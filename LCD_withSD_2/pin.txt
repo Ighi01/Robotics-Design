@@ -1,0 +1,18 @@
+LCD 
+
+vcc / led  		5V
+gnd  			gnd
+cs 			10
+reset			8
+a0			9
+sda			11
+sck			13
+
+SD
+
+vcc / led  		5V
+gnd  			gnd
+cs 			4
+sck			13
+mosi			11
+miso			12

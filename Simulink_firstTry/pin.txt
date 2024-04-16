@@ -1,0 +1,3 @@
+trigger  		4
+echo  			5
+servo			9

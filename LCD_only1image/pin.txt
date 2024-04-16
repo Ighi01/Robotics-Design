@@ -1,0 +1,7 @@
+vcc / led  		5V
+gnd  			gnd
+cs 			10
+reset			8
+a0			9
+sda			11
+sck			13

@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "Clementino1.0.0.ino",
+    "port": "/dev/ttyUSB0"
+}
