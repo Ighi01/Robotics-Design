@@ -11,9 +11,10 @@ not support PIL/pillow (python imaging library)!
 Author(s): Melissa LeBlanc-Williams for Adafruit Industries
 """
 
+import os
 import digitalio
 import board
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageSequence
 from adafruit_rgb_display import st7735
 
 # Configuration for CS and DC pins (these are PiTFT defaults):
@@ -29,7 +30,7 @@ spi = board.SPI()
 
 disp = st7735.ST7735R(
     spi, 
-    rotation=90,
+    rotation=0,
     cs=cs_pin,
     dc=dc_pin,
     rst=reset_pin,
@@ -53,23 +54,10 @@ draw = ImageDraw.Draw(image)
 draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
 disp.image(image)
 
-image = Image.open("blinka.jpg")
-
-# Scale the image to the smaller screen dimension
-image_ratio = image.width / image.height
-screen_ratio = width / height
-if screen_ratio < image_ratio:
-    scaled_width = image.width * height // image.height
-    scaled_height = height
-else:
-    scaled_width = width
-    scaled_height = image.height * width // image.width
-image = image.resize((scaled_width, scaled_height), Image.BICUBIC)
-
-# Crop and center the image
-x = scaled_width // 2 - width // 2
-y = scaled_height // 2 - height // 2
-image = image.crop((x, y, x + width, y + height))
-
-# Display image.
-disp.image(image)
+with Image.open('sad.gif') as im:
+    while True:
+        for frame in ImageSequence.Iterator(im):
+            frame = frame.convert('RGB')
+            r, g, b = frame.split()
+            frame = Image.merge('RGB', (b,g,r))
+            disp.image(frame)

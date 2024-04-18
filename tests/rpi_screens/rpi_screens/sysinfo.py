@@ -31,7 +31,7 @@ spi = board.SPI()
 
 disp = st7735.ST7735R(
     spi, 
-    rotation=90,
+    rotation=0,
     cs=cs_pin,
     dc=dc_pin,
     rst=reset_pin,
