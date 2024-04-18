@@ -11,7 +11,6 @@ not support PIL/pillow (python imaging library)!
 Author(s): Melissa LeBlanc-Williams for Adafruit Industries
 """
 
-import os
 import digitalio
 import board
 from PIL import Image, ImageDraw, ImageSequence
@@ -35,6 +34,7 @@ disp = st7735.ST7735R(
     dc=dc_pin,
     rst=reset_pin,
     baudrate=BAUDRATE,
+    bgr=True
 )
 
 # Create blank image for drawing.
@@ -57,7 +57,4 @@ disp.image(image)
 with Image.open('sad.gif') as im:
     while True:
         for frame in ImageSequence.Iterator(im):
-            frame = frame.convert('RGB')
-            r, g, b = frame.split()
-            frame = Image.merge('RGB', (b,g,r))
-            disp.image(frame)
+            disp.image(frame.convert('RGB'))
