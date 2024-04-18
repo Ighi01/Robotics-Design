@@ -6,7 +6,7 @@
   // Angles must be from -90 to 90 (not 0) for g90 (type 0) , 1 to 180 for others (type 1) and must be integer values : path should be made take in consideration -90 to 90 reference, then algorith adjust it automatically based on the type of the servo
   // Speeds over 100 degree/sec are fed into immediate transactions
   // First movement delay must be 0 
-  // addMovement requires the pin of the interested servo, the number of movement we want to add , followed by the path 
+  // addMovement requires the pin of the interested servo , followed by the path 
   // Every time we add a movement with addMovement we overwrite the previous path added 
 
 //SERVO
@@ -41,16 +41,17 @@ void setup() {
   initializeServos(SERVOS,INITIAL_PIN_SERVOS,typeServo);
   pinMode(irPin, INPUT);
 
-  addMovement(mouthPin, 6, loopPath[0] , typeServo); 
-  addMovement(armPin1, 6, loopPath[1], typeServo);
-  addMovement(armPin2, 6, loopPath[2], typeServo);
+  addMovement(mouthPin, loopPath[0]); 
+  addMovement(armPin1, loopPath[1]);
+  addMovement(armPin2, loopPath[2]);
 }
 
 void loop() {
 
-  if(isComplete(mouthPin)) addMovement(mouthPin, 6, loopPath[0], typeServo);
-  if(isComplete(armPin1)) addMovement(armPin1, 6, loopPath[1], typeServo);
-  if(isComplete(armPin2)) addMovement(armPin2, 6, loopPath[2], typeServo);
+// TODO: trovare un modo per resincronizzare i servo , in caso si desincronizzano da interrupt asincroni che ne modificano il path (oppure fare in modo che semplicemente i path asincroni abbiano lo stesso periodo di durata dei path loop)
+  if(isComplete(mouthPin)) addMovement(mouthPin, loopPath[0]);
+  if(isComplete(armPin1)) addMovement(armPin1, loopPath[1]);
+  if(isComplete(armPin2)) addMovement(armPin2, loopPath[2]);
  
   currentMillis = millis();
 
@@ -60,10 +61,10 @@ void loop() {
     
     if (!irValue && irOldValue) {    
       Movement path_3[6] = { {1,0,90} , {-20,5,60} , {40,4,90} , {60,2,80}, {-30,6,45} , {1,10,90} }; 
-      addMovement(armPin2, 6, path_3, typeServo);
+      addMovement(armPin2, path_3);
       
       Movement path[4] = { {1,0,90} , {40,7.5,60} , {-70,10,90} , {1,5,90} }; 
-      addMovement(armPin3, 4, path, typeServo);
+      addMovement(armPin3, path);
     }
 
     irOldValue = irValue;

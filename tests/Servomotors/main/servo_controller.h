@@ -8,6 +8,7 @@
 
 int NUM_SERVOS;
 int INITIAL_PIN;
+int servoType;
 
 struct ServoData {
     Servo servo;
@@ -30,11 +31,11 @@ struct Movement {
 
 ServoData servos[MAX_SERVO];
 
-void addMovement(int servoIndex, int num_movement, Movement path[], int type) {
+void addMovement(int servoIndex, Movement path[]) {
     servos[servoIndex].movementIndex = 0;
-    servos[servoIndex].numMovements = num_movement;
-    for (int i = 0; i < num_movement; i++) {
-        if (type == 1) {
+    servos[servoIndex].numMovements = sizeof(path[0]);
+    for (int i = 0; i < servos[servoIndex].numMovements; i++) {
+        if (servoType == 1) {
             servos[servoIndex].angles[i] = path[i].ang + 90;
             if (servos[servoIndex].angles[i] == 0) {
                 servos[servoIndex].angles[i] = 1;
@@ -57,6 +58,7 @@ void addMovement(int servoIndex, int num_movement, Movement path[], int type) {
 void initializeServos(int num_servos, int initialPin, int type) {
     NUM_SERVOS = num_servos;
     INITIAL_PIN = initialPin;
+    servoType = type;
     for (int i = 0; i < NUM_SERVOS; i++) {
         servos[i].servo.attach(INITIAL_PIN + i); //servos should be one after the other
         servos[i].previousMillis = 0;
@@ -65,7 +67,7 @@ void initializeServos(int num_servos, int initialPin, int type) {
         servos[i].movementIndex = 0;
         memset(servos[i].angles, 0, sizeof(servos[i].angles));
         memset(servos[i].delays, 0, sizeof(servos[i].delays));
-        if (type == 1) {
+        if (servoType == 1) {
             servos[i].servo.write(91);
             servos[i].previousAngle = 91;
             servos[i].angle = 91;
