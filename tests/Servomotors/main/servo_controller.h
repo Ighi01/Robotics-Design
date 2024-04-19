@@ -25,15 +25,17 @@ struct ServoData {
 
 struct Movement {
     int ang;
-    int delay;
+    int del;
     int speed;
 };
 
 ServoData servos[MAX_SERVO];
 
-void addMovement(int servoIndex, Movement path[]) {
+void addMovement(int servoIndex, Movement path[], int numEl ,unsigned long currentMillis) {
     servos[servoIndex].movementIndex = 0;
-    servos[servoIndex].numMovements = sizeof(path[0]);
+    servos[servoIndex].numMovements = numEl;
+    servos[servoIndex].previousMillis = currentMillis;                  
+    servos[servoIndex].previousDelayMillis = currentMillis;
     for (int i = 0; i < servos[servoIndex].numMovements; i++) {
         if (servoType == 1) {
             servos[servoIndex].angles[i] = path[i].ang + 90;
@@ -44,7 +46,7 @@ void addMovement(int servoIndex, Movement path[]) {
         else {
             servos[servoIndex].angles[i] = path[i].ang;
         }
-        servos[servoIndex].delays[i] = path[i].delay;
+        servos[servoIndex].delays[i] = path[i].del;
         if (path[i].speed < MIN_SPEED) {
             servos[servoIndex].speeds[i] = MIN_SPEED;
         }
@@ -111,7 +113,7 @@ void updateServos(unsigned long currentMillis) {
 }
 
 bool isComplete(int servoIndex) {
-    return servos[servoIndex].movementIndex == (servos[servoIndex].numMovements - 1) && servos[servoIndex].previousAngle == servos[servoIndex].angle;
+  return (servos[servoIndex].movementIndex == (servos[servoIndex].numMovements - 1) || servos[servoIndex].numMovements == 0) && servos[servoIndex].previousAngle == servos[servoIndex].angle;
 }
 
 void printServoData() {
@@ -121,6 +123,12 @@ void printServoData() {
         Serial.print(": ");
         Serial.print(", Current Angle: ");
         Serial.print(servos[i].angle);
+        Serial.print(", Current Angle: ");
+        Serial.print(servos[i].previousAngle);
+        Serial.print(", movementIndex: ");
+        Serial.println(servos[i].movementIndex);
+        Serial.print(", numMovements: ");
+        Serial.println(servos[i].numMovements);
         Serial.print(", Is Complete: ");
         Serial.println(isComplete(i));
         Serial.print("\n");
