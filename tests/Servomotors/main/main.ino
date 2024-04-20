@@ -1,13 +1,10 @@
 #include <Arduino.h>
 #include "servo_controller.h"
-#define MAX_COMMAND_LENGTH 100
-
-const int SERVOS = 4;
-const int INITIAL_PIN_SERVOS = 2;
-const int typeServo = 1;
+#define MAX_COMMAND_LENGTH 140
+#define MAX_SERVO 11
+#define INITIAL_PIN_SERVOS 2
 
 unsigned long currentMillis;
-int index;
 int servoIndex;
 int totMovement;
 int i,j;
@@ -15,7 +12,7 @@ int command[MAX_COMMAND_LENGTH];
 
 void setup() {
   Serial.begin(9600);
-  initializeServos(SERVOS, INITIAL_PIN_SERVOS, typeServo);
+  initializeServos(MAX_SERVO, INITIAL_PIN_SERVOS);
 }
 
 void loop() {
