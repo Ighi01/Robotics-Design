@@ -2,13 +2,14 @@ import digitalio
 import board
 from PIL import Image, ImageDraw, ImageSequence
 from adafruit_rgb_display import st7735
+from time import sleep
 
 spi = board.SPI()
 
 ls = st7735.ST7735R(
     spi, 
     rotation=0,
-    cs=digitalio.DigitalInOut(board.CE0),
+    cs=digitalio.DigitalInOut(board.D17),
     dc=digitalio.DigitalInOut(board.D25),
     rst=digitalio.DigitalInOut(board.D24),
     baudrate=24000000,
@@ -18,7 +19,7 @@ ls = st7735.ST7735R(
 rs = st7735.ST7735R(
     spi, 
     rotation=0,
-    cs=digitalio.DigitalInOut(board.CE1),
+    cs=digitalio.DigitalInOut(board.D27),
     dc=digitalio.DigitalInOut(board.D6),
     rst=digitalio.DigitalInOut(board.D5),
     baudrate=24000000,
@@ -51,5 +52,5 @@ with Image.open('sad.gif') as im:
         
 while True:
     for frame in images:
-        ls.image(frame)
         rs.image(frame)
+        ls.image(frame)

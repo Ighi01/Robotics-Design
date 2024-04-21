@@ -2,7 +2,7 @@ Left screen (or only screen)
 
 VCC   -> 1  (3.3V)
 GND   -> 6  (Ground)
-CS    -> 24 (CE0)
+CS    -> 11 (GPIO17)
 RESET -> 18 (GPIO24)
 A0    -> 22 (GPIO25)
 SDA   -> 19 (MOSI)
@@ -14,7 +14,7 @@ Right screen
 
 VCC   -> 1  (3.3V)
 GND   -> 6  (Ground)
-CS    -> 26 (CE1)
+CS    -> 13 (GPIO27)
 RESET -> 31 (GPIO6)
 A0    -> 26 (GPIO5)
 SDA   -> 19 (MOSI)
