@@ -8,7 +8,7 @@
 #define LENGTH 40 //centimeters
 #define MAX_DEBOUNCING 3 //centimeters
 #define RADIOUS_GEAR 0.01 //meters
-#define FLOATING_TIME 1000 //milliseconds
+#define FLOATING_TIME 1000 //milliseconds (should be greater then 10 ms)
 //
 
 #include <Stepper.h>
