@@ -1,7 +1,7 @@
 from serial import Serial
 from time import sleep
 
-class Arduino:
+class SerialCommunication:
     port: str
     baudrate: int = 9600
     device: Serial

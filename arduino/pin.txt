@@ -1,5 +1,0 @@
-SERVO MOTORS
-From pin 10 to pin 13 (max 4 Servo)
-
-STEPPER MOTORS
-From pin 2 to pin 9 (max 2 Stepper)

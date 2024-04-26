@@ -2,7 +2,7 @@
 #define SERVO_CONTROLLER_H
 
 //Hyperparameters
-#define NUM_SERVOS 10
+#define NUM_SERVOS 11
 #define INITIAL_PIN 2
 #define MAX_MOVEMENTS 20
 #define MAX_SPEED 100 //setted to 100 in order to make the cpu "rest" for 10 ms at every loop , more/equal than that we use the "instant" transmission
