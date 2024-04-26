@@ -7,13 +7,14 @@ from arduino.servo import Servo
 from arduino.stepper import Stepper
 from sensors.ir_sensor import IRSensor
 from sensors.proximity_sensor import ProximitySensor
+from audio import AudioPlayer 
 import digitalio
 import threading
 import time
 
 class StateMachine:
-    def __init__(self, ir_sensor1_pin, ir_sensor2_pin, proximity_trigger_pin, proximity_echo_pin, left_screen_pins, right_screen_pins, servo_controller, stepper_controller):
-
+    def __init__(self, ir_sensor1_pin, ir_sensor2_pin, proximity_trigger_pin, proximity_echo_pin, left_screen_pins, right_screen_pins, servo_controller_serial, stepper_controller_serial, audio_pin):
+        
         self.states = {
             'engaging': Engaging(self),
             'voting': Voting(self),
@@ -31,27 +32,36 @@ class StateMachine:
 
         # PROXIMITY SENSOR
         self.proximity_sensor = ProximitySensor(proximity_trigger_pin, proximity_echo_pin)
-        self.proximity_thread = threading.Thread(target=self.proximity_sensor.measure_distance_task)
+        self.proximity_thread = threading.Thread(target=self.proximity_sensor.measure_distance_task)   #TODO: mettere in stop/restart questo thread a seconda dello stato in cui ci si ritrova? O lasciarlo sempre attivo ?
         self.proximity_thread.start()
+        
+        # AUDIO
+        self.audio_player = AudioPlayer(audio_pin)
 
         # SCREENS
         self.left_screen = Screen(digitalio.DigitalInOut(left_screen_pins[0]), digitalio.DigitalInOut(left_screen_pins[1]), digitalio.DigitalInOut(left_screen_pins[2]))
         self.right_screen = Screen(digitalio.DigitalInOut(right_screen_pins[0]), digitalio.DigitalInOut(right_screen_pins[1]), digitalio.DigitalInOut(right_screen_pins[2]))
     
         # SERVOMOTORS
-        self.arduino_0 = Arduino(servo_controller)
+        self.arduino_0 = Arduino(servo_controller_serial)
         self.servo_0 = Servo(self.arduino_0, 0)
         self.servo_1 = Servo(self.arduino_0, 1)
         self.servo_2 = Servo(self.arduino_0, 2)
-        self.servo_3 = Servo(self.arduino_0, 3)
+        self.servo_3 = Servo(self.arduino_0, 3)        
+        self.servo_4 = Servo(self.arduino_0, 4)
+        self.servo_5 = Servo(self.arduino_0, 5)
+        self.servo_6 = Servo(self.arduino_0, 6)
+        self.servo_7 = Servo(self.arduino_0, 7)        
+        self.servo_8 = Servo(self.arduino_0, 8)
+        self.servo_9 = Servo(self.arduino_0, 9)
+        self.servo_10 = Servo(self.arduino_0, 10)
+        self.servo_11 = Servo(self.arduino_0, 11)
 
         # STEPPER MOTOR
-        self.arduino_1 = Arduino(stepper_controller)
-        # TODO: Inizializzare stepper1
-        # TODO: Inizializzare stepper2
-
-        # SOUND
-        # TODO: Inizializzare il modulo per i suoni
+        self.arduino_1 = Arduino(stepper_controller_serial)
+        self.stepper_0 = Stepper(self.arduino_1, 0)
+        self.stepper_1 = Stepper(self.arduino_1, 1)
+        self.stepper_2 = Stepper(self.arduino_1, 2)
 
     def run(self):
         while True:

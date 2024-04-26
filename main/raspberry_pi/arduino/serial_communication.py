@@ -14,12 +14,5 @@ class SerialCommunication:
     def write(self, data: str):
         self.device.write(bytes(data, 'utf-8'))
         
-    def wait_until_finished(self, motor):
-        while True:
-            self.device.write(f'1 {motor}'.encode())
-            sleep(.05)
-            print(self.device.readline().decode())
-            if self.device.readline().decode() == '1':
-                break
-            else:
-                sleep(.2)
+    def read(self):
+        return self.device.readline().decode().strip()
