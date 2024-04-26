@@ -1,0 +1,11 @@
+(librepcb_library 35ffd470-900e-4e29-87ec-bbfc1f0a21eb
+ (name "local")
+ (description "")
+ (keywords "")
+ (author "kinami")
+ (version "0.1")
+ (created 2024-04-26T10:48:16Z)
+ (deprecated false)
+ (url "")
+ (manufacturer "")
+)
