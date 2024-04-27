@@ -74,7 +74,7 @@ class Engaging:
             self.fsm.moveMultipleServo(self.routines[self.current_routine_index])
         else
             current_indexes = list(self.current_routine_index.keys())
-            if self.fsm.checkAllCompleted(*current_indexes):
+            if self.fsm.checkAllServoCompleted(*current_indexes):
             
                 random_index = random.randint(0, len(self.routines) - 1)
                 while self.current_routine_index == random_index:

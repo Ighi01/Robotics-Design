@@ -2,10 +2,10 @@ class StateMachine:
     def __init__(self, ir_sensor1_pin, ir_sensor2_pin, proximity_trigger_pin, proximity_echo_pin, left_screen_pins, right_screen_pins, servo_controller_serial, stepper_controller_serial, audio_pin):
         
         self.states = {
-            'engaging': Engaging(self),
-            'voting': Voting(self),
-            'feedback': Feedback(self)
-        }
+                        'engaging': Engaging(self),
+                        'voting': Voting(self),
+                        'feedback': Feedback(self)
+                      }
 
         # INITIAL STATE
         self.current_state = 'engaging'
@@ -35,12 +35,7 @@ class StateMachine:
         # STEPPER MOTOR
         self.arduino_1 = Arduino(stepper_controller_serial)
         self.steppers = [Stepper(self.arduino_1, i) for i in range(3)]
-
-    def run(self):
-        while True:
-            state_function = self.states[self.current_state].run
-            state_function()
-    
+  
     def moveMultipleServo(self, servo_movements):
         for servo, movements in servo_movements.items():
             self.servos[servo].move(*movements)
@@ -49,9 +44,14 @@ class StateMachine:
         for stepper, movement in stepper_movements.items():
             self.steppers[stepper].move(*movement)
 
-    def checkAllCompleted(self, *indexes):
+    def checkAllServoCompleted(self, *indexes):
         for index in indexes:
             if not self.servos[index].is_completed():
                 return False
         return True
+
+    def run(self):
+        while True:
+            state_function = self.states[self.current_state].run
+            state_function()
 
