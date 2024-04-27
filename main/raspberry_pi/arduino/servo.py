@@ -19,7 +19,3 @@ class Servo:
         self.arduino.write(command)
         response = self.arduino.read()
         return bool(int(response))
-    
-    def wait_until_finished(self):     # Stare attenti quando si stalla la CPU dentro un "while true" , piu' prudente farlo da un thread
-        while not self.is_completed():
-            sleep(0.2)
