@@ -51,7 +51,6 @@ int command[MAX_COMMAND_LENGTH];
 void setup() {
   Serial.begin(9600);
   initializeServos();
-  initializeSteppers();
 }
 
 void loop() {
@@ -65,29 +64,11 @@ void loop() {
       commandIndex++;
     }
 
-    if (command[0] == 0) {
-      int totMovement = command[2];
-      Movement path[totMovement];
-      int i = 3;
-      int j = 0;
-      while (i < 3*(totMovement+1)) {
-        path[j].ang = command[i++];
-        path[j].del = command[i++];
-        path[j++].speed = command[i++];
-      }
-      addMovementServo(command[1], path, totMovement, currentMillis);
-    }
-
-    if (command[0] == 1) {
-      Serial.println(isCompleteServo(command[1]));
-    }
-
     if (command[0] == 2) {
       addMovementStepper(command[1], command[2] , command[3], command[4] , command[5] ,currentMillis);
     }
   }
 
   updateSteppers(currentMillis);
-  updateServos(currentMillis);
   delay(10);
 }
