@@ -1,3 +1,4 @@
+import random
 class Voting:
     def __init__(self, state_machine):
         self.fsm = state_machine

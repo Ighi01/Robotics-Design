@@ -1,3 +1,4 @@
+import random
 class Engaging:
     def __init__(self, state_machine):
         self.fsm = state_machine
@@ -72,7 +73,7 @@ class Engaging:
                 random_index = random.randint(0, len(self.routines) - 1)
             self.current_routine_index = random_index
             self.fsm.moveMultipleServo(self.routines[self.current_routine_index])
-        else
+        else:
             current_indexes = list(self.current_routine_index.keys())
             if self.fsm.checkAllServoCompleted(*current_indexes):
             

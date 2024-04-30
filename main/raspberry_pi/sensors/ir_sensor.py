@@ -12,7 +12,7 @@ class IRSensor:
     def irq_callback(self, pin):
         self.counter += 1
 
-        if self.fsm.current_state = 'engaging' or self.fsm.current_state = 'voting':
+        if self.fsm.current_state == 'engaging' or self.fsm.current_state == 'voting':
             self.fsm.states[self.fsm.current_state].isFirst = True
 
         self.fsm.current_state = 'feedback'

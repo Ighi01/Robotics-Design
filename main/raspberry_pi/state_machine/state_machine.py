@@ -1,3 +1,15 @@
+from .engaging import Engaging
+from .voting import Voting
+from .feedback import Feedback
+from sensors.ir_sensor import IRSensor
+from sensors.proximity_sensor import ProximitySensor
+import threading
+from audio.audio_player import AudioPlayer
+import digitalio
+from screen.screen import Screen
+from arduino.serial_communication import SerialCommunication
+from arduino.servo import Servo
+from arduino.stepper import Stepper
 class StateMachine:
     def __init__(self, ir_sensor1_pin, ir_sensor2_pin, proximity_trigger_pin, proximity_echo_pin, left_screen_pins, right_screen_pins, servo_controller_serial, stepper_controller_serial, audio_pin):
         
@@ -29,11 +41,11 @@ class StateMachine:
         self.right_screen = Screen(digitalio.DigitalInOut(right_screen_pins[0]), digitalio.DigitalInOut(right_screen_pins[1]), digitalio.DigitalInOut(right_screen_pins[2]))
     
         # SERVOMOTORS
-        self.arduino_0 = Arduino(servo_controller_serial)
+        self.arduino_0 = SerialCommunication(servo_controller_serial)
         self.servos = [Servo(self.arduino_0, i) for i in range(12)]
 
         # STEPPER MOTOR
-        self.arduino_1 = Arduino(stepper_controller_serial)
+        self.arduino_1 = SerialCommunication(stepper_controller_serial)
         self.steppers = [Stepper(self.arduino_1, i) for i in range(3)]
   
     def moveMultipleServo(self, servo_movements):
