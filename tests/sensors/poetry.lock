@@ -34,13 +34,27 @@ adafruit-circuitpython-typing = "*"
 
 [[package]]
 name = "adafruit-circuitpython-connectionmanager"
-version = "1.0.1"
+version = "2.0.0"
 description = "A urllib3.poolmanager/urllib3.connectionpool-like library for managing sockets and connections"
 optional = false
 python-versions = "*"
 files = [
-    {file = "adafruit-circuitpython-connectionmanager-1.0.1.tar.gz", hash = "sha256:913b325488860524edcb6a69f13575addc27c0127764cd74074476e149ba7a73"},
-    {file = "adafruit_circuitpython_connectionmanager-1.0.1-py3-none-any.whl", hash = "sha256:9b7800960b61896f499086a2dbf192c270a3eb1f69bf88268a1bd5422f33ad68"},
+    {file = "adafruit_circuitpython_connectionmanager-2.0.0-py3-none-any.whl", hash = "sha256:a7164831e02c02792c65123d2931dfeb6e998456aa0da48a0effaaddc8af7691"},
+    {file = "adafruit_circuitpython_connectionmanager-2.0.0.tar.gz", hash = "sha256:32b0a2e38f703bf6e22d93e6929a301fe4e18fff6f68ad251521b8d250ef6436"},
+]
+
+[package.dependencies]
+Adafruit-Blinka = "*"
+
+[[package]]
+name = "adafruit-circuitpython-hcsr04"
+version = "0.4.18"
+description = "CircuitPython library for controlling HC-SR04 ultrasonic range sensors."
+optional = false
+python-versions = "*"
+files = [
+    {file = "adafruit-circuitpython-hcsr04-0.4.18.tar.gz", hash = "sha256:9312670e6ec935f6ec27e785d14fd02fb2d4008aef0bc91fd16e9ffb45e74912"},
+    {file = "adafruit_circuitpython_hcsr04-0.4.18-py3-none-any.whl", hash = "sha256:7a36ea5e2ae0bf962b07f40863f2fd67a6e30196ba92e4c57ccb9f971e18ab13"},
 ]
 
 [package.dependencies]
@@ -48,13 +62,13 @@ Adafruit-Blinka = "*"
 
 [[package]]
 name = "adafruit-circuitpython-requests"
-version = "3.2.5"
+version = "3.2.8"
 description = "A requests-like library for web interfacing"
 optional = false
 python-versions = "*"
 files = [
-    {file = "adafruit_circuitpython_requests-3.2.5-py3-none-any.whl", hash = "sha256:25f789bac9f0568c289585418e52abeee7cd37c06c2fb58780aeb62022faff3e"},
-    {file = "adafruit_circuitpython_requests-3.2.5.tar.gz", hash = "sha256:971d7fe96b032c8f7a92ab6aaa1997e3c920171f3b935ae76b2c6b8af9c8929d"},
+    {file = "adafruit_circuitpython_requests-3.2.8-py3-none-any.whl", hash = "sha256:aca829e7a84bda37b8a70a867e28ae8c8aa27cbf596ea16f52805b0d2051be13"},
+    {file = "adafruit_circuitpython_requests-3.2.8.tar.gz", hash = "sha256:50e46e4a1ee9a4f2e832308468191b855424ebc468a0bc8c911c68df33918863"},
 ]
 
 [package.dependencies]
@@ -114,21 +128,6 @@ files = [
     {file = "Adafruit_PureIO-1.1.11-py3-none-any.whl", hash = "sha256:281ab2099372cc0decc26326918996cbf21b8eed694ec4764d51eefa029d324e"},
     {file = "Adafruit_PureIO-1.1.11.tar.gz", hash = "sha256:c4cfbb365731942d1f1092a116f47dfdae0aef18c5b27f1072b5824ad5ea8c7c"},
 ]
-
-[[package]]
-name = "audioio"
-version = "2.1.0"
-description = "Platform independent interfacing of numpy arrays of floats with audio files and devices for scientific data analysis."
-optional = false
-python-versions = ">=3"
-files = [
-    {file = "audioio-2.1.0-py3-none-any.whl", hash = "sha256:c4d4401f32a98d0c627b07b5579d06daf4904c5f849db05568a10bacfac53ad9"},
-    {file = "audioio-2.1.0.tar.gz", hash = "sha256:74446ff8b22ec1cddf8f51912218eaa7183c0ccdad55f4451afa139708b7f51d"},
-]
-
-[package.dependencies]
-numpy = "*"
-scipy = "*"
 
 [[package]]
 name = "gpiod"
@@ -334,48 +333,6 @@ files = [
 ]
 
 [[package]]
-name = "scipy"
-version = "1.13.0"
-description = "Fundamental algorithms for scientific computing in Python"
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "scipy-1.13.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ba419578ab343a4e0a77c0ef82f088238a93eef141b2b8017e46149776dfad4d"},
-    {file = "scipy-1.13.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:22789b56a999265431c417d462e5b7f2b487e831ca7bef5edeb56efe4c93f86e"},
-    {file = "scipy-1.13.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:05f1432ba070e90d42d7fd836462c50bf98bd08bed0aa616c359eed8a04e3922"},
-    {file = "scipy-1.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b8434f6f3fa49f631fae84afee424e2483289dfc30a47755b4b4e6b07b2633a4"},
-    {file = "scipy-1.13.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:dcbb9ea49b0167de4167c40eeee6e167caeef11effb0670b554d10b1e693a8b9"},
-    {file = "scipy-1.13.0-cp310-cp310-win_amd64.whl", hash = "sha256:1d2f7bb14c178f8b13ebae93f67e42b0a6b0fc50eba1cd8021c9b6e08e8fb1cd"},
-    {file = "scipy-1.13.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:0fbcf8abaf5aa2dc8d6400566c1a727aed338b5fe880cde64907596a89d576fa"},
-    {file = "scipy-1.13.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:5e4a756355522eb60fcd61f8372ac2549073c8788f6114449b37e9e8104f15a5"},
-    {file = "scipy-1.13.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b5acd8e1dbd8dbe38d0004b1497019b2dbbc3d70691e65d69615f8a7292865d7"},
-    {file = "scipy-1.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9ff7dad5d24a8045d836671e082a490848e8639cabb3dbdacb29f943a678683d"},
-    {file = "scipy-1.13.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:4dca18c3ffee287ddd3bc8f1dabaf45f5305c5afc9f8ab9cbfab855e70b2df5c"},
-    {file = "scipy-1.13.0-cp311-cp311-win_amd64.whl", hash = "sha256:a2f471de4d01200718b2b8927f7d76b5d9bde18047ea0fa8bd15c5ba3f26a1d6"},
-    {file = "scipy-1.13.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:d0de696f589681c2802f9090fff730c218f7c51ff49bf252b6a97ec4a5d19e8b"},
-    {file = "scipy-1.13.0-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:b2a3ff461ec4756b7e8e42e1c681077349a038f0686132d623fa404c0bee2551"},
-    {file = "scipy-1.13.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6bf9fe63e7a4bf01d3645b13ff2aa6dea023d38993f42aaac81a18b1bda7a82a"},
-    {file = "scipy-1.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1e7626dfd91cdea5714f343ce1176b6c4745155d234f1033584154f60ef1ff42"},
-    {file = "scipy-1.13.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:109d391d720fcebf2fbe008621952b08e52907cf4c8c7efc7376822151820820"},
-    {file = "scipy-1.13.0-cp312-cp312-win_amd64.whl", hash = "sha256:8930ae3ea371d6b91c203b1032b9600d69c568e537b7988a3073dfe4d4774f21"},
-    {file = "scipy-1.13.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:5407708195cb38d70fd2d6bb04b1b9dd5c92297d86e9f9daae1576bd9e06f602"},
-    {file = "scipy-1.13.0-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:ac38c4c92951ac0f729c4c48c9e13eb3675d9986cc0c83943784d7390d540c78"},
-    {file = "scipy-1.13.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:09c74543c4fbeb67af6ce457f6a6a28e5d3739a87f62412e4a16e46f164f0ae5"},
-    {file = "scipy-1.13.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:28e286bf9ac422d6beb559bc61312c348ca9b0f0dae0d7c5afde7f722d6ea13d"},
-    {file = "scipy-1.13.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:33fde20efc380bd23a78a4d26d59fc8704e9b5fd9b08841693eb46716ba13d86"},
-    {file = "scipy-1.13.0-cp39-cp39-win_amd64.whl", hash = "sha256:45c08bec71d3546d606989ba6e7daa6f0992918171e2a6f7fbedfa7361c2de1e"},
-    {file = "scipy-1.13.0.tar.gz", hash = "sha256:58569af537ea29d3f78e5abd18398459f195546bb3be23d16677fb26616cc11e"},
-]
-
-[package.dependencies]
-numpy = ">=1.22.4,<2.3"
-
-[package.extras]
-dev = ["cython-lint (>=0.12.2)", "doit (>=0.36.0)", "mypy", "pycodestyle", "pydevtool", "rich-click", "ruff", "types-psutil", "typing_extensions"]
-doc = ["jupyterlite-pyodide-kernel", "jupyterlite-sphinx (>=0.12.0)", "jupytext", "matplotlib (>=3.5)", "myst-nb", "numpydoc", "pooch", "pydata-sphinx-theme (>=0.15.2)", "sphinx (>=5.0.0)", "sphinx-design (>=0.4.0)"]
-test = ["array-api-strict", "asv", "gmpy2", "hypothesis (>=6.30)", "mpmath", "pooch", "pytest", "pytest-cov", "pytest-timeout", "pytest-xdist", "scikit-umfpack", "threadpoolctl"]
-
-[[package]]
 name = "spidev"
 version = "3.6"
 description = "Python bindings for Linux SPI access through spidev"
@@ -402,20 +359,6 @@ numpy = "*"
 spidev = ">=3.4"
 
 [[package]]
-name = "sysv-ipc"
-version = "1.1.0"
-description = "System V IPC primitives (semaphores, shared memory and message queues) for Python"
-optional = false
-python-versions = "*"
-files = [
-    {file = "sysv_ipc-1.1.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:ff6e3c98d8aa3e1ae5378d86869c4699c76f94318705d08085c97fb010770a31"},
-    {file = "sysv_ipc-1.1.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:30611dccecd8fa0dc9f83d4d465e5047692df0ec9a095abef8b90ccc64afbdaf"},
-    {file = "sysv_ipc-1.1.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:4bbbe4e5ad5ab859e6d21fc8ff3e3b01082b959fa5c2cd76289dbcd56350c5f9"},
-    {file = "sysv_ipc-1.1.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:61190b934b0277f7a189092dcabceee8d9736fd73de90fd9b50ea69f0bac4723"},
-    {file = "sysv_ipc-1.1.0.tar.gz", hash = "sha256:0f063cbd36ec232032e425769ebc871f195a7d183b9af32f9901589ea7129ac3"},
-]
-
-[[package]]
 name = "typing-extensions"
 version = "4.11.0"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -429,4 +372,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "325fd3c45f51b198524199a91b9305fe595adc9f72411b93a0ed5569c2628098"
+content-hash = "914b7d35feda220727063d22dceeac5dd7bcf337f4b0549aa80ce6c781657cc8"
