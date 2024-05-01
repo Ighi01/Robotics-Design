@@ -1,5 +1,7 @@
 import os
+
 import audioio
+
 
 class AudioPlayer:
     def __init__(self, audio_pin):
