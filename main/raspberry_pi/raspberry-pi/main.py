@@ -2,8 +2,8 @@ import board
 from state_machine.state_machine import StateMachine
 
 # Pin Definitions
-IR_SENSOR1_PIN = board.D18
-IR_SENSOR2_PIN = board.D19
+IR_SENSOR1_PIN = 4
+IR_SENSOR2_PIN = 19
 PROXIMITY_TRIGGER_PIN = board.D20
 PROXIMITY_ECHO_PIN = board.D21
 AUDIO_PIN = board.D22

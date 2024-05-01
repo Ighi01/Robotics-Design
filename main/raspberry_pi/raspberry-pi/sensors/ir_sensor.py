@@ -1,13 +1,14 @@
-import digitalio
+import RPi.GPIO as GPIO
 
 class IRSensor:
-    def __init__(self, pin , state_machine):
-        self.pin = digitalio.DigitalInOut(pin)
-        self.pin.direction = digitalio.Direction.INPUT
-        self.pin.switch_to_input(pull=digitalio.Pull.DOWN)
+    counter: int
+    
+    def __init__(self, pin, state_machine):
         self.counter = 0
         self.fsm = state_machine
-        self.pin.irq_trigger(digitalio.EdgeRising, self.irq_callback)
+        self.pin = pin
+        GPIO.setup(self.pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(self.pin, GPIO.RISING, callback=self.irq_callback)
 
     def irq_callback(self, pin):
         self.counter += 1

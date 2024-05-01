@@ -10,6 +10,7 @@ from screen.screen import Screen
 from arduino.serial_communication import SerialCommunication
 from arduino.servo import Servo
 from arduino.stepper import Stepper
+
 class StateMachine:
     def __init__(self, ir_sensor1_pin, ir_sensor2_pin, proximity_trigger_pin, proximity_echo_pin, left_screen_pins, right_screen_pins, servo_controller_serial, stepper_controller_serial, audio_pin):
         
@@ -23,7 +24,7 @@ class StateMachine:
         self.current_state = 'engaging'
 
         # FIRST IR SENSOR
-        self.ir_sensor1 = IRSensor(ir_sensor1_pin,self)
+        self.ir_sensor1 = IRSensor(ir_sensor1_pin, self)
 
         # SECOND IR SENSOR
         self.ir_sensor2 = IRSensor(ir_sensor2_pin,self)
