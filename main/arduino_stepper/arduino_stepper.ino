@@ -35,9 +35,9 @@
  *          5. Lenght of the bouncing that the axis start to do after reaching the wanted displacement in centimeters (0 for no bouncing) (if this value is greather then MAX_BOUNCING is saturate at this value)
  * 
  *          6. Velocity of the gear for the bouncing (rpm)
- *    
- *    Example of input: 2 1 90 100 2 200 -> This command cause the Stepper no 1 to move the axis to 90% of maximum displacement moving the gear at 100 rpm , then after reaching the displacemnt it start bouncing up and down of 2 centimeters with gear speed of 200 rpm
- *    
+ *    2 0 90 20 1 30
+ *    Example of input: 2 0 90 20 1 30 -> This command cause the Stepper no 0 to move the axis to 90% of maximum displacement moving the gear at 100 rpm , then after reaching the displacemnt it start bouncing up and down of 2 centimeters with gear speed of 200 rpm
+ *    MIN SPEED 15, MAX SPEED 30
  */
 
 #include <Arduino.h>
@@ -50,7 +50,7 @@ int command[MAX_COMMAND_LENGTH];
 
 void setup() {
   Serial.begin(9600);
-  initializeServos();
+  initializeSteppers();
 }
 
 void loop() {
