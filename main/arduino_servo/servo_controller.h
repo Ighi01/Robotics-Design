@@ -7,8 +7,6 @@
 #define MAX_MOVEMENTS 20
 #define MAX_SPEED 100 //setted to 100 in order to make the cpu "rest" for 10 ms at every loop , more/equal than that we use the "instant" transmission
 #define MIN_SPEED 5 //avoid division by 0
-#define MIN_MICRO 300 // SG90 around 0 degree 
-//
 
 #include <Servo.h>
 
@@ -44,7 +42,7 @@ void initializeServos() {
     servos[i].movementIndex = 0;
     memset(servos[i].angles, 0, sizeof(servos[i].angles));
     memset(servos[i].delays, 0, sizeof(servos[i].delays));
-    servos[i].servo.writeMicroseconds(MIN_MICRO);
+    servos[i].servo.write(0);
     servos[i].previousAngle = 0;
     servos[i].angle = 0;
   }
@@ -73,14 +71,14 @@ void updateServos(unsigned long currentMillis) {
   for (int i = 0; i < NUM_SERVOS; i++) {
     if (servos[i].previousAngle != servos[i].angle) {
       if (servos[i].speeds[servos[i].movementIndex] >= MAX_SPEED) {
-        servos[i].servo.writeMicroseconds((servos[i].angle*10)+MIN_MICRO);
+        servos[i].servo.write(servos[i].angle);
         servos[i].previousAngle = servos[i].angle;
       }
       else {
         int direction = (servos[i].angle > servos[i].previousAngle) ? 1 : -1;
         if (currentMillis - servos[i].previousMillis >= (1000 / servos[i].speeds[servos[i].movementIndex])) {
           servos[i].previousMillis = currentMillis;
-          servos[i].servo.writeMicroseconds(((servos[i].previousAngle + direction)*10)+MIN_MICRO);
+          servos[i].servo.write(servos[i].previousAngle + direction);
           servos[i].previousAngle += direction;
         }
       }
