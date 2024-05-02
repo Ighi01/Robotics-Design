@@ -30,14 +30,14 @@
  * 
  *          3. Percentage (integer value) of displacent of the axis (0 if is at the origin, 100 is it is at maximum displacement wrt the origin).
  * 
- *          4. Velocity of the gear (rpm)
+ *          4. Velocity of the gear (MIN SPEED 15, MAX SPEED 30)
  * 
- *          5. Lenght of the bouncing that the axis start to do after reaching the wanted displacement in centimeters (0 for no bouncing) (if this value is greather then MAX_BOUNCING is saturate at this value)
+ *          5. Lenght of the bouncing that the axis start to do after reaching the wanted displacement in millimeters (0 for no bouncing) (if this value is greather then MAX_BOUNCING = 0.5 centimeter is saturate at this value)
  * 
- *          6. Velocity of the gear for the bouncing (rpm)
- *    2 0 90 20 1 30
- *    Example of input: 2 0 90 20 1 30 -> This command cause the Stepper no 0 to move the axis to 90% of maximum displacement moving the gear at 100 rpm , then after reaching the displacemnt it start bouncing up and down of 2 centimeters with gear speed of 200 rpm
- *    MIN SPEED 15, MAX SPEED 30
+ *          6. Velocity of the gear for the bouncing (MIN SPEED 15, MAX SPEED 30)
+ *    
+ *    Example of input: 2 0 90 20 10 30 -> This command cause the Stepper no 0 to move the axis to 90% of maximum displacement moving the gear at 15 speed , then after reaching the displacemnt it start bouncing up and down of 2 centimeters with gear speed of 30
+ *   
  */
 
 #include <Arduino.h>
