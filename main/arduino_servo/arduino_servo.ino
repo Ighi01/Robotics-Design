@@ -43,7 +43,7 @@
 #include <Arduino.h>
 #include "servo_controller.h"
 //#include "stepper_controller.h"
-#define MAX_COMMAND_LENGTH 140
+#define MAX_COMMAND_LENGTH 400
 
 unsigned long currentMillis;
 int command[MAX_COMMAND_LENGTH];
@@ -65,16 +65,22 @@ void loop() {
     }
 
     if (command[0] == 0) {
-      int totMovement = command[2];
-      Movement path[totMovement];
-      int i = 3;
-      int j = 0;
-      while (i < 3*(totMovement+1)) {
-        path[j].ang = command[i++];
-        path[j].del = command[i++];
-        path[j++].speed = command[i++];
+      int i = 1;
+      int totServo = command[i++];
+
+      for(int servo = 0; servo < totServo; servo ++){
+        int servoIndex = command[i++];
+        totMovement = command[i++];
+        Movement path[totMovement];
+        int h = i;
+        int j = 0;
+        while (i < (3*totMovement + h)) {
+          path[j].ang = command[i++];
+          path[j].del = command[i++];
+          path[j++].speed = command[i++];
+        }
+        addMovementServo(servoIndex, path, totMovement, currentMillis);
       }
-      addMovementServo(command[1], path, totMovement, currentMillis);
     }
 
     if (command[0] == 1) {
