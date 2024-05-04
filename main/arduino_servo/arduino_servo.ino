@@ -49,6 +49,7 @@ int command[MAX_COMMAND_LENGTH];
 
 void setup() {
   Serial.begin(9600);
+  //Serial.println("ciao");
   initializeServos();
 }
 
