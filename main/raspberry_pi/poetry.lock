@@ -34,13 +34,27 @@ adafruit-circuitpython-typing = "*"
 
 [[package]]
 name = "adafruit-circuitpython-connectionmanager"
-version = "1.0.1"
+version = "2.0.0"
 description = "A urllib3.poolmanager/urllib3.connectionpool-like library for managing sockets and connections"
 optional = false
 python-versions = "*"
 files = [
-    {file = "adafruit-circuitpython-connectionmanager-1.0.1.tar.gz", hash = "sha256:913b325488860524edcb6a69f13575addc27c0127764cd74074476e149ba7a73"},
-    {file = "adafruit_circuitpython_connectionmanager-1.0.1-py3-none-any.whl", hash = "sha256:9b7800960b61896f499086a2dbf192c270a3eb1f69bf88268a1bd5422f33ad68"},
+    {file = "adafruit_circuitpython_connectionmanager-2.0.0-py3-none-any.whl", hash = "sha256:a7164831e02c02792c65123d2931dfeb6e998456aa0da48a0effaaddc8af7691"},
+    {file = "adafruit_circuitpython_connectionmanager-2.0.0.tar.gz", hash = "sha256:32b0a2e38f703bf6e22d93e6929a301fe4e18fff6f68ad251521b8d250ef6436"},
+]
+
+[package.dependencies]
+Adafruit-Blinka = "*"
+
+[[package]]
+name = "adafruit-circuitpython-hcsr04"
+version = "0.4.18"
+description = "CircuitPython library for controlling HC-SR04 ultrasonic range sensors."
+optional = false
+python-versions = "*"
+files = [
+    {file = "adafruit-circuitpython-hcsr04-0.4.18.tar.gz", hash = "sha256:9312670e6ec935f6ec27e785d14fd02fb2d4008aef0bc91fd16e9ffb45e74912"},
+    {file = "adafruit_circuitpython_hcsr04-0.4.18-py3-none-any.whl", hash = "sha256:7a36ea5e2ae0bf962b07f40863f2fd67a6e30196ba92e4c57ccb9f971e18ab13"},
 ]
 
 [package.dependencies]
@@ -48,13 +62,13 @@ Adafruit-Blinka = "*"
 
 [[package]]
 name = "adafruit-circuitpython-requests"
-version = "3.2.5"
+version = "3.2.8"
 description = "A requests-like library for web interfacing"
 optional = false
 python-versions = "*"
 files = [
-    {file = "adafruit_circuitpython_requests-3.2.5-py3-none-any.whl", hash = "sha256:25f789bac9f0568c289585418e52abeee7cd37c06c2fb58780aeb62022faff3e"},
-    {file = "adafruit_circuitpython_requests-3.2.5.tar.gz", hash = "sha256:971d7fe96b032c8f7a92ab6aaa1997e3c920171f3b935ae76b2c6b8af9c8929d"},
+    {file = "adafruit_circuitpython_requests-3.2.8-py3-none-any.whl", hash = "sha256:aca829e7a84bda37b8a70a867e28ae8c8aa27cbf596ea16f52805b0d2051be13"},
+    {file = "adafruit_circuitpython_requests-3.2.8.tar.gz", hash = "sha256:50e46e4a1ee9a4f2e832308468191b855424ebc468a0bc8c911c68df33918863"},
 ]
 
 [package.dependencies]
@@ -429,4 +443,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "325fd3c45f51b198524199a91b9305fe595adc9f72411b93a0ed5569c2628098"
+content-hash = "213482b437f65bb0e74ffe1a1ddb668e7eea8462e32a1005cfffeb198beb9ac6"

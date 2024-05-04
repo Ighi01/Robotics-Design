@@ -1,19 +1,17 @@
 import RPi.GPIO as GPIO
 
+
 class IRSensor:
-    counter: int
-    
-    def __init__(self, pin, state_machine):
-        self.counter = 0
-        self.fsm = state_machine
+    pin: int
+    callback: callable
+    bouncetime: int
+
+    def __init__(self, pin, callback, bouncetime=100):
         self.pin = pin
-        GPIO.setup(self.pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.add_event_detect(self.pin, GPIO.RISING, callback=self.irq_callback)
+        self.callback = callback
+        self.bouncetime = bouncetime
 
-    def irq_callback(self, pin):
-        self.counter += 1
-
-        if self.fsm.current_state == 'engaging' or self.fsm.current_state == 'voting':
-            self.fsm.states[self.fsm.current_state].isFirst = True
-
-        self.fsm.current_state = 'feedback'
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.pin, GPIO.IN)
+        GPIO.add_event_detect(self.pin, GPIO.FALLING, callback=self.callback, bouncetime=self.bouncetime)

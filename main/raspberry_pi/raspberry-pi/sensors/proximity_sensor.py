@@ -1,32 +1,17 @@
-import pulseio
-import digitalio
-import time
-import threading
+from adafruit_hcsr04 import HCSR04
+from board import Pin
+
 
 class ProximitySensor:
-    def __init__(self, trigger_pin, echo_pin):
-        self.trigger_pin = digitalio.DigitalInOut(trigger_pin)
-        self.trigger_pin.direction = digitalio.Direction.OUTPUT
-        self.echo_pin = pulseio.PulseIn(echo_pin, maxlen=1)
-        self.echo_pin.clear()
-        self.distance = None
+    trigger_pin: Pin
+    echo_pin: Pin
+    device: HCSR04
 
-    def measure_distance_task(self):
-        while True:
-            self.trigger_pin.value = True
-            time.sleep(0.00001)
-            self.trigger_pin.value = False
-            self.echo_pin.clear()
+    def __init__(self, trigger_pin: Pin, echo_pin: Pin):
+        self.trigger_pin = trigger_pin
+        self.echo_pin = echo_pin
+        self.device = HCSR04(trigger_pin, echo_pin)
 
-            while not self.echo_pin:
-                pass
-            start_time = time.monotonic()
-            while self.echo_pin:
-                pass
-            end_time = time.monotonic()
-
-            pulse_duration = end_time - start_time
-
-            distance = pulse_duration * 34300 / 2 
-            self.distance = distance
-            time.sleep(0.1)
+    @property
+    def distance(self):
+        return self.device.distance
