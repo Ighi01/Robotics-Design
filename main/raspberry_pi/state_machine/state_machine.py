@@ -1,17 +1,16 @@
 import threading
 
 import digitalio
-from ..arduino.serial_communication import SerialCommunication
-from ..arduino.servo import Servo
-from ..arduino.stepper import Stepper
-# from ..audio.audio_player import AudioPlayer
-from ..screen.screen import Screen
-from ..sensors.ir_sensor import IRSensor
-from ..sensors.proximity_sensor import ProximitySensor
 
 from .engaging import Engaging
 from .feedback import Feedback
 from .voting import Voting
+from ..arduino.serial_communication import SerialCommunication
+from ..arduino.servo import Servo
+from ..arduino.stepper import Stepper
+from ..screen.screen import Screen
+from ..sensors.ir_sensor import IRSensor
+from ..sensors.proximity_sensor import ProximitySensor
 
 
 class StateMachine:
@@ -37,9 +36,6 @@ class StateMachine:
         self.proximity_sensor = ProximitySensor(proximity_trigger_pin, proximity_echo_pin)
         self.proximity_thread = threading.Thread(target=self.proximity_sensor.measure_distance_task)
         self.proximity_thread.start()
-
-        # AUDIO
-        # self.audio_player = AudioPlayer(audio_pin)
 
         # SCREENS
         self.left_screen = Screen(digitalio.DigitalInOut(left_screen_pins[0]),

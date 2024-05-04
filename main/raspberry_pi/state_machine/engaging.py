@@ -66,11 +66,13 @@ class Engaging:
             else:
                 stepper_movements = {
                     0: (
-                    self.fsm.ir_sensor1.counter / (self.fsm.ir_sensor1.counter + self.fsm.ir_sensor2.counter), 100, 3,
-                    200),
+                        self.fsm.ir_sensor1.counter / (self.fsm.ir_sensor1.counter + self.fsm.ir_sensor2.counter), 100,
+                        3,
+                        200),
                     1: (
-                    self.fsm.ir_sensor2.counter / (self.fsm.ir_sensor1.counter + self.fsm.ir_sensor2.counter), 100, 3,
-                    200)
+                        self.fsm.ir_sensor2.counter / (self.fsm.ir_sensor1.counter + self.fsm.ir_sensor2.counter), 100,
+                        3,
+                        200)
                 }
 
             self.fsm.moveMultipleStepper(stepper_movements)
