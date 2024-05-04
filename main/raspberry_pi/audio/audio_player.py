@@ -21,5 +21,5 @@ class AudioPlayer:
                 self.audio.play(self.audio_wavefile, volume=self.volume)
                 while self.audio.playing:
                     pass
-        except:
+        except Exception as _:
             print("Error: Could not play audio file.")
