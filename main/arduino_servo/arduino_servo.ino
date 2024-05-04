@@ -42,7 +42,6 @@
 
 #include <Arduino.h>
 #include "servo_controller.h"
-//#include "stepper_controller.h"
 #define MAX_COMMAND_LENGTH 400
 
 unsigned long currentMillis;
@@ -70,7 +69,7 @@ void loop() {
 
       for(int servo = 0; servo < totServo; servo ++){
         int servoIndex = command[i++];
-        totMovement = command[i++];
+        int totMovement = command[i++];
         Movement path[totMovement];
         int h = i;
         int j = 0;
@@ -84,7 +83,16 @@ void loop() {
     }
 
     if (command[0] == 1) {
-      Serial.println(isCompleteServo(command[1]));
+      int i = 1;
+      int totServo = command[i++];
+      int result = true;
+      while(i< (totServo + 1)){
+        if(!isCompleteServo(command[i++])){
+          result = false;
+          break;
+        }
+      }
+      Serial.println(result);
     }
   }
 
