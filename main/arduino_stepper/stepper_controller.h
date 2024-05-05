@@ -63,7 +63,7 @@ void initializeSteppers() {
   for (int i = 0; i < NUM_STEPPER; i++) {
     steppers[i].percentage = 0;
     steppers[i].bounceStep = 0;
-    steppers[i].timeToFloat = 0;
+    steppers[i].timeToFloat = fmod(1000 * (60.0 / MAX_SPEED) * ((fullTurn + maxDebTurn) / STEPS_PER_REVOLUTION), 1.0);;
     steppers[i].bounceVelocity = 0;
     steppers[i].previousMillis = 0;
     steppers[i].goUp = false;

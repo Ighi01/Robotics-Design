@@ -64,7 +64,12 @@ void loop() {
     }
 
     if (command[0] == 2) {
-      addMovementStepper(command[1], command[2] , command[3], command[4] , command[5] ,currentMillis);
+      int i = 1;
+      int totStepper = command[i++];
+      for(int stepper = 0; stepper < totStepper; stepper++){
+        addMovementStepper(command[i], command[i+1] , command[i+2], command[i+3] , command[i+4] ,currentMillis);
+        i = i + 5;
+      }
     }
   }
 

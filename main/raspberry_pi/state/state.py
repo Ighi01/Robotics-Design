@@ -9,6 +9,8 @@ from screen.screen import Screen
 from sensors.ir_sensor import IRSensor
 from sensors.proximity_sensor import ProximitySensor
 
+import random
+
 
 class SM(StateMachine):
     """
@@ -54,10 +56,12 @@ class SM(StateMachine):
     # TODO: Maybe a fourth state for the final result?
 
     # These are the transitions of the state machine
+    loopEngaging = engaging.to.itself()
     approached = engaging.to(voting)
-    voted = voting.to(feedback)
-    feedbacked = feedback.to(voting)
-    time_out = voting.to(engaging)
+    leaved = voting.to(engaging)
+    voted_engaging = engaging.to(feedback) 
+    voted = voting.to(feedback) 
+    feedbacked = feedback.to(engaging)
 
     # This is the constructor of the state machine
     def __init__(self, ir_sensor_right_pin: int, ir_sensor_left_pin: int, proximity_trigger_pin: Pin,
@@ -66,8 +70,8 @@ class SM(StateMachine):
                  serial_communication_servos_port: str, serial_communication_steppers_port: str):
         super(SM, self).__init__()
 
-        self.ir_sensor_right = IRSensor(ir_sensor_right_pin, None)  # TODO: Add callback
-        self.ir_sensor_left = IRSensor(ir_sensor_left_pin, None)  # TODO: Add callback
+        self.ir_sensor_right = IRSensor(ir_sensor_right_pin, self)
+        self.ir_sensor_left = IRSensor(ir_sensor_left_pin, self)
 
         self.proximity_sensor = ProximitySensor(proximity_trigger_pin, proximity_echo_pin)
 
@@ -123,12 +127,17 @@ class SM(StateMachine):
 
     def on_exit_engaging(self):
         pass
+    
+    
 
     def on_enter_voting(self):
         pass
 
     def on_exit_voting(self):
         pass
+    
+    
+    
 
     def on_enter_feedback(self):
         pass
@@ -149,21 +158,34 @@ class SM(StateMachine):
 
     def after_approached(self):
         pass
+    
+    
 
     def before_voted(self):
         pass
 
-    def on_voted(self):
-        pass
+    def on_leaved(self):
+        if self.ir_sensor_right.counter == 0 and self.ir_sensor_right.counter == 0:
+            stepper_movements = {
+                0: [50, 100, 3, 200],
+                1: [50, 100, 3, 200]
+            }
+        self.moveMultipleStepper(stepper_movements) #TODO BETTER
+            
+        random_index = random.randint(0, len(self.routines) - 1)
+        while self.current_routine_index == random_index:
+            random_index = random.randint(0, len(self.routines) - 1)
+        self.current_routine_index = random_index
+        self.fsm.moveMultipleServo(self.routines[self.current_routine_index])
+                
 
-    def after_voted(self):
-        pass
-
-    def before_feedbacked(self):
         pass
 
     def on_feedbacked(self):
+        self.on_leaved()
         pass
 
-    def after_feedbacked(self):
-        pass
+            
+        
+            
+            
