@@ -1,10 +1,19 @@
+from enum import Enum
+
 from serial import Serial
 
 
-class SerialCommunication:
+class Mode(Enum):
+    SERVO = 0
+    STEPPER = 1
+
+
+class Arduino:
     port: str
     baudrate: int = 9600
     device: Serial
+    mode: Mode
+    movements: dict[int, list[tuple]]
 
     def __init__(self, port: str, baudrate: int = 9600):
         self.port = port

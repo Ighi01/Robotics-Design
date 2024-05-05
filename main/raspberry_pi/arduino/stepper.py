@@ -1,11 +1,11 @@
-from .serial_communication import SerialCommunication
+from .arduino import Arduino
 
 
 class Stepper:
-    arduino: SerialCommunication
+    arduino: Arduino
     index: int
 
-    def __init__(self, arduino: SerialCommunication, index: int):
+    def __init__(self, arduino: Arduino, index: int):
         self.arduino = arduino
         self.index = index
 

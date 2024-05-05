@@ -5,7 +5,7 @@ import digitalio
 from .engaging import Engaging
 from .feedback import Feedback
 from .voting import Voting
-from ..arduino.serial_communication import SerialCommunication
+from ..arduino.arduino import Arduino
 from ..arduino.servo import Servo
 from ..arduino.stepper import Stepper
 from ..screen.screen import Screen
@@ -46,11 +46,11 @@ class StateMachine:
                                    digitalio.DigitalInOut(right_screen_pins[2]))
 
         # SERVOMOTORS
-        self.arduino_0 = SerialCommunication(servo_controller_serial)
+        self.arduino_0 = Arduino(servo_controller_serial)
         self.servos = [Servo(self.arduino_0, i) for i in range(12)]
 
         # STEPPER MOTOR
-        self.arduino_1 = SerialCommunication(stepper_controller_serial)
+        self.arduino_1 = Arduino(stepper_controller_serial)
         self.steppers = [Stepper(self.arduino_1, i) for i in range(3)]
 
     def moveMultipleServo(self, servo_movements):
