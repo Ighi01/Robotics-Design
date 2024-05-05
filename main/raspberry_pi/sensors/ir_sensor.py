@@ -20,7 +20,7 @@ class IRSensor:
 
     def ir_callback(self):
         self.counter = self.counter + 1
-        if self.machine.getstate() == 'Engaging':
+        if self.machine.getstate().id == 'Engaging':
             self.machine.voted_engaging()
-        if self.getstate() == 'Voting':
+        if self.getstate().id == 'Voting':
             self.machine.voted()
