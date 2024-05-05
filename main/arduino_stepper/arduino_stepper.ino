@@ -30,6 +30,10 @@ int command[MAX_COMMAND_LENGTH];
 void setup() {
   Serial.begin(9600);
   initializeSteppers();
+  while (Serial.available() <= 0) {
+    Serial.println("ack");
+    delay(1000);
+  }
 }
 
 void loop() {

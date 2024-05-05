@@ -52,13 +52,15 @@ class SM(StateMachine):
     stepper_left: Stepper
 
     # These are the states of the state machine
-    engaging = State('Engaging', initial=True)
+    setup = State('setup', initial=True)
+    engaging = State('Engaging')
     voting = State('Voting')
     feedback = State('Feedback')
-    # TODO: Maybe a fourth state for the final result?
 
     # These are the transitions of the state machine
+    setup_ready = setup.to(engaging)
     loopEngaging = engaging.to.itself()
+    loopVoting = voting.to.itself()
     approached = engaging.to(voting)
     leaved = voting.to(engaging)
     voted_engaging = engaging.to(feedback) 
@@ -100,92 +102,76 @@ class SM(StateMachine):
         self.stepper_left = Stepper(self.stepper_arduino, 1)
 
     #######################
-    #  General callbacks  #
-    #######################
-    # These are the callbacks that are called on every transition
-
-    def before_transition(self, to_state, *args, **kwargs):
-        pass
-
-    def on_exit_state(self, state, *args, **kwargs):
-        pass
-
-    def on_transition(self, from_state, to_state, *args, **kwargs):
-        pass
-
-    def on_enter_state(self, state, *args, **kwargs):
-        pass
-
-    def after_transition(self, state, *args, **kwargs):
-        pass
-
-    #######################
     #   State callbacks   #
     #######################
-    # These are the callbacks that are called on specific states
 
-    def on_enter_engaging(self):
-        pass
+    def on_enter_setup(self):
+        while !self.servo_arduino.read():
+            time.sleep(1)
+            continue
+        self.servo_arduino.write("ack");
 
-    def on_exit_engaging(self):
-        pass
+        while !self.stepper_arduino.read():
+            time.sleep(1)
+            continue
+        self.stepper_arduino.write("ack");
+        self.setup_ready()
+
+    def on_enter_engaging(self): #TODO
+        # if command2
+            # move steppers depending on counters
+            # move servos (command 1) drawing from one avaible routine or depending on emotion posssibly different from a previous one
+            # show screen (or more than one) depending on emotion (?)
+            # play audio (or more than one) depending on emotion (?)
+        if self.proximity_sensor.nextState:
+            self.proximity_sensor.nextState = False
+            self.approached()
+            return
+        if self.ir_sensor_right.nextState or self.ir_sensor_left.nextState:
+            self.ir_sensor_right.nextState = False
+            self.ir_sensor_right.nextState = False
+            self.voted_engaging()
+            return
+        self.loopEngaging()
     
-    
+    def on_enter_feedback(self): #TODO
+        # move steppers (maybe not here)
+        # move servos (command 1) depending on the vote
+        # show screen (or more than one) depending on the vote
+        # play audio (or more than one) depending on the vote
+        self.feedbacked()
 
-    def on_enter_voting(self):
-        pass
-
-    def on_exit_voting(self):
-        pass
-    
-    
-    
-
-    def on_enter_feedback(self):
-        pass
-
-    def on_exit_feedback(self):
-        pass
+    def on_enter_voting(self): 
+        time.sleep(1)
+        if self.proximity_sensor.nextState:
+            self.proximity_sensor.nextState = False
+            self.leaved()
+            return
+         if self.ir_sensor_right.nextState or self.ir_sensor_left.nextState:
+            self.ir_sensor_right.nextState = False
+            self.ir_sensor_right.nextState = False
+            self.voted()
+            return
+        self.loopVoting()
 
     ##########################
     #  Transition callbacks  #
     ##########################
-    # These are the callbacks that are called on specific transitions
 
-    def before_approached(self):
-        pass
+    def on_setup_ready(self): #TODO      
+        # move steppers on 50%
+        # move servos (command 1) drawing from one avaible routine 
+        # show screen (or more than one) neutral (?)
+        # play audio (or more than one) neutral (?)     
 
-    def on_approached(self):
-        pass
+    def on_loopEngaging(self):
+        time.sleep(1)
 
-    def after_approached(self):
-        pass
-    
-    
-
-    def before_voted(self):
-        pass
-
-    def on_leaved(self):
-        if self.ir_sensor_right.counter == 0 and self.ir_sensor_right.counter == 0:
-            stepper_movements = {
-                0: [50, 100, 3, 200],
-                1: [50, 100, 3, 200]
-            }
-        self.moveMultipleStepper(stepper_movements) #TODO BETTER
-            
-        random_index = random.randint(0, len(self.routines) - 1)
-        while self.current_routine_index == random_index:
-            random_index = random.randint(0, len(self.routines) - 1)
-        self.current_routine_index = random_index
-        self.fsm.moveMultipleServo(self.routines[self.current_routine_index])
-                
-
-        pass
-
-    def on_feedbacked(self):
-        self.on_leaved()
-        pass
+    def on_approached(self): #TODO
+        # move steppers at 50%
+        # move servos (command 1) depending on the voting routine
+        # show screen (or more than one) depending on the voting routine
+        # play audio (or more than one) depending on the voting routine
 
             
         

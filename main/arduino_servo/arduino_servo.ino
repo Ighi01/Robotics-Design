@@ -43,6 +43,10 @@ int command[MAX_COMMAND_LENGTH];
 void setup() {
   Serial.begin(9600);
   initializeServos();
+  while (Serial.available() <= 0) {
+    Serial.println("ack");
+    delay(100);
+  }
 }
 
 void loop() {

@@ -3,15 +3,15 @@ from statemachine import StateMachine
 
 class IRSensor:
     pin: int
-    machine: StateMachine
+    nextState: bool
     bouncetime: int
     counter: int
 
-    def __init__(self, pin, machine, bouncetime=100):
+    def __init__(self, pin, bouncetime=100):
         self.pin = pin
-        self.machine = machine
         self.bouncetime = bouncetime
         self.counter = 0
+        self.nextState = False
 
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
@@ -20,7 +20,4 @@ class IRSensor:
 
     def ir_callback(self):
         self.counter = self.counter + 1
-        if self.machine.getstate().id == 'Engaging':
-            self.machine.voted_engaging()
-        if self.getstate().id == 'Voting':
-            self.machine.voted()
+        self.nextState = True
