@@ -42,7 +42,7 @@
 
 #include <Arduino.h>
 #include "stepper_controller.h"
-#define MAX_COMMAND_LENGTH 140
+#define MAX_COMMAND_LENGTH 400
 
 unsigned long currentMillis;
 int command[MAX_COMMAND_LENGTH];

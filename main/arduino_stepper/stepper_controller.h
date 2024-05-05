@@ -6,7 +6,6 @@
 #define INITIAL_PIN 2
 
 #define STEPS_PER_REVOLUTION 1024
-#define DIRECTION -1
 #define MAX_SPEED 30
 #define MIN_SPEED 15
 
@@ -38,10 +37,10 @@ StepperData steppers[NUM_STEPPER];
 void move(int stepperIndex){
   if(steppers[stepperIndex].actual < steppers[stepperIndex].goal){
     if (stepperIndex == 0){  
-      stepper1.step(steppers[stepperIndex].direction * DIRECTION);
+      stepper1.step(steppers[stepperIndex].direction);
     }
     if (stepperIndex == 1){
-      stepper2.step(steppers[stepperIndex].direction * DIRECTION);
+      stepper2.step(steppers[stepperIndex].direction);
     }
     steppers[stepperIndex].actual ++;
   }
