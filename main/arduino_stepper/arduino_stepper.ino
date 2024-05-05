@@ -74,5 +74,4 @@ void loop() {
   }
 
   updateSteppers(currentMillis);
-  delay(10);
 }

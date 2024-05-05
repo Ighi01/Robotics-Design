@@ -2,7 +2,6 @@
 #define STEPPER_CONTROLLER_H
 #include <Stepper.h>
 
-//Hyperparameters
 #define NUM_STEPPER 2
 #define INITIAL_PIN 2
 
@@ -28,20 +27,35 @@ struct StepperData {
   int bounceVelocity;
   bool goUp;
   unsigned long previousMillis;
+
+  int actual;
+  int goal;
+  int direction;
 };
 
 StepperData steppers[NUM_STEPPER];
 
-void speed(int speed, int stepperIndex){
-  
+void move(int stepperIndex){
+  if(steppers[stepperIndex].actual < steppers[stepperIndex].goal){
+    if (stepperIndex == 0){  
+      stepper1.step(steppers[stepperIndex].direction * DIRECTION);
+    }
+    if (stepperIndex == 1){
+      stepper2.step(steppers[stepperIndex].direction * DIRECTION);
+    }
+    steppers[stepperIndex].actual ++;
+  }
+}
+
+void setSpeed(int speed, int stepperIndex){  
   if (speed < MIN_SPEED) {
     speed = MIN_SPEED;
   } else if (speed > MAX_SPEED) {
     speed = MAX_SPEED;
   }
 
-  if (stepperIndex == 0){    
-    stepper1.setSpeed(speed);
+  if (stepperIndex == 0){  
+    stepper1.setSpeed(speed);  
   }
 
   if (stepperIndex == 1){    
@@ -49,70 +63,84 @@ void speed(int speed, int stepperIndex){
   }
 }
 
-void step_(int step, int stepperIndex){
-  if (stepperIndex == 0){        
-    stepper1.step(step * DIRECTION);
-  }
-
-  if (stepperIndex == 1){        
-    stepper2.step(step * DIRECTION);
-  }
+void addStep(int step, int stepperIndex){
+  int direction = 1;
+  if(step < 0)
+  {
+    step *= -1;
+    direction *= -1;
+  }  
+  steppers[stepperIndex].actual = 0;
+  steppers[stepperIndex].goal = step;
+  steppers[stepperIndex].direction = direction;
 }
 
 void initializeSteppers() {
   for (int i = 0; i < NUM_STEPPER; i++) {
     steppers[i].percentage = 0;
     steppers[i].bounceStep = 0;
-    steppers[i].timeToFloat = fmod(1000 * (60.0 / MAX_SPEED) * ((fullTurn + maxDebTurn) / STEPS_PER_REVOLUTION), 1.0);;
+    steppers[i].timeToFloat = 0;
     steppers[i].bounceVelocity = 0;
     steppers[i].previousMillis = 0;
     steppers[i].goUp = false;
 
-    speed(MAX_SPEED, i);  
-    step_(-fullTurn, i);
-    step_(maxDebTurn, i);
+    setSpeed(MAX_SPEED, i);  
+    addStep(-fullTurn, i);
+  }
+
+  while(steppers[0].actual < steppers[0].goal && steppers[1].actual < steppers[1].goal) {
+    if(steppers[0].actual < steppers[0].goal) move(0);
+    if(steppers[1].actual < steppers[1].goal) move(1);
+  }
+
+  for (int i = 0; i < NUM_STEPPER; i++) {  
+    addStep(maxDebTurn, i);
+  }
+
+  while(steppers[0].actual < steppers[0].goal && steppers[1].actual < steppers[1].goal) {
+    if(steppers[0].actual < steppers[0].goal) move(0);
+    if(steppers[1].actual < steppers[1].goal) move(1);
   }
 }
 
 void addMovementStepper(int stepperIndex, int percentage, int velocity, int bounceStep, int bounceVelocity, unsigned long currentMillis) {
 
-  while(steppers[stepperIndex].bounceStep > 0 && steppers[stepperIndex].goUp && (currentMillis - steppers[stepperIndex].previousMillis) < steppers[stepperIndex].timeToFloat) {
-    currentMillis = millis();
-  }
+  int step;
 
-  int step = fullTurn * 0.01 * (percentage - steppers[stepperIndex].percentage);
-  
   if (steppers[stepperIndex].goUp) {   
-    speed(steppers[stepperIndex].bounceVelocity,stepperIndex);     
-    step_(steppers[stepperIndex].bounceStep,stepperIndex);
-    steppers[stepperIndex].goUp = false;
+    step = fullTurn * 0.01 * (percentage - steppers[stepperIndex].percentage) + steppers[stepperIndex].bounceStep - (steppers[stepperIndex].actual - steppers[stepperIndex].goal) * steppers[stepperIndex].direction;
+  }
+  else{
+    step = fullTurn * 0.01 * (percentage - steppers[stepperIndex].percentage) - (steppers[stepperIndex].actual - steppers[stepperIndex].goal) * steppers[stepperIndex].direction;
   }
 
-  speed(velocity,stepperIndex);
-  step_(step,stepperIndex);
+  setSpeed(velocity,stepperIndex);
+  addStep(step,stepperIndex);
 
   steppers[stepperIndex].percentage = percentage;
   steppers[stepperIndex].previousMillis = currentMillis;
   steppers[stepperIndex].bounceStep = bounceStep >= (MAX_DEBOUNCING * 10) ? maxDebTurn : maxDebTurn * (bounceStep / (10 * MAX_DEBOUNCING));
-  steppers[stepperIndex].timeToFloat = fmod(1000 * (60.0 / velocity) * (step / STEPS_PER_REVOLUTION), 1.0);
   steppers[stepperIndex].bounceVelocity = bounceVelocity;
+  steppers[stepperIndex].goUp = false;
 }
 
-void updateSteppers(unsigned long currentMillis) {
+void updateSteppers(unsigned long currentMillis) {  
   for (int i = 0; i < NUM_STEPPER; i++) {
-    if (steppers[i].bounceStep > 0 && (currentMillis - steppers[i].previousMillis) > steppers[i].timeToFloat) {
+    if (steppers[i].actual < steppers[i].goal){
+      move(i);
+    }
+    else if (steppers[i].bounceStep > 0 && (currentMillis - steppers[i].previousMillis) > FLOATING_TIME) {
       
-      speed(steppers[i].bounceVelocity,i);
+      setSpeed(steppers[i].bounceVelocity,i);
 
       if (steppers[i].goUp) {
-        step_(steppers[i].bounceStep,i);
+        addStep(steppers[i].bounceStep,i);
         steppers[i].goUp = false;
       } else {
-        step_(-steppers[i].bounceStep,i);
+        addStep(-steppers[i].bounceStep,i);
         steppers[i].goUp = true;
       }
       steppers[i].previousMillis = currentMillis;
-      steppers[i].timeToFloat = FLOATING_TIME;
     }
   }
 }
