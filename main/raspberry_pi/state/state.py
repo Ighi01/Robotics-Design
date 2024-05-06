@@ -12,6 +12,7 @@ from sensors.ir_sensor import IRSensor
 from sensors.proximity_sensor import ProximitySensor
 
 import random
+import time
 
 
 class SM(StateMachine):
@@ -106,15 +107,15 @@ class SM(StateMachine):
     #######################
 
     def on_enter_setup(self):
-        while !self.servo_arduino.read():
+        while not(self.servo_arduino.read()):
             time.sleep(1)
             continue
-        self.servo_arduino.write("ack");
+        self.servo_arduino.write("ack")
 
-        while !self.stepper_arduino.read():
+        while not(self.stepper_arduino.read()):
             time.sleep(1)
             continue
-        self.stepper_arduino.write("ack");
+        self.stepper_arduino.write("ack")
         self.setup_ready()
 
     def on_enter_engaging(self): #TODO
@@ -123,8 +124,7 @@ class SM(StateMachine):
             # move servos (command 1) drawing from one avaible routine or depending on emotion posssibly different from a previous one
             # show screen (or more than one) depending on emotion (?)
             # play audio (or more than one) depending on emotion (?)
-        if self.proximity_sensor.nextState:
-            self.proximity_sensor.nextState = False
+        if self.proximity_sensor.distance < 100:
             self.approached()
             return
         if self.ir_sensor_right.nextState or self.ir_sensor_left.nextState:
@@ -143,11 +143,10 @@ class SM(StateMachine):
 
     def on_enter_voting(self): 
         time.sleep(1)
-        if self.proximity_sensor.nextState:
-            self.proximity_sensor.nextState = False
+        if self.proximity_sensor.distance > 250:
             self.leaved()
             return
-         if self.ir_sensor_right.nextState or self.ir_sensor_left.nextState:
+        if self.ir_sensor_right.nextState or self.ir_sensor_left.nextState:
             self.ir_sensor_right.nextState = False
             self.ir_sensor_right.nextState = False
             self.voted()
@@ -172,8 +171,3 @@ class SM(StateMachine):
         # move servos (command 1) depending on the voting routine
         # show screen (or more than one) depending on the voting routine
         # play audio (or more than one) depending on the voting routine
-
-            
-        
-            
-            
