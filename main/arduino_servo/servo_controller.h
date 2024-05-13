@@ -2,18 +2,14 @@
 #define SERVO_CONTROLLER_H
 
 //Hyperparameters
-#define NUM_SERVOS 12
-#define INITIAL_PIN 2
+#define NUM_SERVOS 5
 #define MAX_MOVEMENTS 10
-#define MAX_SPEED 100 //setted to 100 in order to make the cpu "rest" for 10 ms at every loop , more/equal than that we use the "instant" transmission
-#define MIN_SPEED 5 //avoid division by 0
 
-#include <Servo.h>
-
-//THIS LIBRARY IS INTENDED TO WORK WITH SG90 
+#define PROVIDE_ONLY_LINEAR_MOVEMENT 
+#include <ServoEasing.hpp> 
 
 struct ServoData {
-  Servo servo;
+  ServoEasing servo;
   int previousAngle;
   int angle; //must be integer
   unsigned long previousMillis;
@@ -23,6 +19,9 @@ struct ServoData {
   int angles[MAX_MOVEMENTS]; //degree
   int delays[MAX_MOVEMENTS]; //sec
   int speeds[MAX_MOVEMENTS]; //degree/sec
+
+  int initialAngle;
+  int resetSpeed;
 };
 
 struct Movement {
@@ -34,60 +33,93 @@ struct Movement {
 ServoData servos[NUM_SERVOS];
 
 void initializeServos() {
+
+  servos[0].initialAngle = 0; 
+  servos[1].initialAngle = 0;
+  servos[2].initialAngle = 0;
+  servos[3].initialAngle = 0; 
+  servos[4].initialAngle = 2; //ARM
+  
+  servos[0].resetSpeed = 1000; 
+  servos[1].resetSpeed = 1000;
+  servos[2].resetSpeed = 1000;
+  servos[3].resetSpeed = 1000; 
+  servos[4].resetSpeed = 25; //ARM
+
+  servos[0].servo.attach(3,servos[0].initialAngle); 
+  servos[1].servo.attach(5,servos[1].initialAngle);
+  servos[2].servo.attach(6,servos[2].initialAngle);
+  servos[3].servo.attach(9,servos[3].initialAngle); 
+  servos[4].servo.attach(10,servos[4].initialAngle); //ARM
+
   for (int i = 0; i < NUM_SERVOS; i++) {
-    servos[i].servo.attach(INITIAL_PIN + i); //servos should be one after the other
     servos[i].previousMillis = 0;
     servos[i].previousDelayMillis = 0;
     servos[i].numMovements = 0;
     servos[i].movementIndex = 0;
     memset(servos[i].angles, 0, sizeof(servos[i].angles));
     memset(servos[i].delays, 0, sizeof(servos[i].delays));
-    servos[i].servo.write(0);
-    servos[i].previousAngle = 0;
-    servos[i].angle = 0;
+    servos[i].previousAngle = servos[i].initialAngle;
+    servos[i].angle = servos[i].initialAngle;
   }
 }
 
-void addMovementServo(int servoIndex, Movement path[], int numEl ,unsigned long currentMillis) {
+void addMovementServo(int servoIndex, Movement path[], int numEl) {
   servos[servoIndex].movementIndex = 0;
   servos[servoIndex].numMovements = numEl;
-  servos[servoIndex].previousMillis = currentMillis;                  
-  servos[servoIndex].previousDelayMillis = currentMillis;
+  
   for (int i = 0; i < servos[servoIndex].numMovements; i++) {
     servos[servoIndex].angles[i] = path[i].ang;
     servos[servoIndex].delays[i] = path[i].del;
-    if (path[i].speed < MIN_SPEED) {
-      servos[servoIndex].speeds[i] = MIN_SPEED;
-    }
-    else {
-      servos[servoIndex].speeds[i] = path[i].speed;
-    }
+    servos[servoIndex].speeds[i] = path[i].speed;
   }
   servos[servoIndex].angle = servos[servoIndex].angles[0];
+
+  stopAllServos();
+
+  //Reset Servo before starting new movement
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    bool firstOne = true;
+    if(firstOne){
+      servos[i].servo.startEaseTo(servos[i].initialAngle, servos[i].resetSpeed);
+      firstOne = false;
+    }
+    else{
+      servos[i].servo.setEaseTo(servos[i].initialAngle, servos[i].resetSpeed);
+    }
+    servos[i].previousAngle = servos[i].initialAngle;
+  }
+  
+  //Wait until are servo are resetted
+  while (ServoEasing::areInterruptsActive()) {
+    delay(10);
+  }
+
+ 
+  servos[servoIndex].previousMillis = millis();                  
+  servos[servoIndex].previousDelayMillis = millis();
 }
 
 void updateServos(unsigned long currentMillis) {
   //Move servos
   for (int i = 0; i < NUM_SERVOS; i++) {
+    bool firstOne = true;
     if (servos[i].previousAngle != servos[i].angle) {
-      if (servos[i].speeds[servos[i].movementIndex] >= MAX_SPEED) {
-        servos[i].servo.write(servos[i].angle);
-        servos[i].previousAngle = servos[i].angle;
+      if(firstOne){
+        servos[i].servo.startEaseTo(servos[i].angle, servos[i].speeds[servos[i].movementIndex]);
+        firstOne = false;
       }
-      else {
-        int direction = (servos[i].angle > servos[i].previousAngle) ? 1 : -1;
-        if (currentMillis - servos[i].previousMillis >= (1000 / servos[i].speeds[servos[i].movementIndex])) {
-          servos[i].previousMillis = currentMillis;
-          servos[i].servo.write(servos[i].previousAngle + direction);
-          servos[i].previousAngle += direction;
-        }
+      else{
+        servos[i].servo.setEaseTo(servos[i].angle, servos[i].speeds[servos[i].movementIndex]);
       }
+      servos[i].previousAngle = servos[i].angle;
     }
   }
   //Update Angles
   for (int i = 0; i < NUM_SERVOS; i++) {
     if (servos[i].movementIndex < servos[i].numMovements - 1) {
       if ((currentMillis - servos[i].previousDelayMillis) / 1000 >= servos[i].delays[servos[i].movementIndex + 1]) {
+        if(!servos[i].servo.isMoving())
         servos[i].movementIndex++;
         servos[i].previousDelayMillis = currentMillis;
         servos[i].angle = servos[i].angles[servos[i].movementIndex];
