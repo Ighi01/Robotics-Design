@@ -20,7 +20,7 @@
  * 
  *          NOTE: The number of servo specified must match the number of servos then provided. All those arguments must be separated by space ,too
  *
- *      Example of input: 0 2 0 2 90 0 90 0 5 100 3 1 60 0 30 -> This command cause 2 servo to move simultaneously: the Servo no 0 to move to 90 degrees immediatelly (since 0 delay) at 90 deg/sec velocity and then after 5 seconds 
+ *      Example of input: 0 2 0 2 90 0 90 0 5 100 1 1 60 0 30 -> This command cause 2 servo to move simultaneously: the Servo no 0 to move to 90 degrees immediatelly (since 0 delay) at 90 deg/sec velocity and then after 5 seconds 
  *                                                           from the prevoius movement move to 0 degrees instantly (since 100 velocity), then finish; 
  *                                                           in parallel it also cause the Servo no3 to move of 60 degrees immediatelly at 30 deg/sec velocity, then finish
  *    0 4 0 4 90 0 75 0 2 100 90 2 75 0 2 100 1 4 90 0 75 0 2 100 90 2 75 0 2 100 3 3 180 0 100 0 4 75 90 3 50 2 2 180 0 90 0 5 50
@@ -52,8 +52,12 @@
 
 #include <Arduino.h>
 #include "servo_controller.h"
+<<<<<<< Updated upstream
 #include "stepper_controller.h"
 #define MAX_COMMAND_LENGTH 500
+=======
+#define MAX_COMMAND_LENGTH 250
+>>>>>>> Stashed changes
 
 unsigned long currentMillis;
 int command[MAX_COMMAND_LENGTH];

@@ -2,11 +2,24 @@
 #define SERVO_CONTROLLER_H
 
 //Hyperparameters
+<<<<<<< Updated upstream
 #define NUM_SERVOS 5
 #define MAX_MOVEMENTS 10
 
 #define PROVIDE_ONLY_LINEAR_MOVEMENT 
 #include <ServoEasing.hpp> 
+=======
+#define NUM_SERVOS 12
+#define INITIAL_PIN 2
+#define MAX_MOVEMENTS 7 
+#define MAX_SPEED 100 //setted to 100 in order to make the cpu "rest" for 10 ms at every loop , more/equal than that we use the "instant" transmission
+#define MIN_SPEED 5 //avoid division by 0
+
+#include <ServoEasing.hpp>
+#define PROVIDE_ONLY_LINEAR_MOVEMENT
+
+//THIS LIBRARY IS INTENDED TO WORK WITH SG90 
+>>>>>>> Stashed changes
 
 struct ServoData {
   ServoEasing servo;
@@ -53,14 +66,24 @@ void initializeServos() {
   servos[4].servo.attach(10,servos[4].initialAngle); //ARM
 
   for (int i = 0; i < NUM_SERVOS; i++) {
+<<<<<<< Updated upstream
+=======
+    servos[i].servo.attach(INITIAL_PIN + i,0); //servos should be one after the other
+>>>>>>> Stashed changes
     servos[i].previousMillis = 0;
     servos[i].previousDelayMillis = 0;
     servos[i].numMovements = 0;
     servos[i].movementIndex = 0;
     memset(servos[i].angles, 0, sizeof(servos[i].angles));
     memset(servos[i].delays, 0, sizeof(servos[i].delays));
+<<<<<<< Updated upstream
     servos[i].previousAngle = servos[i].initialAngle;
     servos[i].angle = servos[i].initialAngle;
+=======
+    //servos[i].servo.write(0);
+    servos[i].previousAngle = 0;
+    servos[i].angle = 0;
+>>>>>>> Stashed changes
   }
 }
 
@@ -103,7 +126,11 @@ void addMovementServo(int servoIndex, Movement path[], int numEl) {
 void updateServos(unsigned long currentMillis) {
   //Move servos
   for (int i = 0; i < NUM_SERVOS; i++) {
+<<<<<<< Updated upstream
     bool firstOne = true;
+=======
+    /*
+>>>>>>> Stashed changes
     if (servos[i].previousAngle != servos[i].angle) {
       if(firstOne){
         servos[i].servo.startEaseTo(servos[i].angle, servos[i].speeds[servos[i].movementIndex]);
@@ -114,6 +141,13 @@ void updateServos(unsigned long currentMillis) {
       }
       servos[i].previousAngle = servos[i].angle;
     }
+     */
+    if (servos[i].previousAngle != servos[i].angle) {
+      servos[i].servo.setEasingType(EASE_CUBIC_IN_OUT);
+      servos[i].servo.startEaseTo(servos[i].angle, servos[i].speeds[servos[i].movementIndex]);
+      servos[i].previousAngle = servos[i].angle;
+    }
+  
   }
   //Update Angles
   for (int i = 0; i < NUM_SERVOS; i++) {
