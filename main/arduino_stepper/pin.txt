@@ -1,2 +1,0 @@
-STEPPER MOTORS
-From pin 2 to pin 13 (max 3 Stepper)
