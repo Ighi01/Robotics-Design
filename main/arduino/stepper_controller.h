@@ -3,10 +3,10 @@
 #include <Stepper.h>
 
 #define STEPS_PER_REVOLUTION 1024
-#define MAX_SPEED 36
+#define MAX_SPEED 33
 #define MIN_SPEED 15
 
-#define LENGTH 11.4           //lenght of the bar in centimeters
+#define LENGTH 9              //lenght of the bar in centimeters
 #define RADIOUS_GEAR 0.0025   //radious of the gear in meters                 NOTE: those two values have been tuned wrt real values due to some imperpections 
 #define MAX_DEBOUNCING 0.5    //lenght of the maximum bouncing in centimeters
 #define FLOATING_TIME 1000    //milliseconds (should be greater then 10 ms)
@@ -59,7 +59,7 @@ void addStep(int step){
 }
 
 void initializeStepper() {
-  stepperData.percentage = 0;
+  stepperData.percentage = 100;
   stepperData.bounceStep = 0;
   stepperData.timeToFloat = 0;
   stepperData.bounceVelocity = 0;
@@ -67,22 +67,24 @@ void initializeStepper() {
   stepperData.goUp = false;
 
   setSpeed(MAX_SPEED);  
-  addStep(-fullTurn);
+  addStep(fullTurn);
 
   while(stepperData.actual < stepperData.goal) {
     move();
   }
   
-  addStep(maxDebTurn);
+  addStep(-maxDebTurn);
 
   while(stepperData.actual < stepperData.goal) {
     move();
   }
 }
 
-void addMovementStepper(int percentage, int velocity, int bounceStep, int bounceVelocity, unsigned long currentMillis) {
+void addMovementStepper(int percentage, int velocity, int bounceStep, int bounceVelocity) {
 
   int step;
+  
+  unsigned long currentMillis = millis();
 
   if (stepperData.goUp) {   
     step = fullTurn * 0.01 * (percentage - stepperData.percentage) + stepperData.bounceStep - (stepperData.actual - stepperData.goal) * stepperData.direction;

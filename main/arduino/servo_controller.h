@@ -34,16 +34,16 @@ ServoData servos[NUM_SERVOS];
 
 void initializeServos() {
 
-  servos[0].initialAngle = 0; 
-  servos[1].initialAngle = 0;
-  servos[2].initialAngle = 0;
-  servos[3].initialAngle = 0; 
+  servos[0].initialAngle = 5; //MOUTH DOWN
+  servos[1].initialAngle = 5; //MOUTH UP
+  servos[2].initialAngle = 25; //NECK LXR
+  servos[3].initialAngle = 45; //NECK UXD
   servos[4].initialAngle = 2; //ARM
   
-  servos[0].resetSpeed = 1000; 
-  servos[1].resetSpeed = 1000;
-  servos[2].resetSpeed = 1000;
-  servos[3].resetSpeed = 1000; 
+  servos[0].resetSpeed = 100; //MOUTH DOWN
+  servos[1].resetSpeed = 100; //MOUTH UP
+  servos[2].resetSpeed = 25; //NECK LXR
+  servos[3].resetSpeed = 25; //NECK UXD
   servos[4].resetSpeed = 25; //ARM
 
   servos[0].servo.attach(3,servos[0].initialAngle); 
@@ -74,6 +74,9 @@ void addMovementServo(int servoIndex, Movement path[], int numEl) {
     servos[servoIndex].speeds[i] = path[i].speed;
   }
   servos[servoIndex].angle = servos[servoIndex].angles[0];
+}
+
+void resetServo(){
 
   stopAllServos();
 
@@ -88,16 +91,13 @@ void addMovementServo(int servoIndex, Movement path[], int numEl) {
       servos[i].servo.setEaseTo(servos[i].initialAngle, servos[i].resetSpeed);
     }
     servos[i].previousAngle = servos[i].initialAngle;
+    servos[i].angle = servos[i].initialAngle;
   }
   
   //Wait until are servo are resetted
   while (ServoEasing::areInterruptsActive()) {
     delay(10);
   }
-
- 
-  servos[servoIndex].previousMillis = millis();                  
-  servos[servoIndex].previousDelayMillis = millis();
 }
 
 void updateServos(unsigned long currentMillis) {

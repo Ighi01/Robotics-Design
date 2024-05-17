@@ -69,8 +69,6 @@ void setup() {
 }
 
 void loop() {
-  currentMillis = millis();
-
   if (Serial.available() > 0) {
     int commandIndex = 0;
 
@@ -82,7 +80,7 @@ void loop() {
     if (command[0] == 0) {
       int i = 1;
       int totServo = command[i++];
-
+      resetServo();
       for(int servo = 0; servo < totServo; servo ++){
         int servoIndex = command[i++];
         int totMovement = command[i++];
@@ -112,10 +110,12 @@ void loop() {
     }
 
     if(command[0] == 2){
-      addMovementStepper(command[1], command[2] , command[3], command[4] ,currentMillis);
+      addMovementStepper(command[1], command[2] , command[3], command[4]);
     }
   }
-
+  
+  currentMillis = millis();
+  
   updateServos(currentMillis);
   updateStepper(currentMillis);
 }
