@@ -109,7 +109,22 @@ void loop() {
       Serial.println(result);
     }
 
-    if(command[0] == 2){
+    if (command[0] == 2) {
+      int i = 1;
+      int totServo = command[i++];
+
+      if(totServo == 0){
+        resetAllServos();
+      }
+      else{
+        resetServo(command[i++], true);
+        while(i< totServo){
+          resetServo(command[i++], false);
+        }
+      }
+    }
+
+    if(command[0] == 3){
       addMovementStepper(command[1], command[2] , command[3], command[4]);
     }
   }
