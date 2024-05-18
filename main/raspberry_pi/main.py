@@ -1,22 +1,69 @@
 import board
 
-from state.state import SM
-
-# Pin Definitions
-IR_SENSOR1_PIN = 4
-IR_SENSOR2_PIN = 19
-PROXIMITY_TRIGGER_PIN = board.D20
-PROXIMITY_ECHO_PIN = board.D21
-AUDIO_PIN = board.D22
-LEFT_SCREEN_PINS = (board.D17, board.D25, board.D24)
-RIGHT_SCREEN_PINS = (board.D27, board.D6, board.D5)
-SERVO_CONTROLLER = '/dev/ttyUSB0'
-STEPPER_CONTROLLER = '/dev/ttyUSB1'
+from robot.robot import Robot
+from robot.side import Side
 
 
 def main():
-    state_machine = SM(IR_SENSOR1_PIN, IR_SENSOR2_PIN, PROXIMITY_TRIGGER_PIN, PROXIMITY_ECHO_PIN,
-                       LEFT_SCREEN_PINS, RIGHT_SCREEN_PINS, SERVO_CONTROLLER, STEPPER_CONTROLLER)
+    robot = Robot(
+        left_side={
+            'side': Side.LEFT,
+            'arduino_port': '/dev/ttyUSB0',
+            'eye': {
+                'cs': board.D17,
+                'dc': board.D25,
+                'rst': board.D24,
+            },
+            'arm': {
+                'index': 0,
+            },
+            'mouth': {
+                'top_index': 1,
+                'top_max_angle': 90,
+                'bottom_index': 2,
+                'bottom_max_angle': 90,
+                'audio_channel_index': 0,
+            },
+            'neck': {
+                'horizontal_index': 3,
+                'vertical_index': 4,
+                'ir_sensor_pin': 4,
+            },
+        },
+        right_side={
+            'side': Side.RIGHT,
+            'arduino_port': '/dev/ttyUSB1',
+            'eye': {
+                'cs': board.D27,
+                'dc': board.D6,
+                'rst': board.D5,
+            },
+            'arm': {
+                'index': 0,
+                'max_angle': 80,
+                'max_velocity': 200,
+            },
+            'mouth': {
+                'top_index': 1,
+                'top_max_angle': 20,
+                'bottom_index': 2,
+                'bottom_max_angle': 20,
+                'audio_channel_index': 1,
+            },
+            'neck': {
+                'horizontal_index': 3,
+                'vertical_index': 4,
+                'ir_sensor_pin': 19,
+            },
+        },
+        proximity_sensor={
+            'trigger_pin': board.D20,
+            'echo_pin': board.D21,
+        },
+        ring_leds={
+            'pin': board.D10,
+        }
+    )
 
 
 if __name__ == '__main__':

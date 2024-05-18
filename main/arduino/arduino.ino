@@ -32,9 +32,6 @@
  *
  *      Example of input: 1 3 2 3 5 -> This command inquire if 3 have finished their movements: Servo no 2 , Servo no 3 and Servo no 5
  * DA MODIFICARE 
- * 1. Number of Stepper: From 1 to the total number of stepper. For each stepper that you want to move you must specify those commands:
- * 
- *       2. Stepper number: From 0 to the total number of stepper minus 1. (Stepper are meant to be connected in consecutive pins)
  * 
  *       3. Percentage (integer value) of displacent of the axis (0 if is at the origin, 100 is it is at maximum displacement wrt the origin)
  * 
@@ -46,7 +43,7 @@
  * 
  * NOTE: The number of stepper specified must match the number of stepper then provided. All those arguments must be separated by space ,too
  *
- * Example of input: 2 0 90 20 5 30 1 10 30 3 20 -> This command cause 2 stepper to move simultaneously: the Stepper no 0 to move the axis to 90% of maximum displacement moving the gear at 20 speed , then after reaching the displacemnt it start bouncing up and down of 5 millimiterss with gear speed of 30;
+ * Example of input: 2 90 20 5 30 -> This command cause 2 stepper to move simultaneously: the Stepper no 0 to move the axis to 90% of maximum displacement moving the gear at 20 speed , then after reaching the displacemnt it start bouncing up and down of 5 millimiterss with gear speed of 30;
  *                                                                                                            in parallel it also cause the Stepper no 1 to move the axis to 10% of maximum displacement moving the gear at 30 speed , then after reaching the displacemnt it start bouncing up and down of 3 millimiterss with gear speed of 20
  */
 

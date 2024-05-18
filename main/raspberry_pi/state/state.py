@@ -1,8 +1,8 @@
+import time
+
 from board import Pin
-from digitalio import DigitalInOut
 from statemachine import StateMachine, State
 
-from arduino.arduino import Arduino
 from arduino.servo import Servo
 from arduino.servo_arduino import ServoArduino
 from arduino.stepper import Stepper
@@ -10,9 +10,6 @@ from arduino.stepper_arduino import StepperArduino
 from screen.screen import Screen
 from sensors.ir_sensor import IRSensor
 from sensors.proximity_sensor import ProximitySensor
-
-import random
-import time
 
 
 class SM(StateMachine):
@@ -64,8 +61,8 @@ class SM(StateMachine):
     loopVoting = voting.to.itself()
     approached = engaging.to(voting)
     leaved = voting.to(engaging)
-    voted_engaging = engaging.to(feedback) 
-    voted = voting.to(feedback) 
+    voted_engaging = engaging.to(feedback)
+    voted = voting.to(feedback)
     feedbacked = feedback.to(engaging)
 
     # This is the constructor of the state machine
@@ -107,23 +104,23 @@ class SM(StateMachine):
     #######################
 
     def on_enter_setup(self):
-        while not(self.servo_arduino.read()):
+        while not (self.servo_arduino.read()):
             time.sleep(1)
             continue
         self.servo_arduino.write("ack")
 
-        while not(self.stepper_arduino.read()):
+        while not (self.stepper_arduino.read()):
             time.sleep(1)
             continue
         self.stepper_arduino.write("ack")
         self.setup_ready()
 
-    def on_enter_engaging(self): #TODO
+    def on_enter_engaging(self):  # TODO
         # if command2
-            # move steppers depending on counters
-            # move servos (command 1) drawing from one avaible routine or depending on emotion posssibly different from a previous one
-            # show screen (or more than one) depending on emotion (?)
-            # play audio (or more than one) depending on emotion (?)
+        # move steppers depending on counters
+        # move servos (command 1) drawing from one avaible routine or depending on emotion posssibly different from a previous one
+        # show screen (or more than one) depending on emotion (?)
+        # play audio (or more than one) depending on emotion (?)
         if self.proximity_sensor.distance < 100:
             self.approached()
             return
@@ -133,15 +130,15 @@ class SM(StateMachine):
             self.voted_engaging()
             return
         self.loopEngaging()
-    
-    def on_enter_feedback(self): #TODO
+
+    def on_enter_feedback(self):  # TODO
         # move steppers (maybe not here)
         # move servos (command 1) depending on the vote
         # show screen (or more than one) depending on the vote
         # play audio (or more than one) depending on the vote
         self.feedbacked()
 
-    def on_enter_voting(self): 
+    def on_enter_voting(self):
         time.sleep(1)
         if self.proximity_sensor.distance > 250:
             self.leaved()
@@ -157,17 +154,19 @@ class SM(StateMachine):
     #  Transition callbacks  #
     ##########################
 
-    def on_setup_ready(self): #TODO      
+    def on_setup_ready(self):  # TODO
         # move steppers on 50%
         # move servos (command 1) drawing from one avaible routine 
         # show screen (or more than one) neutral (?)
-        # play audio (or more than one) neutral (?)     
+        # play audio (or more than one) neutral (?)
+        pass
 
     def on_loopEngaging(self):
         time.sleep(1)
 
-    def on_approached(self): #TODO
+    def on_approached(self):  # TODO
         # move steppers at 50%
         # move servos (command 1) depending on the voting routine
         # show screen (or more than one) depending on the voting routine
         # play audio (or more than one) depending on the voting routine
+        pass
