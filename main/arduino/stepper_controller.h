@@ -6,23 +6,23 @@
 #define MAX_SPEED 33
 #define MIN_SPEED 15
 
-#define LENGTH 9              //lenght of the bar in centimeters
-#define RADIOUS_GEAR 0.0025   //radious of the gear in meters                 NOTE: those two values have been tuned wrt real values due to some imperpections 
-#define MAX_DEBOUNCING 0.5    //lenght of the maximum bouncing in centimeters
-#define FLOATING_TIME 1000    //milliseconds (should be greater then 10 ms)
+//NOTE: those two values have been tuned wrt real values due to some imperpections
+#define LENGTH 9              
+#define RADIOUS_GEAR 0.0025                   
+#define MAX_DEBOUNCING 0.5    
+#define FLOATING_TIME 1000    
 
 int fullTurn = 0.01 * ((LENGTH - MAX_DEBOUNCING) / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
 int maxDebTurn = 0.01 * (MAX_DEBOUNCING / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
 Stepper stepper = Stepper(STEPS_PER_REVOLUTION, 2, 7, 4, 8);
 
 struct StepperData {
-  int percentage; //integer
+  int percentage; 
   int bounceStep; 
   int timeToFloat;
   int bounceVelocity;
   bool goUp;
   unsigned long previousMillis;
-
   int actual;
   int goal;
   int direction;

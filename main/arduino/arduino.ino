@@ -1,4 +1,6 @@
 /*
+  // TODO : update documentation
+
   This function serves as a serial command handler for controlling multiple servo motors simultaneously
   Serial command arguments **must** be separated by a **space** in the following order:
 
@@ -50,7 +52,7 @@
 #include <Arduino.h>
 #include "servo_controller.h"
 #include "stepper_controller.h"
-#define MAX_COMMAND_LENGTH 500
+#define MAX_COMMAND_LENGTH 400
 
 unsigned long currentMillis;
 int command[MAX_COMMAND_LENGTH];
@@ -66,6 +68,9 @@ void setup() {
 }
 
 void loop() {
+
+  //TODO : add control on the correctness of the input
+  
   if (Serial.available() > 0) {
     int commandIndex = 0;
 
@@ -77,7 +82,6 @@ void loop() {
     if (command[0] == 0) {
       int i = 1;
       int totServo = command[i++];
-      resetServo();
       for(int servo = 0; servo < totServo; servo ++){
         int servoIndex = command[i++];
         int totMovement = command[i++];
@@ -87,7 +91,8 @@ void loop() {
         while (i < (3*totMovement + h)) {
           path[j].ang = command[i++];
           path[j].del = command[i++];
-          path[j++].speed = command[i++];
+          path[j].speed = command[i++];
+          path[j++].type = command[i++];
         }
         addMovementServo(servoIndex, path, totMovement);
       }
@@ -97,8 +102,8 @@ void loop() {
       int i = 1;
       int totServo = command[i++];
       int result = true;
-      while(i< (totServo + 1)){
-        if(!isCompleteServo(command[i++])){
+      while(i< (totServo + 2)){
+        if(!isAllCompleteServo(command[i++])){
           result = false;
           break;
         }
@@ -114,9 +119,8 @@ void loop() {
         resetAllServos();
       }
       else{
-        resetServo(command[i++], true);
-        while(i< totServo){
-          resetServo(command[i++], false);
+        while(i< (totServo + 2)){
+          resetServo(command[i++]);
         }
       }
     }
