@@ -130,8 +130,6 @@ void loop() {
     }
   }
   
-  currentMillis = millis();
-  
-  updateServos(currentMillis);
-  updateStepper(currentMillis);
+  updateServos();
+  updateStepper();
 }

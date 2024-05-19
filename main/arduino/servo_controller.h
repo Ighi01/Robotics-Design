@@ -4,7 +4,7 @@
 #define NUM_SERVOS 5
 #define MAX_MOVEMENTS 15
 
-// TODO: migliorare inizializzazione codice
+// TODO: do better code pins initialization
 
 #define ENABLE_EASE_LINEAR
 #define ENABLE_EASE_QUADRATIC
@@ -38,6 +38,7 @@ struct Movement {
 };
 
 ServoData servos[NUM_SERVOS];
+unsigned long currentMillis;
 
 void rootServo(int servoIndex){
   servos[servoIndex].previousDelayMillis = 0;
@@ -107,7 +108,8 @@ void resetAllServos(){
   }
 }
 
-void updateServos(unsigned long currentMillis) {
+void updateServos() {
+  currentMillis = millis();
   // Move Servo    
   for (int i = 0; i < NUM_SERVOS; i++) {
     if (servos[i].previousAngle != servos[i].angle) {

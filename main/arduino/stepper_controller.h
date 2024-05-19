@@ -1,12 +1,16 @@
 #ifndef STEPPER_CONTROLLER_H
 #define STEPPER_CONTROLLER_H
+
 #include <Stepper.h>
 
 #define STEPS_PER_REVOLUTION 1024
 #define MAX_SPEED 33
-#define MIN_SPEED 15
 
-//NOTE: those two values have been tuned wrt real values due to some imperpections
+#define IN_1 2
+#define IN_2 4
+#define IN_3 7
+#define IN_4 8
+
 #define LENGTH 9              
 #define RADIOUS_GEAR 0.0025                   
 #define MAX_DEBOUNCING 0.5    
@@ -14,7 +18,8 @@
 
 int fullTurn = 0.01 * ((LENGTH - MAX_DEBOUNCING) / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
 int maxDebTurn = 0.01 * (MAX_DEBOUNCING / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
-Stepper stepper = Stepper(STEPS_PER_REVOLUTION, 2, 7, 4, 8);
+Stepper stepper = Stepper(STEPS_PER_REVOLUTION, IN_1, IN_2, IN_3, IN_4);
+unsigned long currentMillis;
 
 struct StepperData {
   int percentage; 
@@ -38,9 +43,7 @@ void move(){
 }
 
 void setSpeed(int speed){  
-  if (speed < MIN_SPEED) {
-    speed = MIN_SPEED;
-  } else if (speed > MAX_SPEED) {
+  if (speed > MAX_SPEED) {
     speed = MAX_SPEED;
   }  
   stepper.setSpeed(speed);  
@@ -65,52 +68,41 @@ void initializeStepper() {
   stepperData.bounceVelocity = 0;
   stepperData.previousMillis = 0;
   stepperData.goUp = false;
-
   setSpeed(MAX_SPEED);  
   addStep(fullTurn);
-
   while(stepperData.actual < stepperData.goal) {
     move();
-  }
-  
+  }  
   addStep(-maxDebTurn);
-
   while(stepperData.actual < stepperData.goal) {
     move();
   }
 }
 
 void addMovementStepper(int percentage, int velocity, int bounceStep, int bounceVelocity) {
-
-  int step;
-  
-  unsigned long currentMillis = millis();
-
+  int step;  
   if (stepperData.goUp) {   
     step = fullTurn * 0.01 * (percentage - stepperData.percentage) + stepperData.bounceStep - (stepperData.actual - stepperData.goal) * stepperData.direction;
   }
   else{
     step = fullTurn * 0.01 * (percentage - stepperData.percentage) - (stepperData.actual - stepperData.goal) * stepperData.direction;
   }
-
   setSpeed(velocity);
   addStep(step);
-
   stepperData.percentage = percentage;
-  stepperData.previousMillis = currentMillis;
+  stepperData.previousMillis = millis();
   stepperData.bounceStep = bounceStep >= (MAX_DEBOUNCING * 10) ? maxDebTurn : maxDebTurn * (bounceStep / (10 * MAX_DEBOUNCING));
   stepperData.bounceVelocity = bounceVelocity;
   stepperData.goUp = false;
 }
 
-void updateStepper(unsigned long currentMillis) {  
+void updateStepper() {  
+  currentMillis = millis();
   if (stepperData.actual < stepperData.goal){
     move();
   }
-  else if (stepperData.bounceStep > 0 && (currentMillis - stepperData.previousMillis) > FLOATING_TIME) {
-    
+  else if (stepperData.bounceStep > 0 && (currentMillis - stepperData.previousMillis) > FLOATING_TIME) {   
     setSpeed(stepperData.bounceVelocity);
-
     if (stepperData.goUp) {
       addStep(stepperData.bounceStep);
       stepperData.goUp = false;
