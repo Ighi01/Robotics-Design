@@ -13,6 +13,7 @@
 #define ENABLE_EASE_SINE
 
 #include <ServoEasing.hpp> 
+#include <EEPROM.h>
 
 struct ServoData {
   ServoEasing servo;
@@ -38,7 +39,7 @@ struct Movement {
 };
 
 ServoData servos[NUM_SERVOS];
-unsigned long currentMillis;
+unsigned long servoCurrentMillis;
 
 void rootServo(int servoIndex){
   servos[servoIndex].previousDelayMillis = 0;
@@ -69,15 +70,18 @@ void initializeServos() {
   //TODO: define limits of servo using myServo.setMinMaxConstraint(minMicroseconds, maxMicroseconds);
   //TODO: do it also for speeds
   
-  servos[0].servo.attach(3,servos[0].initialAngle); //MOUTH DOWN
-  servos[1].servo.attach(5,servos[1].initialAngle); //MOUTH UP
-  servos[2].servo.attach(6,servos[2].initialAngle); //NECK UXD
-  servos[3].servo.attach(9,servos[3].initialAngle); //NECK LXR
-  servos[4].servo.attach(10,servos[4].initialAngle); //ARM
+  servos[0].servo.attach(3, EEPROM.read(0) < 255 ? EEPROM.read(0) : servos[0].initialAngle); //MOUTH DOWN
+  servos[1].servo.attach(5, EEPROM.read(1) < 255 ? EEPROM.read(1) : servos[1].initialAngle); //MOUTH UP
+  servos[2].servo.attach(6, EEPROM.read(2) < 255 ? EEPROM.read(2) : servos[2].initialAngle); //NECK UXD
+  servos[3].servo.attach(9, EEPROM.read(3) < 255 ? EEPROM.read(3) : servos[3].initialAngle); //NECK LXR
+  servos[4].servo.attach(10, EEPROM.read(4) < 255 ? EEPROM.read(4) : servos[4].initialAngle); //ARM
 
   for (int i = 0; i < NUM_SERVOS; i++) {
     rootServo(i);
     servos[i].isReset = false;
+    servos[i].servo.setEasingType(EASE_LINEAR);
+    servos[i].servo.startEaseTo(servos[i].initialAngle, servos[i].resetSpeed);
+    EEPROM.put(i, servos[i].initialAngle);
   }
 }
 
@@ -98,6 +102,7 @@ void resetServo(int servoIndex){
   servos[servoIndex].servo.stop();
   servos[servoIndex].servo.setEasingType(EASE_LINEAR);
   servos[servoIndex].servo.startEaseTo(servos[servoIndex].initialAngle, servos[servoIndex].resetSpeed);
+  EEPROM.put(servoIndex, servos[servoIndex].initialAngle);
   rootServo(servoIndex);
   servos[servoIndex].isReset = true;
 }
@@ -109,7 +114,7 @@ void resetAllServos(){
 }
 
 void updateServos() {
-  currentMillis = millis();
+  servoCurrentMillis = millis();
   // Move Servo    
   for (int i = 0; i < NUM_SERVOS; i++) {
     if (servos[i].previousAngle != servos[i].angle) {
@@ -135,6 +140,7 @@ void updateServos() {
             break;
         }
         servos[i].servo.startEaseTo(servos[i].angle, servos[i].speeds[servos[i].movementIndex]);
+        EEPROM.put(i ,servos[i].angle);
         servos[i].previousAngle = servos[i].angle;
       }
       else{
@@ -147,10 +153,10 @@ void updateServos() {
   //Update Angles
   for (int i = 0; i < NUM_SERVOS; i++) {
     if (servos[i].movementIndex < servos[i].numMovements - 1) {
-      if ((currentMillis - servos[i].previousDelayMillis) / 1000 >= servos[i].delays[servos[i].movementIndex + 1]) {
+      if ((servoCurrentMillis - servos[i].previousDelayMillis) / 1000 >= servos[i].delays[servos[i].movementIndex + 1]) {
         if(!servos[i].servo.isMoving()){
           servos[i].movementIndex++;
-          servos[i].previousDelayMillis = currentMillis;
+          servos[i].previousDelayMillis = servoCurrentMillis;
           servos[i].angle = servos[i].angles[servos[i].movementIndex];
         }
       }
@@ -160,6 +166,17 @@ void updateServos() {
 
 bool isAllCompleteServo(int servoIndex) {
   return (servos[servoIndex].movementIndex == (servos[servoIndex].numMovements - 1) || servos[servoIndex].numMovements == 0) && servos[servoIndex].previousAngle == servos[servoIndex].angle;
+}
+
+bool isAllCompleteServos(){
+  int result = true;
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    if(!isAllCompleteServo(i){
+      result = false;
+      break;
+    }
+  }
+  return result;
 }
 
 #endif

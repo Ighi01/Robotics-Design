@@ -19,7 +19,7 @@
 int fullTurn = 0.01 * ((LENGTH - MAX_DEBOUNCING) / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
 int maxDebTurn = 0.01 * (MAX_DEBOUNCING / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
 Stepper stepper = Stepper(STEPS_PER_REVOLUTION, IN_1, IN_2, IN_3, IN_4);
-unsigned long currentMillis;
+unsigned long stepperCurrentMillis;
 
 struct StepperData {
   int percentage; 
@@ -97,11 +97,11 @@ void addMovementStepper(int percentage, int velocity, int bounceStep, int bounce
 }
 
 void updateStepper() {  
-  currentMillis = millis();
+  stepperCurrentMillis = millis();
   if (stepperData.actual < stepperData.goal){
     move();
   }
-  else if (stepperData.bounceStep > 0 && (currentMillis - stepperData.previousMillis) > FLOATING_TIME) {   
+  else if (stepperData.bounceStep > 0 && (stepperCurrentMillis - stepperData.previousMillis) > FLOATING_TIME) {   
     setSpeed(stepperData.bounceVelocity);
     if (stepperData.goUp) {
       addStep(stepperData.bounceStep);
@@ -110,7 +110,7 @@ void updateStepper() {
       addStep(-stepperData.bounceStep);
       stepperData.goUp = true;
     }
-    stepperData.previousMillis = currentMillis;
+    stepperData.previousMillis = stepperCurrentMillis;
   }
 }
 
