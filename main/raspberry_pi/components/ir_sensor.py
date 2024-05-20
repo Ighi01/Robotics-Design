@@ -1,6 +1,10 @@
 import RPi.GPIO as GPIO
 
 
+def do_nothing():
+    pass
+
+
 class IRSensor:
     pin: int
     bouncetime: int
@@ -16,7 +20,7 @@ class IRSensor:
         GPIO.add_event_detect(
             self.pin,
             GPIO.FALLING,
-            callback=self.callback if self.callback is not None else lambda _: None,
+            callback=self.callback if self.callback is not None else do_nothing,
             bouncetime=self.bouncetime
         )
 

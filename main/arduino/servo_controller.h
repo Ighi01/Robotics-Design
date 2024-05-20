@@ -171,7 +171,7 @@ bool isAllCompleteServo(int servoIndex) {
 bool isAllCompleteServos(){
   int result = true;
   for (int i = 0; i < NUM_SERVOS; i++) {
-    if(!isAllCompleteServo(i){
+    if(!isAllCompleteServo(i)){
       result = false;
       break;
     }

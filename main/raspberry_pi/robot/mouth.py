@@ -1,6 +1,7 @@
 from components.arduino import Arduino
 from components.servo import Servo
 from components.speaker import Speaker
+from components.curve import Curve
 from robot.side import Side
 
 
@@ -19,20 +20,20 @@ class Mouth:
         self.max_angle_top = top_max_angle
         self.max_angle_bottom = bottom_max_angle
 
-    def open_percent(self, percent: int, delay: int, velocity: int):
-        self.bottom_servo.add_movement(int(self.max_angle_bottom * percent / 100), delay, velocity)
-        self.top_servo.add_movement(int(self.max_angle_top * percent / 100), delay, velocity)
+    def open_percent(self, percent: int, delay: int, velocity: int, curve: Curve = Curve.LINEAR):
+        self.bottom_servo.add_movement(int(self.max_angle_bottom * percent / 100), delay, velocity, curve)
+        self.top_servo.add_movement(int(self.max_angle_top * percent / 100), delay, velocity, curve)
 
-    def close(self, delay: int, velocity: int):
-        self.open_percent(0, delay, velocity)
+    def close(self, delay: int, velocity: int, curve: Curve = Curve.LINEAR):
+        self.open_percent(0, delay, velocity, curve)
 
-    def open(self, delay: int, velocity: int):
-        self.open_percent(100, delay, velocity)
+    def open(self, delay: int, velocity: int, curve: Curve = Curve.LINEAR):
+        self.open_percent(100, delay, velocity, curve)
 
-    def open_half(self, delay: int, velocity: int):
-        self.open_percent(50, delay, velocity)
+    def open_half(self, delay: int, velocity: int, curve: Curve = Curve.LINEAR):
+        self.open_percent(50, delay, velocity, curve)
 
-    def ñamñam(self, times: int, velocity: int, delay_between: int = 0):
+    def ñamñam(self, times: int, velocity: int, curve: Curve = Curve.LINEAR, delay_between: int = 0):
         for _ in range(times):
-            self.open(delay_between, velocity)
-            self.close(delay_between, velocity)
+            self.open(delay_between, velocity, curve)
+            self.close(delay_between, velocity, curve)

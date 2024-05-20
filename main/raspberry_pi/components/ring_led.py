@@ -1,11 +1,11 @@
-from board import Pin
+from typing import Any
 from neopixel import NeoPixel
 
 
 class RingLED:
-    pin: Pin
+    pin: Any
     device: NeoPixel
 
-    def __init__(self, pin: Pin, num_leds: int = 12):
+    def __init__(self, pin: Any, num_leds: int = 12):
         self.pin = pin
         self.device = NeoPixel(pin, num_leds)
