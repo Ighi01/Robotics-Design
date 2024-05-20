@@ -88,6 +88,7 @@
 #include "stepper_controller.h"
 #define MAX_COMMAND_LENGTH 400
 int command[MAX_COMMAND_LENGTH];
+unsigned long currentMillis;
 
 void setup() {
   Serial.begin(9600);
@@ -166,7 +167,7 @@ void loop() {
       addMovementStepper(command[1], command[2] , command[3], command[4]);
     }
   }
-  
-  updateServos();
-  updateStepper();
+  currentMillis = millis();
+  updateServos(currentMillis);
+  updateStepper(currentMillis);
 }
