@@ -10,7 +10,7 @@ class Servo:
         self.arduino = arduino
         self.index = index
 
-    def add_movement(self, angle: int, delay: int, velocity: int, curve: Curve):
+    def add_movement(self, angle: int, velocity: int, delay: int = 0, curve: Curve = Curve.LINEAR):
         self.arduino.add_servo_movement(self.index, angle, delay, velocity, curve)
         
     def is_finished(self):
