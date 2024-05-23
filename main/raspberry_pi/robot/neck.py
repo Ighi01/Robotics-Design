@@ -21,7 +21,7 @@ class Neck:
         self.stepper = Stepper(arduino)
         self.horizontal_servo = Servo(arduino, horizontal_index)
         self.vertical_servo = Servo(arduino, vertical_index)
-        #self.sensor = IRSensor(ir_sensor_pin)
+        self.sensor = IRSensor(ir_sensor_pin)
 
     def turn_head_horizontal(self, angle: int, velocity: int, delay: int = 0, curve: Curve = Curve.LINEAR):
         self.horizontal_servo.add_movement(angle, delay, velocity, curve)

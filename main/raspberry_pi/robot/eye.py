@@ -9,6 +9,7 @@ class Eye:
     screen: Screen
 
     def __init__(self, side: Side, cs: DigitalInOut, dc: DigitalInOut, rst: DigitalInOut):
+        self.side = side
         self.screen = Screen(cs, dc, rst)
 
     def blank(self):

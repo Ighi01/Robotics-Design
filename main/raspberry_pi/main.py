@@ -10,12 +10,12 @@ def main():
     try:
         pygame.mixer.init()
     except pygame.error:
-        print('The speakers are not connected')
+        print('Error connecting to audio device. Exiting...')
         return
     robot = Robot(
         left={
-            'side': Side.RIGHT,
-            'arduino_port': '/dev/ttyACM0',
+            'side': Side.LEFT,
+            'arduino_port': '/dev/ARL',
             'eye': {
                 'cs': board.D17,
                 'rst': board.D24,
@@ -49,7 +49,7 @@ def main():
         },
         right={
             'side': Side.RIGHT,
-            'arduino_port': '/dev/ttyACM1',
+            'arduino_port': '/dev/ARR',
             'eye': {
                 'cs': board.D27,
                 'rst': board.D5,
@@ -78,7 +78,7 @@ def main():
                 'max_angle_horizontal': 0,
                 'min_angle_horizontal': 0,
                 'center_angle_horizontal': 0,
-                'ir_sensor_pin': 19,
+                'ir_sensor_pin': 16,
             },
         },
         proximity_sensor={
