@@ -46,6 +46,7 @@ class Arduino:
         self.servo_movements[index].append((angle, delay, velocity, curve))
 
     def send_servo_movements(self):
+        print(self.servo_movements)
         servos = []
         for index, movements in self.servo_movements.items():
             movs = []
@@ -61,6 +62,10 @@ class Arduino:
                 movnum=len(movs),
                 movs=' '.join(movs)
             ))
+        print(servo_template_main.format(
+            servo_len=len(servos),
+            servos=' '.join(servos)
+        ))
         self.write(servo_template_main.format(
             servo_len=len(servos),
             servos=' '.join(servos)
@@ -80,6 +85,10 @@ class Arduino:
             if response == '':
                 continue
             return response == '1'
+    
+    def wait_until_finished(self, indexes: list[int] = []):
+        while not self.is_finished(indexes):
+            pass
 
     def reset(self, indexes: list[int] = []):
         if not indexes:

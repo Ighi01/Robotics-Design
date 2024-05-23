@@ -10,7 +10,7 @@ class Robot:
     ring_leds: RingLED
 
     def __init__(self, left: dict, right: dict, proximity_sensor: dict, ring_leds: dict):
-        #self.left = RobotSide(**left)
-        self.right = RobotSide(**right)
+        self.left = RobotSide(**left)
+        #self.right = RobotSide(**right)
         self.proximity_sensor = ProximitySensor(**proximity_sensor)
         self.ring_leds = RingLED(**ring_leds)

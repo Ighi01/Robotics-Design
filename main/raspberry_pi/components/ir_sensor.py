@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 
 
-def do_nothing():
+def do_nothing(_):
     pass
 
 
