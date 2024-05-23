@@ -1,21 +1,20 @@
+from time import sleep
+from adafruit_rgb_display.st7735 import ST7735R
 from threading import Thread
-
+from digitalio import DigitalInOut
 import board
 from PIL import Image, ImageDraw, ImageSequence
-from adafruit_rgb_display.st7735 import ST7735R
-from digitalio import DigitalInOut
 
 spi = board.SPI()
 
-
 class Screen:
     device: ST7735R
-    current_thread: Thread | None = None
+    current_thread: Thread
     stop: bool = False
-
-    def __init__(self, cs: DigitalInOut, dc: DigitalInOut, rst: DigitalInOut):
-        self.device = ST7735R(
-            spi,
+    
+    def __init__(cls, cs: DigitalInOut, dc: DigitalInOut, rst: DigitalInOut):
+        cls.device = ST7735R(
+            spi, 
             rotation=0,
             cs=cs,
             dc=dc,
@@ -23,13 +22,14 @@ class Screen:
             baudrate=24000000,
             bgr=True
         )
-
+        cls.current_thread = None
+        
     def _stop(self):
         self.stop = True
         if self.current_thread:
             self.current_thread.join()
         self.stop = False
-
+        
     def _blank(self):
         if self.device.rotation % 180 == 90:
             height = self.device.width  # we swap height/width to rotate it to landscape!
@@ -44,9 +44,8 @@ class Screen:
 
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
-        # TODO: fix this
-        self.device.image(draw)
-
+        self.device.image(image)
+        
     def blank(self):
         self._stop()
         self.current_thread = Thread(target=self._blank)

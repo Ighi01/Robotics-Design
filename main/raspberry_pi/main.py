@@ -23,7 +23,8 @@ def main():
             },
             'arm': {
                 'index': 4,
-                'max_angle': 75,
+                'min_angle': 80,
+                'max_angle': 0,
                 'max_velocity': 200,
             },
             'mouth': {
@@ -36,10 +37,10 @@ def main():
                 'audio_channel_index': 1,
             },
             'neck': {
-                'horizontal_index': 2,
-                'vertical_index': 3,
-                'max_angle_vertical': 45,
-                'min_angle_vertical': 25,
+                'horizontal_index': 3,
+                'vertical_index': 2,
+                'max_angle_vertical': 20,
+                'min_angle_vertical': 50,
                 'center_angle_vertical': 35,
                 'max_angle_horizontal': 180,
                 'min_angle_horizontal': 0,
@@ -57,21 +58,23 @@ def main():
             },
             'arm': {
                 'index': 4,
+                'min_angle': 0,
                 'max_angle': 75,
                 'max_velocity': 200,
             },
             'mouth': {
                 'top_index': 0,
                 'bottom_index': 1,
-                'open_angle_top': 20,
+                'open_angle_top': 30,
                 'closed_angle_top': 0,
-                'open_angle_bottom': 20,
+                'open_angle_bottom': 30,
                 'closed_angle_bottom': 0,
                 'audio_channel_index': 1,
             },
+            #TODO
             'neck': {
-                'horizontal_index': 2,
-                'vertical_index': 3,
+                'horizontal_index': 3,
+                'vertical_index': 2,
                 'max_angle_vertical': 0,
                 'min_angle_vertical': 0,
                 'center_angle_vertical': 0,
@@ -89,6 +92,11 @@ def main():
             'pin': board.D10,
         }
     )
+    robot.left.arm.raise_full(100, 1)
+    robot.left.arm.lower(100, 1)
+    robot.left.arm.raise_half(100, 1)
+    robot.left.arm.lower(100, 1)
+    robot.left.arduino.send_servo_movements()
 
 
 if __name__ == '__main__':

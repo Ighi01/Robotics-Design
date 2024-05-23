@@ -53,7 +53,7 @@ class Screen:
         
     def _sad(self):
         images = []
-        with Image.open('sad.gif') as im:
+        with Image.open('sad-green.gif') as im:
             for frame in ImageSequence.Iterator(im):
                 frame = frame.convert('RGB')
                 images.append(frame)

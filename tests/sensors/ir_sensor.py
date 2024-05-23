@@ -1,14 +1,16 @@
 import RPi.GPIO as IO
 from time import sleep
 
+pin = 19
+
 IO.setwarnings(False)
 IO.setmode(IO.BCM)
-IO.setup(3,IO.IN)
+IO.setup(pin,IO.IN)
 
 def callback(_):
     print('IR sensor detected something')
 
-IO.add_event_detect(3,IO.FALLING, callback=callback, bouncetime=200)
+IO.add_event_detect(pin, IO.FALLING, callback=callback, bouncetime=200)
 
 while True:
     pass

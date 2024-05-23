@@ -19,7 +19,7 @@ class RobotSide:
     def __init__(self, side: Side, arduino_port: Path, eye: dict, arm: dict, mouth: dict, neck: dict):
         self.side = side
         self.arduino = Arduino(arduino_port)
-        self.eye = Eye(**eye)
+        #self.eye = Eye(side, **eye)
         self.arm = Arm(self.arduino, **arm)
         self.mouth = Mouth(self.side, self.arduino, **mouth)
         self.neck = Neck(self.arduino, **neck)
