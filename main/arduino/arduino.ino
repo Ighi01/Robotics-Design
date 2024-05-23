@@ -79,7 +79,7 @@
  * 
  *               5. Velocity of the gear for the bouncing (must be integer) : maximum speed = 33
  *
- *          Example of input: 2 90 20 5 30 -> This command 3 cause the Stepper to move the axis to 90% of maximum displacement moving the gear at 20 speed , then after reaching the displacemnt it start bouncing up and down of 5 millimiterss with gear speed of 30.
+ *          Example of input: 3 90 20 5 30 -> This command 3 cause the Stepper to move the axis to 90% of maximum displacement moving the gear at 20 speed , then after reaching the displacemnt it start bouncing up and down of 5 millimiterss with gear speed of 30.
  *
  */
 
@@ -121,7 +121,7 @@ void loop() {
         Movement path[totMovement];
         int h = i;
         int j = 0;
-        while (i < (3*totMovement + h)) {
+        while (i < (4*totMovement + h)) {
           path[j].ang = command[i++];
           path[j].del = command[i++];
           path[j].speed = command[i++];
@@ -138,10 +138,10 @@ void loop() {
         Serial.println(isAllCompleteServos());
       }
       else{
-        int result = true;
+        int result = 1;
         while(i< (totServo + 2)){
           if(!isAllCompleteServo(command[i++])){
-            result = false;
+            result = 0;
             break;
           }
         }

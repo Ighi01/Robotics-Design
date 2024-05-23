@@ -18,7 +18,7 @@
 
 int fullTurn = 0.01 * ((LENGTH - MAX_DEBOUNCING) / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
 int maxDebTurn = 0.01 * (MAX_DEBOUNCING / (6.28 * RADIOUS_GEAR)) * STEPS_PER_REVOLUTION;
-Stepper stepper = Stepper(STEPS_PER_REVOLUTION, IN_1, IN_2, IN_3, IN_4);
+Stepper stepper = Stepper(STEPS_PER_REVOLUTION, IN_1, IN_3, IN_2, IN_4);
 
 struct StepperData {
   int percentage; 

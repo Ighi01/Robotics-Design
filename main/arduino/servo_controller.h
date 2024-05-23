@@ -27,7 +27,7 @@ struct ServoData {
   int types[MAX_MOVEMENTS];  
   int initialAngle;
   int resetSpeed;
-  int isReset;
+  bool isReset;
 };
 
 struct Movement {
@@ -53,11 +53,11 @@ void rootServo(int servoIndex){
 
 void initializeServos() {
 
-  servos[0].initialAngle = 0; 
-  servos[1].initialAngle = 0;  
-  servos[2].initialAngle = 50; 
-  servos[3].initialAngle = 145;
-  servos[4].initialAngle = 0; 
+  servos[0].initialAngle = 40; // 40 ORANGE , 0 GREEN 
+  servos[1].initialAngle = 40; // 40 ORANGE , 0 GREEN
+  servos[2].initialAngle = 35; // 35 ORANGE , 50 GREEN
+  servos[3].initialAngle = 30; // 30 ORANGE , 150 GREEN
+  servos[4].initialAngle = 80; // 80 ORANGE , 0 GREEN
 
   servos[0].resetSpeed = 100;
   servos[1].resetSpeed = 100;
@@ -110,7 +110,7 @@ void resetAllServos(){
 void updateServos(unsigned long currentMillis) {
   // Move Servo    
   for (int i = 0; i < NUM_SERVOS; i++) {
-    if (servos[i].previousAngle != servos[i].angle) {
+    if (servos[i].previousAngle != servos[i].angle && !servos[i].servo.isMoving()) {
       if(!servos[i].isReset){
         switch(servos[i].types[servos[i].movementIndex]){
           case 0:
@@ -160,11 +160,11 @@ bool isAllCompleteServo(int servoIndex) {
   return (servos[servoIndex].movementIndex == (servos[servoIndex].numMovements - 1) || servos[servoIndex].numMovements == 0) && servos[servoIndex].previousAngle == servos[servoIndex].angle;
 }
 
-bool isAllCompleteServos(){
-  int result = true;
+int isAllCompleteServos(){
+  int result = 1;
   for (int i = 0; i < NUM_SERVOS; i++) {
     if(!isAllCompleteServo(i)){
-      result = false;
+      result = 0;
       break;
     }
   }
