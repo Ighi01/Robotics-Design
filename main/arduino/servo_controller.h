@@ -142,6 +142,7 @@ void updateServos(unsigned long currentMillis) {
       }
     }
   }
+  int finished = 0;
   //Update Angles
   for (int i = 0; i < NUM_SERVOS; i++) {
     if (servos[i].movementIndex < servos[i].numMovements - 1) {
@@ -153,6 +154,13 @@ void updateServos(unsigned long currentMillis) {
         }
       }
     }
+    else if(!servos[i].servo.isMoving()){
+      finished++;
+    }
+  }
+
+  if(finished == NUM_SERVOS){
+    Serial.println("ok");      
   }
 }
 
