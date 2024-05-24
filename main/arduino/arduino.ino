@@ -92,6 +92,7 @@ unsigned long currentMillis;
 
 void setup() {
   Serial.begin(9600);
+  Serial.setTimeout(10000);
   initializeServos();
   initializeStepper();
   while (Serial.available() <= 0) {
@@ -104,10 +105,12 @@ void loop() {
 
   //TODO : add control on the correctness of the input
   
-  if (Serial.available() > 0) {
-    int commandIndex = 0;
+  if (Serial.available() > 1) {
 
-    while (Serial.available() > 0) {
+    int commandIndex = 0;
+    int lenght = Serial.parseInt();
+
+    while (commandIndex < lenght) {
       command[commandIndex] = Serial.parseInt();
       commandIndex++;
     }
