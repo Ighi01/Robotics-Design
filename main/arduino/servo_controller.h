@@ -160,23 +160,7 @@ void updateServos(unsigned long currentMillis) {
   }
 
   if(finished == NUM_SERVOS){
-    Serial.println("ok");      
+    Serial.println("ok");    
   }
 }
-
-bool isAllCompleteServo(int servoIndex) {
-  return (servos[servoIndex].movementIndex == (servos[servoIndex].numMovements - 1) || servos[servoIndex].numMovements == 0) && servos[servoIndex].previousAngle == servos[servoIndex].angle;
-}
-
-int isAllCompleteServos(){
-  int result = 1;
-  for (int i = 0; i < NUM_SERVOS; i++) {
-    if(!isAllCompleteServo(i)){
-      result = 0;
-      break;
-    }
-  }
-  return result;
-}
-
 #endif

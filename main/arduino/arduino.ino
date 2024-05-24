@@ -131,24 +131,6 @@ void loop() {
       }
     }
 
-    if (command[0] == 1) {
-      int i = 1;
-      int totServo = command[i++];
-      if(totServo == 0){
-        Serial.println(isAllCompleteServos());
-      }
-      else{
-        int result = 1;
-        while(i< (totServo + 2)){
-          if(!isAllCompleteServo(command[i++])){
-            result = 0;
-            break;
-          }
-        }
-        Serial.println(result);
-      }
-    }
-
     if (command[0] == 2) {
       int i = 1;
       int totServo = command[i++];
