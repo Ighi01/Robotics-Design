@@ -33,6 +33,7 @@ struct StepperData {
 };
 
 StepperData stepperData;
+bool finished = false;
 
 void move(){
   if(stepperData.actual < stepperData.goal){
@@ -93,6 +94,7 @@ void addMovementStepper(int percentage, int velocity, int bounceStep, int bounce
   stepperData.bounceStep = bounceStep >= (MAX_DEBOUNCING * 10) ? maxDebTurn : maxDebTurn * (bounceStep / (10 * MAX_DEBOUNCING));
   stepperData.bounceVelocity = bounceVelocity;
   stepperData.goUp = false;
+  finished = false;
 }
 
 void updateStepper(unsigned long currentMillis) {  
@@ -100,6 +102,10 @@ void updateStepper(unsigned long currentMillis) {
     move();
   }
   else if (stepperData.bounceStep > 0 && (currentMillis - stepperData.previousMillis) > FLOATING_TIME) {   
+    if (!finished){
+      Serial.println("ko");
+      finished = true;
+    }
     setSpeed(stepperData.bounceVelocity);
     if (stepperData.goUp) {
       addStep(stepperData.bounceStep);
