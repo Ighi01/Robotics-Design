@@ -88,24 +88,26 @@
 #include "stepper_controller.h"
 #define MAX_COMMAND_LENGTH 400
 int command[MAX_COMMAND_LENGTH];
-unsigned long currentMillis;
+unsigned long currentMillis, previuousMillis;
 
 void setup() {
   Serial.begin(9600);
-  Serial.setTimeout(10000);
+  Serial.setTimeout(3000);
   initializeServos();
   initializeStepper();
   while (Serial.available() <= 0) {
     Serial.println("ack");
     delay(100);
   }
+  Serial.end();
+  Serial.begin(9600);
 }
 
 void loop() {
 
   //TODO : add control on the correctness of the input
   
-  if (Serial.available() > 1) {
+  if (Serial.available() > 2) {
 
     int commandIndex = 0;
     int lenght = Serial.parseInt();
@@ -132,6 +134,7 @@ void loop() {
         }
         addMovementServo(servoIndex, path, totMovement);
       }
+      Undone();
     }
 
     if (command[0] == 2) {
@@ -146,6 +149,7 @@ void loop() {
           resetServo(command[i++]);
         }
       }
+      Undone();
     }
 
     if(command[0] == 3){
