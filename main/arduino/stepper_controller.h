@@ -33,7 +33,7 @@ struct StepperData {
 };
 
 StepperData stepperData;
-bool finished = false;
+bool finished = true;
 
 void move(){
   if(stepperData.actual < stepperData.goal){
@@ -101,11 +101,12 @@ void updateStepper(unsigned long currentMillis) {
   if (stepperData.actual < stepperData.goal){
     move();
   }
-  else if (stepperData.bounceStep > 0 && (currentMillis - stepperData.previousMillis) > FLOATING_TIME) {   
+  else {
     if (!finished){
       Serial.println("ko");
       finished = true;
     }
+    if (stepperData.bounceStep > 0 && (currentMillis - stepperData.previousMillis) > FLOATING_TIME) {
     setSpeed(stepperData.bounceVelocity);
     if (stepperData.goUp) {
       addStep(stepperData.bounceStep);
@@ -115,6 +116,7 @@ void updateStepper(unsigned long currentMillis) {
       stepperData.goUp = true;
     }
     stepperData.previousMillis = currentMillis;
+    }
   }
 }
 
