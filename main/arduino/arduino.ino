@@ -137,7 +137,7 @@ void loop() {
       Undone();
     }
 
-    if (command[0] == 2) {
+    if (command[0] == 1) {
       int i = 1;
       int totServo = command[i++];
 
@@ -152,7 +152,7 @@ void loop() {
       Undone();
     }
 
-    if(command[0] == 3){
+    if(command[0] == 2){
       addMovementStepper(command[1], command[2] , command[3], command[4]);
     }
   }
