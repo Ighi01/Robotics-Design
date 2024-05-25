@@ -6,7 +6,6 @@ from components.stepper import Stepper
 
 
 class Neck:
-    stepper: Stepper
     horizontal_servo: Servo
     vertical_servo: Servo
     sensor: IRSensor
@@ -25,7 +24,6 @@ class Neck:
                  min_angle_horizontal: int,
                  center_angle_horizontal: int,
                  ir_sensor_pin: int):
-        self.stepper = Stepper(arduino)
         self.horizontal_servo = Servo(arduino, horizontal_index)
         self.vertical_servo = Servo(arduino, vertical_index)
         self.max_angle_vertical = max_angle_vertical

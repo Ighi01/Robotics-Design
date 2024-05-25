@@ -1,16 +1,25 @@
 from digitalio import DigitalInOut
 
 from components.screen import Screen
+from components.stepper import Stepper
+from components.arduino import Arduino
 from robot.side import Side
 
 
 class Eye:
     side: Side
+    stepper: Stepper
+    max_velocity: int
     screen: Screen
 
-    def __init__(self, side: Side, cs: DigitalInOut, dc: DigitalInOut, rst: DigitalInOut):
+    def __init__(self, side: Side, arduino: Arduino, max_velocity: int, cs: DigitalInOut, dc: DigitalInOut, rst: DigitalInOut):
         self.side = side
+        self.stepper = Stepper(arduino)
+        self.max_velocity = max_velocity
         self.screen = Screen(cs, dc, rst)
+        
+    def raise_percent(self, percent: int, velocity_percent: int, bounce_distance: int = 0, bounce_velocity_percentage: int = 0):
+        self.stepper.move(percent, int(velocity_percent / 100 * self.max_velocity), bounce_distance, bounce_velocity_percentage / 100 * self.max_velocity)
 
     def blank(self):
         self.screen.blank()
@@ -34,4 +43,4 @@ class Eye:
         self.screen.gif(f'static/eyes/neutral-{self.side.value}.gif')
 
     def sad(self):
-        self.screen.gif(f'static/eyes/sad1-{self.side.value}.gif')
+        self.screen.gif(f'static/eyes/sad-{self.side.value}.gif')

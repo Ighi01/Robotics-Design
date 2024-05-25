@@ -8,11 +8,9 @@ from components.curve import Curve
 servo_template_main: str = '0 {servo_len} {servos}'
 servo_template_ind: str = '{index} {movnum} {movs}'
 servo_template_mov: str = '{angle} {delay} {velocity} {curve}'
-check_template: str = '1 {servo_len} {servos}'
-check_template_all: str = '1 0'
-reset_template: str = '2 {servo_len} {servos}'
-reset_template_all: str = '2 0'
-stepper_template: str = '3 {percentage} {velocity} {bounce_distance} {bounce_velocity}'
+reset_template: str = '{len} 1 {servo_len} {servos}'
+reset_template_all: str = '2 1 0'
+stepper_template: str = '2 {percentage} {velocity} {bounce_distance} {bounce_velocity}'
 
 
 class Arduino:
@@ -25,20 +23,25 @@ class Arduino:
     def __init__(self, port: Path, baudrate: int = 9600):
         self.port = port
         self.baudrate = baudrate
-        self.device = Serial(str(port), baudrate, timeout=.1)
+    
+    def connect(self):
+        self.device = Serial(str(self.port), self.baudrate)
         while self.read() != 'ack':
             sleep(0.1)
-        self.write('connect')
-        print(f'Arduino in port {port} connected')
+        self.write('a')
+        sleep(0.1)
+        print(f'Arduino in port {self.port} connected')
+        
 
     def write(self, data: str):
-        while time_ns() - self.last_sent < 1000000:
+        while time_ns() - self.last_sent < 10000000:
             pass
         self.device.write(bytes(data, 'utf-8'))
         self.last_sent = time_ns()
 
     def read(self):
-        return self.device.readline().decode().strip()
+        a = self.device.readline().decode().strip()
+        return a
 
     def add_servo_movement(self, index: int, angle: int, delay: int, velocity: int, curve: Curve):
         if index not in self.servo_movements:
@@ -62,47 +65,48 @@ class Arduino:
                 movnum=len(movs),
                 movs=' '.join(movs)
             ))
-        print(servo_template_main.format(
-            servo_len=len(servos),
-            servos=' '.join(servos)
-        ))
-        self.write(servo_template_main.format(
-            servo_len=len(servos),
-            servos=' '.join(servos)
-        ))
+        command = servo_template_main.format(servo_len=len(servos), servos=' '.join(servos))
+        command_list = command.split(' ')
+        command_list = [str(len(command_list))] + command_list
+        command_split = [command_list[i:i + 15] for i in range(0, len(command_list), 15)]
+        for command in command_split:
+            print(' '.join(command))
+            self.write(' ' + ' '.join(command) + ' ')
         self.servo_movements = {}
-        
-    def is_finished(self, indexes: list[int] = []) -> bool:
-        if not indexes:
-            self.write(check_template_all)
-        else:
-            self.write(check_template.format(
-                servo_len=len(indexes),
-                servos=' '.join(map(str, indexes))
-            ))
-        while True:
-            response = self.read()
-            if response == '':
-                continue
-            return response == '1'
     
-    def wait_until_finished(self, indexes: list[int] = []):
-        while not self.is_finished(indexes):
-            pass
+    def wait_servos(self):
+        while self.read() != 'ok':
+            sleep(0.1)
 
     def reset(self, indexes: list[int] = []):
         if not indexes:
             self.write(reset_template_all)
         else:
             self.write(reset_template.format(
+                len=len(indexes) + 2,
                 servo_len=len(indexes),
                 servos=' '.join(map(str, indexes))
             ))
 
     def move_stepper(self, percentage, velocity, bounce_distance, bounce_velocity):
-        self.write(stepper_template.format(
+        self.write('5 ' + stepper_template.format(
             percentage=percentage,
             velocity=velocity,
             bounce_distance=bounce_distance,
             bounce_velocity=bounce_velocity
         ))
+
+    def wait_stepper(self):
+        while self.read() != 'ko':
+            sleep(0.1)
+
+    def wait(self):
+        servos_done = False
+        stepper_down = False
+        while not servos_done or not stepper_down:
+            res = self.read()
+            if res == 'ok':
+                servos_done = True
+            if res == 'ko':
+                stepper_down = True
+            sleep(0.1)

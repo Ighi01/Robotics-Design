@@ -1,25 +1,32 @@
 from time import sleep
 import board
 import pygame
+from digitalio import DigitalInOut
+import RPi.GPIO as GPIO
+
+
+try:
+    pygame.mixer.init()
+except pygame.error:
+    print('Error connecting to audio device.')
+
+GPIO.setmode(GPIO.BCM)
 
 from robot.robot import Robot
 from robot.side import Side
+from robot.sounds import Sounds
 
 
 def main():
-    try:
-        pygame.mixer.init()
-    except pygame.error:
-        print('Error connecting to audio device. Exiting...')
-        return
     robot = Robot(
         left={
             'side': Side.LEFT,
             'arduino_port': '/dev/ARL',
             'eye': {
-                'cs': board.D17,
-                'rst': board.D24,
-                'dc': board.D25,
+                'cs': DigitalInOut(board.D17),
+                'rst': DigitalInOut(board.D24),
+                'dc': DigitalInOut(board.D25),
+                'max_velocity': 33,
             },
             'arm': {
                 'index': 4,
@@ -52,9 +59,10 @@ def main():
             'side': Side.RIGHT,
             'arduino_port': '/dev/ARR',
             'eye': {
-                'cs': board.D27,
-                'rst': board.D5,
-                'dc': board.D6,
+                'cs': DigitalInOut(board.D27),
+                'rst': DigitalInOut(board.D5),
+                'dc': DigitalInOut(board.D6),
+                'max_velocity': 33,
             },
             'arm': {
                 'index': 4,
@@ -71,16 +79,15 @@ def main():
                 'closed_angle_bottom': 0,
                 'audio_channel_index': 1,
             },
-            #TODO
             'neck': {
                 'horizontal_index': 3,
                 'vertical_index': 2,
-                'max_angle_vertical': 0,
-                'min_angle_vertical': 0,
-                'center_angle_vertical': 0,
+                'max_angle_vertical': 65,
+                'min_angle_vertical': 35,
+                'center_angle_vertical': 50,
                 'max_angle_horizontal': 0,
-                'min_angle_horizontal': 0,
-                'center_angle_horizontal': 0,
+                'min_angle_horizontal': 180,
+                'center_angle_horizontal': 150,
                 'ir_sensor_pin': 16,
             },
         },
@@ -88,16 +95,12 @@ def main():
             'trigger_pin': board.D20,
             'echo_pin': board.D21,
         },
-        ring_leds={
-            'pin': board.D10,
-        }
     )
-    robot.left.arm.raise_full(100, 1)
-    robot.left.arm.lower(100, 1)
-    robot.left.arm.raise_half(100, 1)
-    robot.left.arm.lower(100, 1)
-    robot.left.arduino.send_servo_movements()
+    robot.left.mouth.say(Sounds.GRRR)
+    robot.right.mouth.say(Sounds.GRRR)
+    sleep(10)
 
 
 if __name__ == '__main__':
     main()
+    GPIO.cleanup()

@@ -3,6 +3,7 @@ from components.curve import Curve
 from components.servo import Servo
 from components.speaker import Speaker
 from robot.side import Side
+from robot.sounds import Sounds
 
 
 class Mouth:
@@ -28,21 +29,24 @@ class Mouth:
         assert 0 <= percent <= 100
         assert 0 <= delay
         assert 0 <= velocity
-        self.top_servo.add_movement(percent * (self.open_angle_top - self.closed_angle_top) / 100 + self.closed_angle_top,
-                                    velocity, curve, delay)
-        self.bottom_servo.add_movement(percent * (self.open_angle_bottom - self.closed_angle_bottom) / 100 + self.closed_angle_bottom,
-                                       velocity, curve, delay)
+        self.top_servo.add_movement(int(self.closed_angle_top + (self.open_angle_top - self.closed_angle_top) * (percent / 100)),
+                                    velocity, delay, curve)
+        self.bottom_servo.add_movement(int(self.closed_angle_bottom + (self.open_angle_bottom - self.closed_angle_bottom) * (percent / 100)),
+                                       velocity, delay, curve)
 
     def close(self, velocity: int, delay: int = 0, curve: Curve = Curve.LINEAR):
-        self.open_percent(0, delay, velocity, curve)
+        self.open_percent(0, velocity, delay, curve)
 
     def open(self, velocity: int, delay: int = 0, curve: Curve = Curve.LINEAR):
-        self.open_percent(100, delay, velocity, curve)
+        self.open_percent(100, velocity, delay, curve)
 
     def open_half(self, velocity: int, delay: int = 0, curve: Curve = Curve.LINEAR):
-        self.open_percent(50, delay, velocity, curve)
+        self.open_percent(50, velocity, delay, curve)
 
     def ñamñam(self, times: int, velocity: int, curve: Curve = Curve.LINEAR, delay_between: int = 0):
         for _ in range(times):
-            self.open(delay_between, velocity, curve)
-            self.close(delay_between, velocity, curve)
+            self.open(velocity, delay_between, curve)
+            self.close(velocity, delay_between, curve)
+
+    def say(self, sound: Sounds):
+        self.voice.play_and_wait(sound.value)

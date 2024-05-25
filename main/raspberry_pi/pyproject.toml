@@ -8,7 +8,7 @@ authors = ["kiinami <kinami@posteo.net>"]
 python = "^3.11,<3.13"
 adafruit-circuitpython-rgb-display = "^3.12.4"
 pillow = "==9.5.0"
-rpi-gpio = "^0.7.1"
+rpi-lgpio = "^0.6"
 spidev = "^3.6"
 numpy = "^1.26.4"
 st7735 = "^1.0.0"
