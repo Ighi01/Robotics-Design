@@ -1,7 +1,7 @@
 import RPi.GPIO as IO
 from time import sleep
 
-pin = 19
+pin = 16
 
 IO.setwarnings(False)
 IO.setmode(IO.BCM)

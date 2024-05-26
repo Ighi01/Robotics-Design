@@ -1,3 +1,5 @@
+#!/home/dietpi/.cache/pypoetry/virtualenvs/raspberry-pi-SQ1rTMlp-py3.11/bin/python
+
 from time import sleep
 import board
 import pygame
@@ -96,9 +98,15 @@ def main():
             'echo_pin': board.D21,
         },
     )
-    robot.left.mouth.say(Sounds.GRRR)
-    robot.right.mouth.say(Sounds.GRRR)
-    sleep(10)
+    robot.left.arduino.connect()
+    robot.right.arduino.connect()
+    
+    robot.left.mouth.open(4,)
+    robot.left.mouth.ñamñam(4,)
+    robot.left.neck.look_to_other(400)
+    robot.right.neck.look_to_other(400)
+    
+    robot.send_servo_movements()
 
 
 if __name__ == '__main__':

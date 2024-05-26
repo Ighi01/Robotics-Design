@@ -54,11 +54,11 @@ void rootServo(int servoIndex){
 
 void initializeServos() {
 
-  servos[0].initialAngle = 40; // 40 ORANGE , 0 GREEN 
-  servos[1].initialAngle = 40; // 40 ORANGE , 0 GREEN
-  servos[2].initialAngle = 35; // 35 ORANGE , 55 GREEN
-  servos[3].initialAngle = 30; // 30 ORANGE , 150 GREEN
-  servos[4].initialAngle = 80; // 80 ORANGE , 0 GREEN
+  servos[0].initialAngle = 0; // 40 ORANGE , 0 GREEN 
+  servos[1].initialAngle = 0; // 40 ORANGE , 0 GREEN
+  servos[2].initialAngle = 55; // 35 ORANGE , 55 GREEN
+  servos[3].initialAngle = 150; // 30 ORANGE , 150 GREEN
+  servos[4].initialAngle = 0; // 80 ORANGE , 0 GREEN
 
   servos[0].resetSpeed = 100;
   servos[1].resetSpeed = 100;

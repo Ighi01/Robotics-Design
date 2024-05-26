@@ -18,11 +18,12 @@ class Arduino:
     baudrate: int = 9600
     device: Serial
     last_sent: int = 0
-    servo_movements: dict[int, list[tuple[int, int, int]]] = {}
+    servo_movements: dict[int, list[tuple[int, int, int, Curve]]]
 
     def __init__(self, port: Path, baudrate: int = 9600):
         self.port = port
         self.baudrate = baudrate
+        self.servo_movements = {}
     
     def connect(self):
         self.device = Serial(str(self.port), self.baudrate)
