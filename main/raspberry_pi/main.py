@@ -104,7 +104,8 @@ def main():
     
     robot.left.eye.neutral()
     robot.right.eye.neutral()
-    
+    robot.left.eye.raise_percent(50,100,5,100)
+    robot.right.eye.raise_percent(50,100,5,100)
     #1    
     robot.left.mouth.open(30,0,Curve.QUADRATIC)
     robot.left.arm.raise_percent(90,72,0,Curve.CUBIC)
