@@ -94,7 +94,7 @@ void setup() {
   Serial.begin(9600);
   Serial.setTimeout(3000);
   initializeServos();
-  //initializeStepper();
+  initializeStepper();
   while (Serial.available() <= 0) {
     Serial.println("ack");
     delay(100);
