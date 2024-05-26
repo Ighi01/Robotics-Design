@@ -1,5 +1,3 @@
-from multiprocessing import Pool
-
 from components.proximity_sensor import ProximitySensor
 from robot.robot_side import RobotSide
 
@@ -15,11 +13,8 @@ class Robot:
         self.proximity_sensor = ProximitySensor(**proximity_sensor)
 
     def connect_arduinos(self):
-        pool = Pool()
-        a = pool.apply_async(self.left.arduino.connect)
-        b = pool.apply_async(self.right.arduino.connect)
-        a.wait()
-        b.wait()
+        self.left.arduino.connect()
+        self.right.arduino.connect()
 
     def send_servo_movements(self):
         self.left.arduino.send_servo_movements()

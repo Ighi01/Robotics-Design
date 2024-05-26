@@ -101,8 +101,10 @@ def main():
             'echo_pin': board.D21,
         },
     )
-    robot.left.arduino.connect()
-    robot.right.arduino.connect()
+    robot.connect_arduinos()
+    robot.left.arm.raise_full(150)
+    robot.right.arm.raise_full(150)
+    robot.send_servo_movements()
 
 
 if __name__ == '__main__':
