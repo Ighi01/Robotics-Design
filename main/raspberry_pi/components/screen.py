@@ -7,21 +7,28 @@ from PIL import Image, ImageDraw, ImageSequence
 
 spi = board.SPI()
 
+
 def custom_hook(args):
     # report the failure
     print(f'Thread failed: {args.exc_value}')
 
+
 threading.excepthook = custom_hook
+
 
 class Screen:
     device: ST7735R
     thread: threading.Thread
     blank_image: Image
     images: list
+    change: bool
     
     def _loop(self):
         while True:
+            self.change = False
             for frame in self.images:
+                if self.change:
+                    break
                 self.device.image(frame)
     
     def __init__(self, cs: DigitalInOut, dc: DigitalInOut, rst: DigitalInOut):
@@ -46,6 +53,7 @@ class Screen:
         self.images = [self.blank_image]
         self.thread = threading.Thread(target=self._loop)
         self.thread.start()
+        self.change = False
     
     def blank(self):
         self.images = [self.blank_image]
@@ -57,3 +65,4 @@ class Screen:
                 frame = frame.convert('RGB')
                 frames.append(frame)
         self.images = frames
+        self.change = True

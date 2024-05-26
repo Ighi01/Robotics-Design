@@ -45,6 +45,7 @@ def main():
                 'open_angle_bottom': 0,
                 'closed_angle_bottom': 40,
                 'audio_channel_index': 1,
+                'volume': 100,
             },
             'neck': {
                 'horizontal_index': 3,
@@ -81,6 +82,7 @@ def main():
                 'open_angle_bottom': 30,
                 'closed_angle_bottom': 0,
                 'audio_channel_index': 1,
+                'volume': 100,
             },
             'neck': {
                 'horizontal_index': 3,
