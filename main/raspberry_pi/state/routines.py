@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 from components.curve import Curve
 from robot.robot import Robot
@@ -5,6 +6,9 @@ from robot.sounds import Sounds
 from signal import signal, SIGTERM
 import pygame
 from random import randint
+
+
+log = logging.getLogger(__name__)
 
 
 def setup(robot: Robot):
@@ -63,9 +67,8 @@ def idle(robot: Robot, left_percentage: int, right_percentage: int):
     reset_screen(robot, left_percentage, right_percentage)
     reset_servo(robot, left_percentage, right_percentage)    
     reset_stepper_bouncing(robot, left_percentage, right_percentage)
-    
     time = randint(30, 120)
-    print(f'Idling for {time} seconds')
+    log.debug(f'Idling for {time} seconds')
     sleep(time)
     
 def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
@@ -259,7 +262,6 @@ def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
 
 
 def voting(robot: Robot, left_percentage: int, right_percentage: int):
-    print('Executing voting')
     setup(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
