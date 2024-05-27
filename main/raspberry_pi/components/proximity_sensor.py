@@ -12,9 +12,14 @@ class ProximitySensor:
         self.echo_pin = echo_pin
         self.device = HCSR04(trigger_pin, echo_pin)
 
-    def get_distance(self):
-        while True:
+    @property
+    def distance(self):
+        return 100
+        distances = []
+        while i := 3:
             try:
-                return self.device.distance
+                distances.append(self.device.distance)
+                i -= 1
             except Exception as _:
                 print('Timeout on proximity sensor, trying again...')
+        return sum(distances) / len(distances)

@@ -2,26 +2,18 @@
 
 from time import sleep
 import board
-import pygame
 from digitalio import DigitalInOut
 import RPi.GPIO as GPIO
 
-
-try:
-    pygame.mixer.init()
-except pygame.error:
-    print('Error connecting to audio device.')
-
 GPIO.setmode(GPIO.BCM)
-
-from robot.robot import Robot
-from robot.side import Side
-from robot.sounds import Sounds
-from components.curve import Curve
-from state.state import SM
 
 
 def main():
+    from robot.robot import Robot
+    from robot.side import Side
+    from robot.sounds import Sounds
+    from components.curve import Curve
+    from state.state import SM
     robot = Robot(
         left={
             'side': Side.LEFT,
@@ -45,8 +37,7 @@ def main():
                 'closed_angle_top': 40,
                 'open_angle_bottom': 0,
                 'closed_angle_bottom': 40,
-                'audio_channel_index': 1,
-                'volume': 100,
+                'volume': 20,
             },
             'neck': {
                 'horizontal_index': 3,
@@ -82,8 +73,7 @@ def main():
                 'closed_angle_top': 0,
                 'open_angle_bottom': 30,
                 'closed_angle_bottom': 0,
-                'audio_channel_index': 1,
-                'volume': 100,
+                'volume': 20,
             },
             'neck': {
                 'horizontal_index': 3,
@@ -107,4 +97,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    GPIO.cleanup()

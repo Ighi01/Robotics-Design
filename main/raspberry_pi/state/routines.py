@@ -3,12 +3,19 @@ from components.curve import Curve
 from robot.robot import Robot
 from robot.sounds import Sounds
 from signal import signal, SIGTERM
+import pygame
+from random import randint
 
 
-def set_handler(robot: Robot):
+def setup(robot: Robot):
     def handler(signum, frame):
+        robot.stop_eyes()
         exit(0)
     signal(SIGTERM, handler)
+    pygame.mixer.init()
+    robot.start_eyes()
+    robot.start_voice()
+    reset_servo(robot, 50, 50)
 
     
 def reset(robot: Robot, left_percentage: int, right_percentage: int):
@@ -52,14 +59,15 @@ def reset_servo(robot: Robot, left_percentage: int, right_percentage: int):
     robot.right.arduino.wait_servos()
     
 def idle(robot: Robot, left_percentage: int, right_percentage: int):
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     reset_servo(robot, left_percentage, right_percentage)    
     reset_stepper_bouncing(robot, left_percentage, right_percentage)
     
-    sleep(20)
+    sleep(randint(30, 120))
     
 def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
     robot.right.arm.raise_half(80, 0, Curve.QUADRATIC)
@@ -131,7 +139,7 @@ def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
         
 
 def engaging_2(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
     reset_stepper_fixed(robot, left_percentage, right_percentage)
@@ -193,7 +201,7 @@ def engaging_2(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.eye.neutral()    
     
 def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
     
@@ -246,14 +254,14 @@ def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.mouth.say(Sounds.UHOH)
     
     robot.left.arduino.wait_servos()
-    
-    
+
+
 def voting(robot: Robot, left_percentage: int, right_percentage: int):
     print('Executing voting')
-    set_handler(robot)
+    setup(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
-    reset_stepper(robot, left_percentage, right_percentage)
+    reset_stepper_fixed(robot, left_percentage, right_percentage)
     
     robot.left.mouth.open(80,curve=Curve.BOUNCE)
     robot.left.neck.look_up(30,0,curve=Curve.BOUNCE)
@@ -274,7 +282,7 @@ def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
     pass
     
 def feedback_left_1(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
     set_stepper_fixed_on_percentage(robot, left_percentage, right_percentage)

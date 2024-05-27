@@ -84,14 +84,14 @@ class SM(StateMachine):
 
     def on_enter_engaging(self):
         print('Entered engaging')
-        random_engaging = random.choice([routines.engaging_1, routines.engaging_2, routines.engaging_3])
+        random_engaging = random.choice([routines.engaging_1, routines.engaging_2, routines.engaging_3, routines.idle])
         print(f'Selected engaging routine {random_engaging.__name__}')
         self.execute_routine(random_engaging, (self.robot, *self.percentages))
         print('Engaging routine started')
         while self.current_routine.is_alive():
-            current_distance = self.robot.proximity_sensor.get_distance()
+            current_distance = self.robot.proximity_sensor.distance
             print(f'Current distance: {current_distance}')
-            if self.robot.proximity_sensor.get_distance() < self.trigger_distance:
+            if current_distance < self.trigger_distance:
                 self.approached()
                 return
             else:
