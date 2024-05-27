@@ -35,11 +35,13 @@ class Robot:
         self.left.arduino.send_servo_movements()
         self.right.arduino.send_servo_movements()
         
-    def set_ir_callbacks(self, left_callback: callable, right_callback: callable):
-        self.left.neck.sensor.set_callback(left_callback)
-        self.right.neck.sensor.set_callback(right_callback)
+    def activate_ir(self):
+        self.left.neck.sensor.activate()
+        self.right.neck.sensor.activate()
         
-    def remove_ir_callbacks(self):
-        self.left.neck.sensor.remove_callback()
-        self.right.neck.sensor.remove_callback()
+    def deactivate_ir(self):
+        self.left.neck.sensor.deactivate()
+        self.right.neck.sensor.deactivate()
     
+    def ir_values(self):
+        return self.left.neck.sensor.tripped, self.right.neck.sensor.tripped

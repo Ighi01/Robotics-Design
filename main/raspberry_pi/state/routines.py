@@ -65,6 +65,7 @@ def reset_servo(robot: Robot, left_percentage: int, right_percentage: int):
     robot.right.arduino.wait_servos()
     
 def idle(robot: Robot, left_percentage: int, right_percentage: int):
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     reset_servo(robot, left_percentage, right_percentage)    
     reset_stepper_bouncing(robot, left_percentage, right_percentage)
@@ -281,6 +282,8 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     
     robot.left.eye.comp()
     robot.right.eye.comp()
+    
+    sleep(30)
     
 def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
     reset_screen(robot, left_percentage, right_percentage)

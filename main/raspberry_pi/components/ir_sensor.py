@@ -4,18 +4,23 @@ import logging
 
 log = logging.getLogger(__name__)
 
-def do_nothing(_):
+def do_nothing(*args):
     pass
+
+def trip(self):
+    self.tripped = True
 
 
 class IRSensor:
     pin: int
     bouncetime: int
     callback: callable = do_nothing
+    tripped: bool
 
     def __init__(self, pin, bouncetime=100):
         self.pin = pin
         self.bouncetime = bouncetime
+        self.tripped = False
 
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
@@ -28,11 +33,13 @@ class IRSensor:
         )
     
     def callback_func(self, *args):
-        self.callback.__call__()
+        self.callback(self)
 
-    def set_callback(self, callback: callable):
-        log.debug(f'Setting callback for pin {self.pin} to {callback.__name__}')
-        self.callback = callback
+    def activate(self):
+        self.callback = trip
+        self.tripped = False
+        log.debug(f'Activated IR sensor on pin {self.pin}')
 
-    def remove_callback(self):
+    def deactivate(self):
         self.callback = do_nothing
+        log.debug(f'Deactivated IR sensor on pin {self.pin}')
