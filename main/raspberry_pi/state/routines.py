@@ -2,6 +2,7 @@ from time import sleep
 from components.curve import Curve
 from robot.robot import Robot
 from robot.sounds import Sounds
+from signal import signal, SIGTERM
 
 
 def set_handler(robot: Robot):
@@ -240,6 +241,7 @@ def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
     
     
 def voting(robot: Robot, left_percentage: int, right_percentage: int):
+    set_handler(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
     reset_stepper(robot, left_percentage, right_percentage)

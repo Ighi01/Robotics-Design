@@ -2,6 +2,7 @@ import sys
 from multiprocessing import Process
 from signal import signal, SIGTERM
 import random
+from time import sleep
 
 from statemachine import StateMachine, State
 
@@ -23,7 +24,7 @@ class SM(StateMachine):
     current_routine: Process
     left_votes: int
     right_votes: int
-    trigger_distance: int = 10
+    trigger_distance: float = 10.0
 
     # These are the states of the state machine
     setup = State('setup', initial=True)
@@ -43,8 +44,10 @@ class SM(StateMachine):
 
     # This is the constructor of the state machine
     def __init__(self, robot: Robot):
-        super(SM, self).__init__()
         self.robot = robot
+        self.left_votes = 0
+        self.right_votes = 0
+        super(SM, self).__init__()
         
     ########################
     #   Utility functions  #
@@ -52,10 +55,17 @@ class SM(StateMachine):
     
     @property
     def percentages(self):
-        total_votes = self.left_votes + self.right_votes
-        left_percentage = self.left_votes / total_votes
-        right_percentage = self.right_votes / total_votes
-        return left_percentage, right_percentage
+        if not self.left_votes and not self.right_votes:
+            return 50, 50
+        elif not self.left_votes:
+            return 0, 100
+        elif not self.right_votes:
+            return 100, 0
+        else:
+            total_votes = self.left_votes + self.right_votes
+            left_percentage = self.left_votes / total_votes
+            right_percentage = self.right_votes / total_votes
+            return left_percentage, right_percentage
     
     def execute_routine(self, routine: callable, args: tuple):
         self.current_routine = Process(target=routine, args=args)
