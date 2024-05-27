@@ -249,6 +249,7 @@ def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
     
     
 def voting(robot: Robot, left_percentage: int, right_percentage: int):
+    print('Executing voting')
     set_handler(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
@@ -265,8 +266,10 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.arduino.wait_servos() 
     
     robot.left.eye.comp()
-    robot.right.eye.comp()
+    robot.right.eye.comp()    
     
+    sleep(30)
+
 def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
     pass
     

@@ -25,6 +25,7 @@ class SM(StateMachine):
     left_votes: int
     right_votes: int
     trigger_distance: float = 10.0
+    voting_timeout: int = 30
 
     # These are the states of the state machine
     setup = State('setup', initial=True)
@@ -92,14 +93,20 @@ class SM(StateMachine):
             print(f'Current distance: {current_distance}')
             if self.robot.proximity_sensor.get_distance() < self.trigger_distance:
                 self.approached()
+                return
             else:
-                sleep(0.1)
+                sleep(1)
         print('Engaging routine finished')
         self.loopEngaging()
 
     def on_enter_voting(self):
         print('Entered voting!')
         self.execute_routine(routines.voting, (self.robot, *self.percentages))
+        while self.current_routine.is_alive():
+            sleep(1)
+        print('No one there!')
+        self.leaved()
+        return
         
 
     def on_enter_feedback(self):
