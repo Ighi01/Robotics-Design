@@ -2,6 +2,7 @@ from time import sleep
 from components.curve import Curve
 from robot.robot import Robot
 from robot.sounds import Sounds
+from signal import signal, SIGTERM
 
 
 def set_handler(robot: Robot):
