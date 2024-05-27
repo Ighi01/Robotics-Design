@@ -295,6 +295,14 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.eye.comp()
     robot.right.eye.comp()
     
+    times = 4
+    
+    for _ in range(times):
+        sleep(5)
+        
+    
+    
+    
 def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
     reset_screen(robot, left_percentage, right_percentage)
     robot.left.neck.look_center(30, 0)
