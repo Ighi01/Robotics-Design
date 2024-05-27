@@ -180,66 +180,7 @@ def engaging_2(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.eye.neutral()
     robot.right.arduino.wait_servos()
     robot.right.mouth.say(Sounds.GRRR)
-    robot.left.eye.neutral()
-    set_handler(robot)
-    
-    reset_screen(robot, left_percentage, right_percentage)
-    
-    # 1
-    robot.left.neck.look_to_other(75, curve=Curve.QUADRATIC)
-    robot.left.eye.raise_percent(50, 100, 0, 100)
-
-    robot.right.neck.look_to_other(75, curve=Curve.QUADRATIC)
-    robot.right.eye.raise_percent(50, 100, 0, 100)
-
-    robot.send_servo_movements()
-    robot.left.arduino.wait_servos()
-    robot.left.mouth.say(Sounds.GRRR)
-    robot.left.eye.angry_2()
-    robot.right.arduino.wait_servos()
-    robot.right.mouth.say(Sounds.GRRR)
-    robot.right.eye.angry_2()
-
-    # 2
-    robot.left.neck.look_down(15, 2)
-    robot.left.neck.look_center(15, 1)
-
-    robot.right.eye.raise_percent(100, 100, 0, 100)
-
-    robot.left.arduino.send_servo_movements()
-    robot.left.arduino.wait_servos()
-    robot.right.arduino.wait_stepper()
-    sleep(1)
-    robot.right.eye.raise_percent(50, 100, 0, 100)
-
-    # 3
-    robot.left.neck.look_up(15, 2)
-    robot.left.neck.look_away(360, 2, Curve.QUADRATIC)
-    robot.left.neck.look_front(90, 2, Curve.QUADRATIC)
-
-    robot.right.neck.look_up(15, 2)
-    robot.right.neck.look_away(360, 2, Curve.QUADRATIC)
-    robot.right.neck.look_front(90, 2, Curve.QUADRATIC)
-
-    robot.send_servo_movements()
-    robot.left.arduino.wait_servos()
-    robot.right.arduino.wait_servos()
-
-    # 4
-    robot.left.mouth.open(30, 1, Curve.QUADRATIC)
-    robot.left.arm.raise_percent(90, 64, 2, Curve.CUBIC)
-
-    robot.right.mouth.open(21, 2, Curve.QUADRATIC)
-    robot.right.arm.raise_percent(90, 64, 4, Curve.CUBIC)
-
-    robot.send_servo_movements()
-    robot.left.arduino.wait_servos()
-    robot.left.mouth.say(Sounds.GRRR)
-    robot.left.eye.neutral()
-    robot.right.arduino.wait_servos()
-    robot.right.mouth.say(Sounds.GRRR)
-    robot.left.eye.neutral()
-    
+    robot.left.eye.neutral()    
     
 def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
     set_handler(robot)
