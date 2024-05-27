@@ -119,7 +119,68 @@ def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
         sleep(0.5)
         
 
-def engaging_2(robot: Robot, left_percentage: int, right_percentage: int): #TODO BETTER
+def engaging_2(robot: Robot, int: left_percentage, int: right_percentage):
+    set_handler(robot)
+    reset_screen(robot, left_percentage, right_percentage)
+    
+    robot.right.eye.raise_percent(50, 100, 0, 100)
+    robot.left.eye.raise_percent(50, 100, 0, 100)
+    
+    robot.left.neck.look_to_other(75, curve=Curve.QUADRATIC)
+    robot.right.neck.look_to_other(75, curve=Curve.QUADRATIC)
+
+    robot.send_servo_movements()
+    robot.left.arduino.wait_servos()
+    robot.left.mouth.say(Sounds.GRRR)
+    robot.left.eye.angry_2()
+    robot.right.arduino.wait_servos()
+    robot.right.mouth.say(Sounds.GRRR)
+    robot.right.eye.angry_2()
+    
+    sleep(2)
+    
+    robot.right.eye.raise_percent(100, 100, 0, 100)
+    
+    robot.left.neck.look_down(15, 0)
+    robot.left.neck.look_up(15, 2)
+    robot.left.neck.look_center(15, 2)
+
+    robot.left.arduino.send_servo_movements()
+    robot.left.arduino.wait_servos()
+    
+    sleep(2)
+    
+    robot.right.eye.raise_percent(50, 100, 0, 100)
+    
+    sleep(4)
+
+    robot.left.neck.look_up(15, 0)
+    robot.left.neck.look_away(360, 2, Curve.QUADRATIC)
+    robot.left.neck.look_front(90, 2, Curve.QUADRATIC)
+
+    robot.right.neck.look_up(15, 0)
+    robot.right.neck.look_away(360, 2, Curve.QUADRATIC)
+    robot.right.neck.look_front(90, 2, Curve.QUADRATIC)
+
+    robot.send_servo_movements()
+    robot.left.arduino.wait_servos()
+    robot.right.arduino.wait_servos()
+    
+    sleep(1)
+
+    robot.left.mouth.open(30, 0, Curve.QUADRATIC)
+    robot.left.arm.raise_percent(90, 64, 2, Curve.CUBIC)
+
+    robot.right.mouth.open(21, 2, Curve.QUADRATIC)
+    robot.right.arm.raise_percent(90, 64, 4, Curve.CUBIC)
+
+    robot.send_servo_movements()
+    robot.left.arduino.wait_servos()
+    robot.left.mouth.say(Sounds.GRRR)
+    robot.left.eye.neutral()
+    robot.right.arduino.wait_servos()
+    robot.right.mouth.say(Sounds.GRRR)
+    robot.left.eye.neutral()
     set_handler(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
