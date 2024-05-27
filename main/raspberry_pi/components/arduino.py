@@ -8,8 +8,6 @@ from components.curve import Curve
 servo_template_main: str = '0 {servo_len} {servos}'
 servo_template_ind: str = '{index} {movnum} {movs}'
 servo_template_mov: str = '{angle} {delay} {velocity} {curve}'
-reset_template: str = '{len} 1 {servo_len} {servos}'
-reset_template_all: str = '2 1 0'
 stepper_template: str = '2 {percentage} {velocity} {bounce_distance} {bounce_velocity}'
 
 
@@ -31,7 +29,7 @@ class Arduino:
             sleep(0.1)
         self.write('a')
         sleep(0.1)
-        print(f'Arduino in port {self.port} connected')
+        print(f'Connected to Arduino {self.port}')
         
 
     def write(self, data: str):
@@ -39,9 +37,11 @@ class Arduino:
             pass
         self.device.write(bytes(data, 'utf-8'))
         self.last_sent = time_ns()
+        print(f'Wrote to Arduino {self.port}: "{data}"')
 
     def read(self):
         a = self.device.readline().decode().strip()
+        print(f'Read from Arduino {self.port}: "{a}"')
         return a
 
     def add_servo_movement(self, index: int, angle: int, delay: int, velocity: int, curve: Curve):
@@ -50,7 +50,6 @@ class Arduino:
         self.servo_movements[index].append((angle, delay, velocity, curve))
 
     def send_servo_movements(self):
-        print(self.servo_movements)
         servos = []
         for index, movements in self.servo_movements.items():
             movs = []
@@ -71,23 +70,12 @@ class Arduino:
         command_list = [str(len(command_list))] + command_list
         command_split = [command_list[i:i + 15] for i in range(0, len(command_list), 15)]
         for command in command_split:
-            print(' '.join(command))
             self.write(' ' + ' '.join(command) + ' ')
         self.servo_movements = {}
     
     def wait_servos(self):
         while self.read() != 'ok':
             sleep(0.1)
-
-    def reset(self, indexes: list[int] = []):
-        if not indexes:
-            self.write(reset_template_all)
-        else:
-            self.write(reset_template.format(
-                len=len(indexes) + 2,
-                servo_len=len(indexes),
-                servos=' '.join(map(str, indexes))
-            ))
 
     def move_stepper(self, percentage, velocity, bounce_distance, bounce_velocity):
         self.write('5 ' + stepper_template.format(

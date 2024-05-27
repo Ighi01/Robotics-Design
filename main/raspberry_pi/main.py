@@ -5,7 +5,6 @@ import board
 import pygame
 from digitalio import DigitalInOut
 import RPi.GPIO as GPIO
-from components.curve import Curve
 
 
 try:
@@ -18,6 +17,8 @@ GPIO.setmode(GPIO.BCM)
 from robot.robot import Robot
 from robot.side import Side
 from robot.sounds import Sounds
+from components.curve import Curve
+from state.state import SM
 
 
 def main():
@@ -101,10 +102,7 @@ def main():
             'echo_pin': board.D21,
         },
     )
-    robot.connect_arduinos()
-    robot.left.arm.raise_full(150)
-    robot.right.arm.raise_full(150)
-    robot.send_servo_movements()
+    state_machine = SM(robot)
 
 
 if __name__ == '__main__':

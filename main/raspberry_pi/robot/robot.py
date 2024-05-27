@@ -20,6 +20,10 @@ class Robot:
         self.left.arduino.send_servo_movements()
         self.right.arduino.send_servo_movements()
         
+    def reset(self, left_servos: list = [], right_servos: list = []):
+        self.left.arduino.reset(left_servos)
+        self.right.arduino.reset(right_servos)
+        
     def close(self):
         self.left.arm.raise_full(150)
         self.right.arm.raise_full(150)

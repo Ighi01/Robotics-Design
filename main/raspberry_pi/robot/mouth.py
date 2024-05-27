@@ -49,4 +49,4 @@ class Mouth:
             self.close(velocity, delay_between, curve)
 
     def say(self, sound: Sounds):
-        self.voice.play_and_wait(sound.value)
+        self.voice.play(sound.value)
