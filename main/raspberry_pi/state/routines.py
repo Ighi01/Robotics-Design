@@ -1,8 +1,8 @@
 from time import sleep
-
 from components.curve import Curve
 from robot.robot import Robot
 from robot.sounds import Sounds
+
 def reset(robot: Robot, int: left_percentage, int: right_percentage):
     reset_screen(robot, left_percentage, right_percentage)
     reset_stepper(robot, left_percentage, right_percentage)
@@ -40,8 +40,7 @@ def idle(robot: Robot, int: left_percentage, int: right_percentage):
     sleep(20)
     
 def engaging_1(robot: Robot, int: left_percentage, int: right_percentage):
-    robot.left.eye.neutral()
-    robot.right.eye.neutral()
+    reset_screen(robot, left_percentage, right_percentage)
     
     robot.right.arm.raise_half(80, 0, Curve.QUADRATIC)
     robot.left.arm.raise_half(80, 0, Curve.QUADRATIC)
@@ -113,9 +112,8 @@ def engaging_1(robot: Robot, int: left_percentage, int: right_percentage):
         
 
 def engaging_2(robot: Robot, int: left_percentage, int: right_percentage): #TODO BETTER
-    robot.left.eye.neutral()
-    robot.right.eye.neutral()
-
+    reset_screen(robot, left_percentage, right_percentage)
+    
     # 1
     robot.left.neck.look_to_other(75, curve=Curve.QUADRATIC)
     robot.left.eye.raise_percent(50, 100, 0, 100)
@@ -173,8 +171,7 @@ def engaging_2(robot: Robot, int: left_percentage, int: right_percentage): #TODO
     
     
 def engaging_3(robot: Robot, int: left_percentage, int: right_percentage):
-    robot.left.eye.neutral()
-    robot.right.eye.neutral()
+    reset_screen(robot, left_percentage, right_percentage)
     
     robot.left.eye.raise_percent(left_percentage, 100, 5, 100)
     robot.right.eye.raise_percent(right_percentage, 100, 5, 100)
@@ -230,11 +227,8 @@ def engaging_3(robot: Robot, int: left_percentage, int: right_percentage):
     
 def voting(robot: Robot, int: left_percentage, int: right_percentage):
     
-    robot.left.eye.neutral()
-    robot.right.eye.neutral()
-    
-    robot.left.eye.raise_percent(left_percentage, 100, 0, 100)
-    robot.right.eye.raise_percent(right_percentage, 100, 0, 100)
+    reset_screen(robot, left_percentage, right_percentage)
+    reset_stepper(robot, left_percentage, right_percentage)
     
     robot.left.mouth.open(80,curve=Curve.BOUNCE)
     robot.left.neck.look_up(30,0,curve=Curve.BOUNCE)
