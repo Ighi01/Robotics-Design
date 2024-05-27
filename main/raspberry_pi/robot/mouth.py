@@ -16,10 +16,10 @@ class Mouth:
     closed_angle_bottom: int
 
     def __init__(self, side: Side, arduino: Arduino, top_index: int, bottom_index: int, open_angle_top: int,
-                 closed_angle_top: int, open_angle_bottom: int, closed_angle_bottom: int, audio_channel_index: int, volume: int):
+                 closed_angle_top: int, open_angle_bottom: int, closed_angle_bottom: int, volume: int):
         self.bottom_servo = Servo(arduino, bottom_index)
         self.top_servo = Servo(arduino, top_index)
-        self.voice = Speaker(audio_channel_index, side, volume)
+        self.voice = Speaker(side, volume)
         self.open_angle_top = open_angle_top
         self.closed_angle_top = closed_angle_top
         self.open_angle_bottom = open_angle_bottom

@@ -258,6 +258,7 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     reset_screen(robot, left_percentage, right_percentage)
     reset_stepper(robot, left_percentage, right_percentage)
     reset_servo(robot, left_percentage, right_percentage)
+    reset_stepper_fixed(robot, left_percentage, right_percentage)
     
     robot.left.mouth.open(80,curve=Curve.BOUNCE)
     robot.left.neck.look_up(30,0,curve=Curve.BOUNCE)
@@ -451,6 +452,10 @@ def feedback_left_2(robot: Robot, left_percentage: int, right_percentage: int):
 def feedback_left_3(robot: Robot, left_percentage: int, right_percentage: int):
     set_handler(robot)
     feedback_left(robot, left_percentage, right_percentage)
+    setup(robot)
+    reset_screen(robot, left_percentage, right_percentage)
+    
+    set_stepper_fixed_on_percentage(robot, left_percentage, right_percentage)
     
     robot.left.neck.look_to_other(400, curve=Curve.QUADRATIC)
 

@@ -22,12 +22,13 @@ class Screen:
     blank_image: Image
     images: list
     change: bool
+    stop_sig: bool
     
     def _loop(self):
-        while True:
+        while not self.stop_sig:
             self.change = False
             for frame in self.images:
-                if self.change:
+                if self.change or self.stop_sig:
                     break
                 self.device.image(frame)
     
@@ -51,9 +52,17 @@ class Screen:
         draw = ImageDraw.Draw(self.blank_image)
         draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
         self.images = [self.blank_image]
-        self.thread = threading.Thread(target=self._loop)
-        self.thread.start()
         self.change = False
+        self.stop_sig = False
+        
+    def start(self):
+        self.thread = threading.Thread(target=self._loop, daemon=True)
+        self.thread.start()
+    
+    def stop(self):
+        self.stop_sig = True
+        self.thread.join()
+        self.images = [self.blank_image]
     
     def blank(self):
         self.images = [self.blank_image]

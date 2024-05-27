@@ -13,4 +13,4 @@ class Stepper:
 
     def move(self, percentage: int, velocity: int, bounce_distance: int, bounce_velocity: int):
         self.current_percentage = percentage
-        self.arduino.move_stepper(self.current_percentage, velocity, bounce_distance, bounce_velocity)
+        self.arduino.move_stepper(int(self.current_percentage), int(velocity), int(bounce_distance), int(bounce_velocity))

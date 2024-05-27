@@ -25,6 +25,8 @@ class SM(StateMachine):
     left_votes: int
     right_votes: int
     trigger_distance: float = 10.0
+    voting_timeout: int = 30
+    idled: bool
 
     # These are the states of the state machine
     setup = State('setup', initial=True)
@@ -47,6 +49,7 @@ class SM(StateMachine):
         self.robot = robot
         self.left_votes = 0
         self.right_votes = 0
+        self.idled = False
         super(SM, self).__init__()
         
     ########################
@@ -83,23 +86,30 @@ class SM(StateMachine):
 
     def on_enter_engaging(self):
         print('Entered engaging')
-        random_engaging = random.choice([routines.engaging_1, routines.engaging_2, routines.engaging_3])
-        print(f'Selected engaging routine {random_engaging.__name__}')
-        self.execute_routine(random_engaging, (self.robot, *self.percentages))
+        routine = random.choice([routines.engaging_1, routines.engaging_2, routines.engaging_3]) if self.idled else routines.idle
+        self.idled = not self.idled
+        print(f'Selected engaging routine {routine.__name__}')
+        self.execute_routine(routine, (self.robot, *self.percentages))
         print('Engaging routine started')
         while self.current_routine.is_alive():
-            current_distance = self.robot.proximity_sensor.get_distance()
+            current_distance = self.robot.proximity_sensor.distance
             print(f'Current distance: {current_distance}')
-            if self.robot.proximity_sensor.get_distance() < self.trigger_distance:
+            if current_distance < self.trigger_distance:
                 self.approached()
+                return
             else:
-                sleep(0.1)
+                sleep(1)
         print('Engaging routine finished')
         self.loopEngaging()
 
     def on_enter_voting(self):
         print('Entered voting!')
         self.execute_routine(routines.voting, (self.robot, *self.percentages))
+        while self.current_routine.is_alive():
+            sleep(1)
+        print('No one there!')
+        self.leaved()
+        return
         
 
     def on_enter_feedback(self):
