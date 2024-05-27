@@ -3,9 +3,43 @@ from time import sleep
 from components.curve import Curve
 from robot.robot import Robot
 from robot.sounds import Sounds
+def reset(robot: Robot, int: left_percentage, int: right_percentage):
+    reset_screen(robot, left_percentage, right_percentage)
+    reset_stepper(robot, left_percentage, right_percentage)
+    reset_servo(robot, left_percentage, right_percentage)
+    
+def reset_screen(robot: Robot, int: left_percentage, int: right_percentage):
+    robot.left.eye.neutral()
+    robot.right.eye.neutral()
+    
+def reset_stepper(robot: Robot, int: left_percentage, int: right_percentage):
+    robot.left.eye.raise_percent(50, 100, 0, 100)
+    robot.right.eye.raise_percent(50, 100, 0, 100)
 
-
-def engaging_1(robot: Robot):
+def reset_servo(robot: Robot, int: left_percentage, int: right_percentage):    
+    robot.left.mouth.close(100)
+    robot.left.arm.lower(100)
+    robot.left.neck.look_front(100)
+    robot.left.neck.look_center(30)
+        
+    robot.right.mouth.close(100)
+    robot.right.arm.lower(100)
+    robot.right.neck.look_front(100)
+    robot.right.neck.look_center(30)
+    
+    robot.send_servo_movements()
+    robot.left.arduino.wait_servos()
+    robot.right.arduino.wait_servos()
+    
+def idle(robot: Robot, int: left_percentage, int: right_percentage):
+    reset_screen(robot, left_percentage, right_percentage)
+    reset_servo(robot, left_percentage, right_percentage)    
+    robot.left.eye.raise_percent(left_percentage, 100, 5, 100)
+    robot.right.eye.raise_percent(right_percentage, 100, 5, 100)
+    
+    sleep(20)
+    
+def engaging_1(robot: Robot, int: left_percentage, int: right_percentage):
     robot.left.eye.neutral()
     robot.right.eye.neutral()
     
@@ -78,7 +112,7 @@ def engaging_1(robot: Robot):
         sleep(0.5)
         
 
-def engaging_2(robot: Robot): #TODO BETTER
+def engaging_2(robot: Robot, int: left_percentage, int: right_percentage): #TODO BETTER
     robot.left.eye.neutral()
     robot.right.eye.neutral()
 
@@ -173,23 +207,48 @@ def engaging_3(robot: Robot, int: left_percentage, int: right_percentage):
     robot.right.arm.raise_full(100,0,curve=Curve.BOUNCE)
     
     robot.right.arduino.send_servo_movements()
-    robot.right.arduino.wait_servos()
+    robot.right.arduino.wait_servos()    
     
-    sleep(0.5)
+    robot.left.eye.raise_percent(left_percentage + 40 if left_percentage + 40 < 100 else 100 , 100, 5, 100)
+    
+    sleep(3)
     
     robot.left.mouth.say(Sounds.YUM)
-    robot.left.eye.raise_percent(left_percentage + 25 if left_percentage + 25 < 100 else 100 , 100, 5, 100)
     robot.left.eye.happy_1()
-    robot.left.mouth.ñamñam(5,45,Curve.QUADRATIC,0)
+    robot.left.mouth.ñamñam(2,30,Curve.QUADRATIC,0)
     robot.left.arduino.send_servo_movements()
+    
+    
+    robot.right.eye.raise_percent(right_percentage - 40 if left_percentage - 40 > 0 else 0 , 100, 0, 100)
     
     sleep(2)
     robot.right.eye.comp()
-    robot.right.eye.raise_percent(right_percentage - 25 if left_percentage - 25 > 0 else 0 , 100, 0, 100)
     robot.left.mouth.say(Sounds.UHOH)
     
     robot.left.arduino.wait_servos()
     
     
-#def engaging_3(robot: Robot, int: left_percentage, int: right_percentage):
+def voting(robot: Robot, int: left_percentage, int: right_percentage):
+    
+    robot.left.eye.neutral()
+    robot.right.eye.neutral()
+    
+    robot.left.eye.raise_percent(left_percentage, 100, 0, 100)
+    robot.right.eye.raise_percent(right_percentage, 100, 0, 100)
+    
+    robot.left.mouth.open(80,curve=Curve.BOUNCE)
+    robot.left.neck.look_up(30,0,curve=Curve.BOUNCE)
+    
+    robot.right.mouth.open(60,curve=Curve.BOUNCE)
+    robot.right.neck.look_up(30,0,curve=Curve.BOUNCE)
+    
+    robot.send_servo_movements()
+    robot.right.arduino.wait_servos() 
+    robot.left.arduino.wait_servos() 
+    
+    robot.left.eye.comp()
+    robot.right.eye.comp()
+    
+
+    
     
