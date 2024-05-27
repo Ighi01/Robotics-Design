@@ -1,5 +1,8 @@
 import RPi.GPIO as GPIO
+import logging
 
+
+log = logging.getLogger(__name__)
 
 def do_nothing(_):
     pass
@@ -8,7 +11,7 @@ def do_nothing(_):
 class IRSensor:
     pin: int
     bouncetime: int
-    callback: callable = None
+    callback: callable = do_nothing
 
     def __init__(self, pin, bouncetime=100):
         self.pin = pin
@@ -20,16 +23,16 @@ class IRSensor:
         GPIO.add_event_detect(
             self.pin,
             GPIO.FALLING,
-            callback=self.callback if self.callback is not None else do_nothing,
+            callback=self.callback_func,
             bouncetime=self.bouncetime
         )
+    
+    def callback_func(self, *args):
+        self.callback.__call__()
 
     def set_callback(self, callback: callable):
+        log.debug(f'Setting callback for pin {self.pin} to {callback.__name__}')
         self.callback = callback
-        GPIO.remove_event_detect(self.pin)
-        GPIO.add_event_detect(
-            self.pin,
-            GPIO.FALLING,
-            callback=self.callback,
-            bouncetime=self.bouncetime
-        )
+
+    def remove_callback(self):
+        self.callback = do_nothing

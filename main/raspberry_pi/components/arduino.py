@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from time import time_ns, sleep
 
@@ -9,6 +10,9 @@ servo_template_main: str = '0 {servo_len} {servos}'
 servo_template_ind: str = '{index} {movnum} {movs}'
 servo_template_mov: str = '{angle} {delay} {velocity} {curve}'
 stepper_template: str = '2 {percentage} {velocity} {bounce_distance} {bounce_velocity}'
+
+
+log = logging.getLogger(__name__)
 
 
 class Arduino:
@@ -29,7 +33,7 @@ class Arduino:
             sleep(0.1)
         self.write('a')
         sleep(0.1)
-        print(f'Connected to Arduino {self.port}')
+        log.info(f'{self.port} connected')
         
 
     def write(self, data: str):
@@ -37,11 +41,11 @@ class Arduino:
             pass
         self.device.write(bytes(data, 'utf-8'))
         self.last_sent = time_ns()
-        print(f'Wrote to Arduino {self.port}: "{data}"')
+        log.debug(f'{self.port} <- "{data}"')
 
     def read(self):
         a = self.device.readline().decode().strip()
-        print(f'Read from Arduino {self.port}: "{a}"')
+        log.debug(f'{self.port} -> "{a}"')
         return a
 
     def add_servo_movement(self, index: int, angle: int, delay: int, velocity: int, curve: Curve):
@@ -50,6 +54,8 @@ class Arduino:
         self.servo_movements[index].append((angle, delay, velocity, curve))
 
     def send_servo_movements(self):
+        if not self.servo_movements:
+            return
         servos = []
         for index, movements in self.servo_movements.items():
             movs = []

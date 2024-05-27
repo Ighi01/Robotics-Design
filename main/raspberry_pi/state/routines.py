@@ -11,10 +11,13 @@ from random import randint
 log = logging.getLogger(__name__)
 
 
-def set_handler(robot: Robot):
+def setup(robot: Robot):
     def handler(signum, frame):
+        robot.stop_eyes()
         exit(0)
     signal(SIGTERM, handler)
+    robot.start_eyes()
+    robot.start_voice()
 
     
 def reset(robot: Robot, left_percentage: int, right_percentage: int):
@@ -70,7 +73,7 @@ def idle(robot: Robot, left_percentage: int, right_percentage: int):
     sleep(time)
     
 def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
     robot.right.arm.raise_half(80, 0, Curve.QUADRATIC)
@@ -142,7 +145,7 @@ def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
         
 
 def engaging_2(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
     reset_stepper_fixed(robot, left_percentage, right_percentage)
@@ -204,7 +207,7 @@ def engaging_2(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.eye.neutral()    
     
 def engaging_3(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
     
@@ -263,7 +266,6 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)
     
     reset_screen(robot, left_percentage, right_percentage)
-    reset_stepper(robot, left_percentage, right_percentage)
     reset_servo(robot, left_percentage, right_percentage)
     reset_stepper_fixed(robot, left_percentage, right_percentage)
     
@@ -316,7 +318,7 @@ def feedback_right(robot: Robot, left_percentage: int, right_percentage: int):
     robot.right.arduino.wait_servos()
     
 def feedback_right_1(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     feedback_right(robot, left_percentage, right_percentage)
     
     robot.right.neck.look_to_other(300, curve=Curve.QUADRATIC)
@@ -346,7 +348,7 @@ def feedback_right_1(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.arduino.wait_servos()
     
 def feedback_right_2(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     feedback_right(robot, left_percentage, right_percentage)
     
     robot.right.neck.look_to_other(500, curve=Curve.BOUNCE)
@@ -371,7 +373,7 @@ def feedback_right_2(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.arduino.wait_servos()
     
 def feedback_right_3(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     feedback_right(robot, left_percentage, right_percentage)
     
     robot.left.neck.look_to_other(75, curve=Curve.QUADRATIC)
@@ -396,7 +398,7 @@ def feedback_right_3(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.eye.comp()
     
 def feedback_left_1(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     feedback_left(robot, left_percentage, right_percentage)
     
     robot.left.neck.look_to_other(75, curve=Curve.QUADRATIC)
@@ -418,7 +420,7 @@ def feedback_left_1(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.arduino.wait_stepper()
     
 def feedback_left_2(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     feedback_left(robot, left_percentage, right_percentage)
     
     robot.left.neck.look_to_other(400, curve=Curve.QUADRATIC)
@@ -451,13 +453,13 @@ def feedback_left_2(robot: Robot, left_percentage: int, right_percentage: int):
         robot.right.arm.raise_percent(70,150,0,Curve.BOUNCE)    
         robot.right.arduino.send_servo_movements()
         robot.right.arduino.wait_servos()
-        robot.right.arm.lower(0,150,0,Curve.BOUNCE)   
+        robot.right.arm.lower(150,0,Curve.BOUNCE)   
         robot.right.arduino.send_servo_movements()
         robot.right.arduino.wait_servos()
         sleep(0.5)
         
 def feedback_left_3(robot: Robot, left_percentage: int, right_percentage: int):
-    set_handler(robot)
+    setup(robot)
     feedback_left(robot, left_percentage, right_percentage)
     setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
@@ -495,7 +497,7 @@ def feedback_left_3(robot: Robot, left_percentage: int, right_percentage: int):
         robot.right.arm.raise_percent(70,150,0,Curve.BOUNCE)    
         robot.right.arduino.send_servo_movements()
         robot.right.arduino.wait_servos()
-        robot.right.arm.lower(0,150,0,Curve.BOUNCE)   
+        robot.right.arm.lower(150,0,Curve.BOUNCE)   
         robot.right.arduino.send_servo_movements()
         robot.right.arduino.wait_servos()
         sleep(0.5)

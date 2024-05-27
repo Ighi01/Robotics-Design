@@ -35,14 +35,11 @@ class Robot:
         self.left.arduino.send_servo_movements()
         self.right.arduino.send_servo_movements()
         
-    def reset(self, left_servos: list = [], right_servos: list = []):
-        self.left.arduino.reset(left_servos)
-        self.right.arduino.reset(right_servos)
+    def set_ir_callbacks(self, left_callback: callable, right_callback: callable):
+        self.left.neck.sensor.set_callback(left_callback)
+        self.right.neck.sensor.set_callback(right_callback)
         
-    def close(self):
-        self.left.arm.raise_full(150)
-        self.right.arm.raise_full(150)
-        self.send_servo_movements()
-        self.left.eye.raise_percent(0, 100)
-        self.right.eye.raise_percent(0, 100)
-        
+    def remove_ir_callbacks(self):
+        self.left.neck.sensor.remove_callback()
+        self.right.neck.sensor.remove_callback()
+    

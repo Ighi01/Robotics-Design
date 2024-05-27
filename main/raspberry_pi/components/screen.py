@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 from adafruit_rgb_display.st7735 import ST7735R
 import threading
@@ -6,11 +7,12 @@ import board
 from PIL import Image, ImageDraw, ImageSequence
 
 spi = board.SPI()
+log = logging.getLogger(__name__)
 
 
 def custom_hook(args):
     # report the failure
-    print(f'Thread failed: {args.exc_value}')
+    log.warning(f'Thread failed: {args.exc_value}')
 
 
 threading.excepthook = custom_hook
@@ -61,7 +63,9 @@ class Screen:
     
     def stop(self):
         self.stop_sig = True
-        self.thread.join()
+        if self.thread.is_alive():
+            self.thread.join()
+        self.thread = None
         self.images = [self.blank_image]
     
     def blank(self):

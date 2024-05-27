@@ -4,8 +4,23 @@ from time import sleep
 import board
 from digitalio import DigitalInOut
 import RPi.GPIO as GPIO
+import logging
+from rich.logging import RichHandler
 
 GPIO.setmode(GPIO.BCM)
+
+logging.basicConfig(
+    level="DEBUG",
+    format='%(message)s',
+    datefmt='[%Y-%m-%d %X]',
+    handlers=[
+        RichHandler(
+            rich_tracebacks=True,
+            locals_max_length=30,
+        )
+    ],
+)
+log = logging.getLogger(__name__)
 
 
 def main():
@@ -14,6 +29,7 @@ def main():
     from robot.sounds import Sounds
     from components.curve import Curve
     from state.state import SM
+    from state.routines import engaging_1, engaging_2, engaging_3, voting, feedback_left_1, feedback_left_2, feedback_left_3, feedback_right_1, feedback_right_2, feedback_right_3
     robot = Robot(
         left={
             'side': Side.LEFT,

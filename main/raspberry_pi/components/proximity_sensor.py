@@ -1,5 +1,9 @@
+import logging
 from typing import Any
 from adafruit_hcsr04 import HCSR04
+
+
+log = logging.getLogger(__name__)
 
 
 class ProximitySensor:
@@ -14,12 +18,12 @@ class ProximitySensor:
 
     @property
     def distance(self):
-        return 100
         distances = []
-        while i := 3:
+        i = 3
+        while i:
             try:
                 distances.append(self.device.distance)
                 i -= 1
             except Exception as _:
-                print('Timeout on proximity sensor, trying again...')
+                log.debug('Timeout on proximity sensor, trying again...')
         return sum(distances) / len(distances)
