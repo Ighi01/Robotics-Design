@@ -1,7 +1,9 @@
+#!/home/dietpi/.cache/pypoetry/virtualenvs/sensors-ZBOxR5Ay-py3.11/bin/python
+
 import RPi.GPIO as IO
 from time import sleep
 
-pin = 16
+pin = 19
 
 IO.setwarnings(False)
 IO.setmode(IO.BCM)

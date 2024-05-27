@@ -10,6 +10,7 @@ from statemachine import StateMachine, State
 
 from robot.robot import Robot
 import state.routines as routines
+from robot.side import Side
 
 
 log = logging.getLogger(__name__)
@@ -30,8 +31,9 @@ class SM(StateMachine):
     left_votes: int
     right_votes: int
     trigger_distance: float = 10.0
-    voting_timeout: mp.Process
+    voting_timeout: int = 30
     idled: bool
+    last_voted: Side = None
 
     # These are the states of the state machine
     setup = State('setup', initial=True)
@@ -56,7 +58,6 @@ class SM(StateMachine):
         self.left_votes = 0
         self.right_votes = 0
         self.idled = False
-        self.voting_timeout = None
         super(SM, self).__init__()
         
     ########################
@@ -85,19 +86,9 @@ class SM(StateMachine):
         self.current_routine.terminate()
         self.current_routine.join()
         
-    def after_transition(self, event, source, target):
+    def on_transition(self, event, source, target):
         if source.id != target.id:
             log.info(f"{source.id} --{event}--> {target.id}")
-    
-    def _call_abandoned(self):
-        self.abandoned()
-        
-            
-    def _voting_timeout(self, abandoned):
-        log.debug('Starting timeout')
-        sleep(5)
-        log.debug('Timeout reached')
-        abandoned()
 
     #######################
     #   State callbacks   #
@@ -114,22 +105,37 @@ class SM(StateMachine):
         self.execute_routine(routine, (self.robot, *self.percentages))
         while self.current_routine.is_alive():
             current_distance = self.robot.proximity_sensor.distance
-            log.debug(f'Current distance: {current_distance}')
             if current_distance < self.trigger_distance:
                 self.approached()
                 return
             else:
-                sleep(1)
+                sleep(.1)
         self.loopEngaging()
 
     def on_enter_voting(self):
-        self.robot.set_ir_callbacks(self.voted_left, self.voted_right)
+        self.robot.activate_ir()
         self.execute_routine(routines.voting, (self.robot, *self.percentages))
-        self.voting_timeout = mp.Process(target=self._voting_timeout, args=(self._call_abandoned,))
-        self.voting_timeout.start()
+        while self.current_routine.is_alive():
+            left, right = self.robot.ir_values()
+            if left:
+                self.voted_left()
+                return
+            elif right:
+                self.voted_right()
+                return
+            else:
+                sleep(.1)
+        self.abandoned()
+            
 
     def on_enter_feedback(self):
-        log.debug(f'Feedback!')
+        if last_voted == Side.LEFT:
+            routine = random.choice([routines.feedback_left_1, routines.feedback_left_2, routines.feedback_left_3])
+        else:
+            routine = random.choice([routines.feedback_right_1, routines.feedback_right_2, routines.feedback_right_3])
+        self.execute_routine(routine, (self.robot, *self.percentages))
+        while self.current_routine.is_alive():
+            sleep(.1)
         self.feedbacked()
 
     ##########################
@@ -144,17 +150,19 @@ class SM(StateMachine):
         
     def on_abandoned(self):
         self.interrupt_routine()
-        self.robot.remove_ir_callbacks()
-        self.idled = False
+        self.robot.deactivate_ir()
+        self.idled = True
         
     def on_voted_left(self):
         self.left_votes += 1
         log.info(f'Voted left, left_votes={self.left_votes}, right_votes={self.right_votes}')
-        self.robot.remove_ir_callbacks()
-        self.voting_timeout.terminate()
+        self.robot.deactivate_ir()
+        self.interrupt_routine()
+        self.last_voted = Side.LEFT
         
     def on_voted_right(self):
         self.right_votes += 1
         log.info(f'Voted right, left_votes={self.left_votes}, right_votes={self.right_votes}')
-        self.robot.remove_ir_callbacks()
-        self.voting_timeout.terminate()
+        self.robot.deactivate_ir()
+        self.interrupt_routine()
+        self.last_voted = Side.RIGHT
