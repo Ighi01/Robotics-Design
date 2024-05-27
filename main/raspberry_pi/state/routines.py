@@ -492,6 +492,3 @@ def feedback_left_3(robot: Robot, left_percentage: int, right_percentage: int):
         robot.right.arduino.send_servo_movements()
         robot.right.arduino.wait_servos()
         sleep(0.5)
-        
-    
-    
