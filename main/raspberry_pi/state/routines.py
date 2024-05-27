@@ -64,7 +64,9 @@ def idle(robot: Robot, left_percentage: int, right_percentage: int):
     reset_servo(robot, left_percentage, right_percentage)    
     reset_stepper_bouncing(robot, left_percentage, right_percentage)
     
-    sleep(randint(30, 120))
+    time = randint(30, 120)
+    print(f'Idling for {time} seconds')
+    sleep(time)
     
 def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)

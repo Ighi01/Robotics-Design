@@ -26,6 +26,7 @@ class SM(StateMachine):
     right_votes: int
     trigger_distance: float = 10.0
     voting_timeout: int = 30
+    idled: bool
 
     # These are the states of the state machine
     setup = State('setup', initial=True)
@@ -48,6 +49,7 @@ class SM(StateMachine):
         self.robot = robot
         self.left_votes = 0
         self.right_votes = 0
+        self.idled = False
         super(SM, self).__init__()
         
     ########################
@@ -84,9 +86,10 @@ class SM(StateMachine):
 
     def on_enter_engaging(self):
         print('Entered engaging')
-        random_engaging = random.choice([routines.engaging_1, routines.engaging_2, routines.engaging_3, routines.idle])
-        print(f'Selected engaging routine {random_engaging.__name__}')
-        self.execute_routine(random_engaging, (self.robot, *self.percentages))
+        routine = random.choice([routines.engaging_1, routines.engaging_2, routines.engaging_3]) if self.idled else routines.idle
+        self.idled = not self.idled
+        print(f'Selected engaging routine {routine.__name__}')
+        self.execute_routine(routine, (self.robot, *self.percentages))
         print('Engaging routine started')
         while self.current_routine.is_alive():
             current_distance = self.robot.proximity_sensor.distance
