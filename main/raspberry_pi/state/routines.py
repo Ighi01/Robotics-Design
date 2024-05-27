@@ -119,7 +119,7 @@ def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
         sleep(0.5)
         
 
-def engaging_2(robot: Robot, int: left_percentage, int: right_percentage):
+def engaging_2(robot: Robot, left_percentage: int, right_percentage: int):
     set_handler(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
