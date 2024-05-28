@@ -30,14 +30,14 @@ def reset_screen(robot: Robot, left_percentage: int, right_percentage: int):
     robot.right.eye.neutral()
     
 def reset_stepper_fixed(robot: Robot, left_percentage: int, right_percentage: int):
-    robot.left.eye.raise_percent(50, 100, 0, 100)
+    robot.left.eye.raise_percent(left_percentage, 100, 0, 100)
     sleep(0.5)
-    robot.right.eye.raise_percent(50, 100, 0, 100)
+    robot.right.eye.raise_percent(right_percentage, 100, 0, 100)
     
 def reset_stepper_bouncing(robot: Robot, left_percentage: int, right_percentage: int):
-    robot.left.eye.raise_percent(50, 100, 5, 100)
+    robot.left.eye.raise_percent(left_percentage, 100, 5, 100)
     sleep(0.5)
-    robot.right.eye.raise_percent(50, 100, 5, 100)
+    robot.right.eye.raise_percent(right_percentage, 100, 5, 100)
     
 def set_stepper_fixed_on_percentage(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.eye.raise_percent(left_percentage, 100, 0, 100)
@@ -343,7 +343,13 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
         
         robot.left.mouth.say(Sounds.AAAA)
         robot.right.mouth.say(Sounds.AAAA)
-
+        
+    robot.left.eye.comp()
+    robot.right.eye.comp()
+    robot.left.mouth.say(Sounds.CRYING)
+    robot.right.mouth.say(Sounds.CRYING)
+    sleep(3)
+    
     
 def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
     reset_screen(robot, left_percentage, right_percentage)

@@ -76,7 +76,7 @@ class SM(StateMachine):
             total_votes = self.left_votes + self.right_votes
             left_percentage = self.left_votes / total_votes
             right_percentage = self.right_votes / total_votes
-            return left_percentage, right_percentage
+            return int(left_percentage), int(right_percentage)
     
     def execute_routine(self, routine: callable, args: tuple):
         self.current_routine = Process(target=routine, args=args)

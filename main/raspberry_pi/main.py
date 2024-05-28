@@ -108,9 +108,7 @@ def main():
             'echo_pin': board.D21,
         },
     )
-    # state_machine = SM(robot)
-    robot.connect_arduinos()
-    feedback_right_3(robot, 50, 50)
+    state_machine = SM(robot)
 
 
 if __name__ == '__main__':
