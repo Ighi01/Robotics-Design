@@ -50,3 +50,6 @@ class Mouth:
 
     def say(self, sound: Sounds):
         self.voice.play(sound.value)
+        
+    def say_and_wait(self, sound: Sounds):
+        self.voice.play_and_wait(sound.value)

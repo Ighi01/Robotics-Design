@@ -271,8 +271,7 @@ def engaging_3(robot: Robot, left_percentage: int, right_percentage: int): #TODO
     
     sleep(2)
     robot.right.eye.comp()
-    robot.left.mouth.say(Sounds.UHOH)
-    
+    robot.left.mouth.say_and_wait(Sounds.UHOH)
     robot.left.arduino.wait_servos()
     
     
@@ -299,9 +298,28 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     times = 4
     
     for _ in range(times):
-        sleep(5)
+        robot.left.neck.turn_head_horizontal(50,100)
+        robot.left.neck.turn_head_horizontal(10,100)
+        robot.left.neck.turn_head_horizontal(30,100)
         
-    
+        robot.right.neck.turn_head_horizontal(50,100)
+        robot.right.neck.turn_head_horizontal(10,100)
+        robot.right.neck.turn_head_horizontal(30,100)      
+        
+        robot.send_servo_movements()
+        robot.right.arduino.wait_servos() 
+        robot.left.arduino.wait_servos() 
+        
+        robot.left.arm.raise_full(50)
+        robot.right.arm.raise_full(50)    
+        
+        robot.send_servo_movements()
+        robot.right.arduino.wait_servos() 
+        robot.left.arduino.wait_servos() 
+        
+        robot.left.arm.lower(50)
+        robot.right.arm.raise_full(50)   
+        sleep(5)
     
     
 def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
