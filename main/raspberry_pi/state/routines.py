@@ -271,8 +271,9 @@ def engaging_3(robot: Robot, left_percentage: int, right_percentage: int): #TODO
     
     sleep(2)
     robot.right.eye.comp()
-    robot.left.mouth.say_and_wait(Sounds.UHOH)
+    robot.right.mouth.say(Sounds.UHOH)
     robot.left.arduino.wait_servos()
+    sleep(3)
     
     
 def voting(robot: Robot, left_percentage: int, right_percentage: int):
