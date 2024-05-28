@@ -129,13 +129,14 @@ class SM(StateMachine):
             
 
     def on_enter_feedback(self):
-        if last_voted == Side.LEFT:
+        if self.last_voted == Side.LEFT:
             routine = random.choice([routines.feedback_left_1, routines.feedback_left_2, routines.feedback_left_3])
         else:
             routine = random.choice([routines.feedback_right_1, routines.feedback_right_2, routines.feedback_right_3])
         self.execute_routine(routine, (self.robot, *self.percentages))
         while self.current_routine.is_alive():
             sleep(.1)
+        self.idled = False
         self.feedbacked()
 
     ##########################

@@ -298,13 +298,14 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
     times = 4
     
     for _ in range(times):
+        sleep(5)
         robot.left.neck.turn_head_horizontal(50,100)
         robot.left.neck.turn_head_horizontal(10,100)
         robot.left.neck.turn_head_horizontal(30,100)
         
-        robot.right.neck.turn_head_horizontal(50,100)
-        robot.right.neck.turn_head_horizontal(10,100)
-        robot.right.neck.turn_head_horizontal(30,100)      
+        robot.right.neck.turn_head_horizontal(170,100)
+        robot.right.neck.turn_head_horizontal(130,100)
+        robot.right.neck.turn_head_horizontal(150,100)      
         
         robot.send_servo_movements()
         robot.right.arduino.wait_servos() 
@@ -318,8 +319,11 @@ def voting(robot: Robot, left_percentage: int, right_percentage: int):
         robot.left.arduino.wait_servos() 
         
         robot.left.arm.lower(50)
-        robot.right.arm.raise_full(50)   
-        sleep(5)
+        robot.right.arm.lower(50)
+        
+        robot.send_servo_movements()
+        robot.right.arduino.wait_servos() 
+        robot.left.arduino.wait_servos() 
     
     
 def feedback_left(robot: Robot, left_percentage: int, right_percentage: int):
