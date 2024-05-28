@@ -145,7 +145,7 @@ def engaging_1(robot: Robot, left_percentage: int, right_percentage: int):
         sleep(1)
         
 
-def engaging_2(robot: Robot, left_percentage: int, right_percentage: int): #TODO : aggiungere suono verso la fine 
+def engaging_2(robot: Robot, left_percentage: int, right_percentage: int): 
     setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
@@ -490,9 +490,10 @@ def feedback_left_1(robot: Robot, left_percentage: int, right_percentage: int):
     
     robot.right.mouth.say(Sounds.GRUMBLE)
     robot.right.neck.look_center(50)
+    robot.right.arduino.send_servo_movements()
+    robot.right.arduino.wait_servos()
     
-    robot.right.arduino.wait_stepper()
-    robot.left.arduino.wait_stepper()
+    sleep(2)
     
 def feedback_left_2(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)
