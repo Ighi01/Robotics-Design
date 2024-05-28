@@ -1,6 +1,10 @@
 import pygame
+import logging
 
 from robot.side import Side
+
+
+log = logging.getLogger(__name__)
 
 
 class Speaker:
@@ -21,6 +25,7 @@ class Speaker:
             self.channel.set_volume(0, self.volume / 100)
         
     def play(self, sound: str):
+        log.debug(f'Playing sound {sound} on side {self.side} with volume {self.volume}')
         self.channel.play(pygame.mixer.Sound(sound))
 
     def play_and_wait(self, sound: str):
