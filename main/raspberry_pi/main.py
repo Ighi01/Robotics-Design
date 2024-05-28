@@ -12,7 +12,7 @@ GPIO.setmode(GPIO.BCM)
 logging.basicConfig(
     level="DEBUG",
     format='%(message)s',
-    datefmt='[%Y-%m-%d %X]',
+    datefmt='[%H:%M]',
     handlers=[
         RichHandler(
             rich_tracebacks=True,
@@ -110,7 +110,7 @@ def main():
     )
     # state_machine = SM(robot)
     robot.connect_arduinos()
-    engaging_3(robot, 50, 50)
+    feedback_right_3(robot, 50, 50)
 
 
 if __name__ == '__main__':

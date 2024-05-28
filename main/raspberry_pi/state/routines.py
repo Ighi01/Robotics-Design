@@ -390,6 +390,8 @@ def feedback_right_1(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.arduino.wait_servos()
     robot.left.mouth.say(Sounds.BLEAH)
     
+    sleep(2)
+    
 def feedback_right_2(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)
     feedback_right(robot, left_percentage, right_percentage)
@@ -416,6 +418,7 @@ def feedback_right_2(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.mouth.say(Sounds.CRYING)
     robot.left.eye.sad()
     robot.left.arduino.wait_servos()
+    sleep(2)
     
 def feedback_right_3(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)
@@ -434,8 +437,8 @@ def feedback_right_3(robot: Robot, left_percentage: int, right_percentage: int):
     sleep(1.5)
     
     robot.right.mouth.say(Sounds.EVIL_LAUGH)
-    robot.left.neck.look_center(75, curve=Curve.QUADRATIC)
-    robot.left.send_servo_movements()
+    robot.right.neck.look_front(75, curve=Curve.QUADRATIC)
+    robot.right.arduino.send_servo_movements()
     robot.right.eye.angry_1()
     
     sleep(1.5)
@@ -443,7 +446,8 @@ def feedback_right_3(robot: Robot, left_percentage: int, right_percentage: int):
     robot.left.mouth.say(Sounds.UHOH)
     robot.left.eye.comp()
 
-    robot.left.arduino.wait_servos()
+    robot.right.arduino.wait_servos()
+    sleep(5)
     
 def feedback_left_1(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)
@@ -456,12 +460,12 @@ def feedback_left_1(robot: Robot, left_percentage: int, right_percentage: int):
     robot.right.arduino.wait_servos()
     robot.left.arduino.wait_servos()
     
-    robot.right.eye.raise_percent(right_percentage + 75 if right_percentage + 75 < 100 else 100 , 100, 5, 100)
-    robot.left.eye.raise_percent(left_percentage - 75 if left_percentage - 75 > 0 else 0 , 100, 5, 100)
+    robot.right.eye.raise_percent(right_percentage - 75 if right_percentage - 75 < 100 else 100 , 100, 0, 100)
+    robot.left.eye.raise_percent(left_percentage + 75 if left_percentage + 75 > 0 else 0 , 100, 0, 100)
     
     robot.left.mouth.say(Sounds.HIGH_LAUGH)
     
-    sleep(1)
+    sleep(2.5)
     
     robot.right.mouth.say(Sounds.GRUMBLE)
     robot.right.neck.look_center(50)
@@ -511,7 +515,6 @@ def feedback_left_2(robot: Robot, left_percentage: int, right_percentage: int):
 def feedback_left_3(robot: Robot, left_percentage: int, right_percentage: int):
     setup(robot)
     feedback_left(robot, left_percentage, right_percentage)
-    setup(robot)
     reset_screen(robot, left_percentage, right_percentage)
     
     set_stepper_fixed_on_percentage(robot, left_percentage, right_percentage)

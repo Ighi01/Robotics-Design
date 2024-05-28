@@ -30,7 +30,7 @@ class SM(StateMachine):
     current_routine: Process
     left_votes: int
     right_votes: int
-    trigger_distance: float = 10.0
+    trigger_distance: float = 100.0
     voting_timeout: int = 30
     idled: bool
     last_voted: Side = None
