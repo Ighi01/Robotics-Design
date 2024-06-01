@@ -4,8 +4,6 @@
 #define NUM_SERVOS 5
 #define MAX_MOVEMENTS 15
 
-// TODO: do better code pins initialization
-
 #define ENABLE_EASE_LINEAR
 #define ENABLE_EASE_QUADRATIC
 #define ENABLE_EASE_CUBIC
@@ -65,9 +63,6 @@ void initializeServos() {
   servos[2].resetSpeed = 25; 
   servos[3].resetSpeed = 25; 
   servos[4].resetSpeed = 25;   
-  
-  //TODO: define limits of servo using myServo.setMinMaxConstraint(minMicroseconds, maxMicroseconds);
-  //TODO: do it also for speeds
   
   servos[0].servo.attach(3,servos[0].initialAngle); //MOUTH DOWN
   servos[1].servo.attach(5,servos[1].initialAngle); //MOUTH UP
