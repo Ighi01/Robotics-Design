@@ -4,7 +4,9 @@
   
   Serial command arguments **must** be separated by a **space** in the following order:
 
- * 1. Command number: 0, 1, 2 or 3.
+ * 0. Total numbers in the command (do not consider spaces)
+ *
+ * 1. Command number: 0, 1, or 2.
  *
  *    - 0: Add new movements to the servo motors. If this is the command chosed, the following should be:  
  *           
@@ -37,25 +39,11 @@
  * 
  *              NOTE: The number of servo specified must match the number of servos then provided. All those arguments must be separated by space ,too
  *
- *          Example of input: 0 2 0 2 90 0 90 0 0 5 100 1 3 1 60 0 30 4 -> This command 0 cause 2 servo to move simultaneously: the Servo no 0 to do 2 movements = move to 90 degrees immediatelly (0 delay) at 90 deg/sec velocity with type of movement linear and then after 5 seconds 
+ *          Example of input: 18 0 2 0 2 90 0 90 0 0 5 100 1 3 1 60 0 30 4 -> This command 0 cause 2 servo to move simultaneously: the Servo no 0 to do 2 movements = move to 90 degrees immediatelly (0 delay) at 90 deg/sec velocity with type of movement linear and then after 5 seconds 
  *                                                                                                                                                                 from when the prevoius movement started move to 0 degrees at 100 deg/sec with type of movement Quadratic, then finish; 
- *                                                                                                                              In parallel the Servo no3 will also do 1 movement = move of 60 degrees immediatelly at 30 deg/sec velocity with type of movement Bounce, then finish.
+ *                                                                                                                                 In parallel the Servo no3 will also do 1 movement = move of 60 degrees immediatelly at 30 deg/sec velocity with type of movement Bounce, then finish.
  *
- *    - 1: Inquire whether the given servo motors have all finished their execution (return 1 if all the movements of all the given servos are completed, 0 if not). If this is the command chosed the following should be: 
- *
- *               2. Number of Servo: From 1 to the total number of servos : put 0 here if you want to inquire if all the servos have finished, otherwise for each servos that you want to inquire you must also specify those commands:
- *               
- *               3. Servo index: From 0 to the total number of servos minus 1. In particular we have that:
- *
- *                        Servo 0 = Upper Mouth
- *                        Servo 1 = Lower Mouth
- *                        Servo 2 = Neck for Up and Down
- *                        Servo 3 = Neck for Left and Right
- *                        Servo 4 = Arm
- *
- *          Example of input: 1 2 3 4 -> This will return 1 if both servo 3 and 4 have finished all of their movements , 0 otherwise.
- *
- *    - 2: Reset the given servo motors immediatelly to their initial position (even if it was moving into another angle). If this is the command chosed the following should be: 
+ *    - 1: Reset the given servo motors immediatelly to their initial position (even if it was moving into another angle). If this is the command chosed the following should be: 
  *
  *               2. Number of Servo: From 1 to the total number of servos : put 0 here if you want to reset all the servo, otherwise for each servos that you want to move you must also specify those commands:
  *               
@@ -67,7 +55,7 @@
  *                        Servo 3 = Neck for Left and Right
  *                        Servo 4 = Arm
  *
- *          Example of input: 2 0 -> This will make all the servos reset.
+ *          Example of input: 2 2 0 -> This will make all the servos reset.
  *
  *    - 3: Add new movements to the stepper motor. If this is the command chosed, the following should be:  
  * 
@@ -79,7 +67,7 @@
  * 
  *               5. Velocity of the gear for the bouncing (must be integer) : maximum speed = 33
  *
- *          Example of input: 3 90 20 5 30 -> This command 3 cause the Stepper to move the axis to 90% of maximum displacement moving the gear at 20 speed , then after reaching the displacemnt it start bouncing up and down of 5 millimiterss with gear speed of 30.
+ *          Example of input: 5 3 90 20 5 30 -> This command 3 cause the Stepper to move the axis to 90% of maximum displacement moving the gear at 20 speed , then after reaching the displacemnt it start bouncing up and down of 5 millimiterss with gear speed of 30.
  *
  */
 
@@ -104,8 +92,6 @@ void setup() {
 }
 
 void loop() {
-
-  //TODO : add control on the correctness of the input
   
   if (Serial.available() > 2) {
 
