@@ -1,3 +1,4 @@
 (librepcb_schematics
- (schematic "schematics/main/schematic.lp")
+ (schematic "schematics/v2/schematic.lp")
+ (schematic "schematics/raspberry_pi/schematic.lp")
 )
