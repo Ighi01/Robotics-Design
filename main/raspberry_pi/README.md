@@ -19,3 +19,5 @@ The code is structured as follows:
 - `robot`: Contains the code for the logical components of the robot.
 - `state`: Contains the code for the different states of the robot and the routines that are executed in each state.
 - `static`: Contains the static files for audio and images.
+- `pyproject.toml`: The configuration file for Poetry.
+- `poetry.lock`: The lock file for Poetry.
