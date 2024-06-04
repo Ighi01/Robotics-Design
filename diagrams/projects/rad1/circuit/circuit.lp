@@ -160,7 +160,7 @@
  (component 0a1ca1fa-c441-42d7-b240-23a1cd9f23f2
   (lib_component 3c1cc73a-ce7e-43da-aa41-de4e725adc6d)
   (lib_variant 60647749-65d0-4c88-a15c-e65eaeaa8d58)
-  (name "TR") (value "Servo SG90")
+  (name "TR") (value "Servo DM996")
   (lock_assembly false)
   (signal 2a016582-989c-48e4-91e0-3eacaa0c3fa2 (net 9b90a64e-3bd9-4d3a-9a09-d247988ac901))
   (signal 8f865176-4d3c-4109-8423-01326f09e273 (net ebb70a34-6325-4bce-9b37-fb5d71933806))
@@ -261,7 +261,7 @@
  (component 46bc6b57-9f54-44c3-93bc-8a221a4e67fc
   (lib_component 3c1cc73a-ce7e-43da-aa41-de4e725adc6d)
   (lib_variant 60647749-65d0-4c88-a15c-e65eaeaa8d58)
-  (name "NHR") (value "Servo SG90")
+  (name "NHR") (value "Servo DM996")
   (lock_assembly false)
   (signal 2a016582-989c-48e4-91e0-3eacaa0c3fa2 (net 90d2234f-9c0c-4040-8467-083f055a7148))
   (signal 8f865176-4d3c-4109-8423-01326f09e273 (net ebb70a34-6325-4bce-9b37-fb5d71933806))
@@ -309,7 +309,7 @@
  (component 51a84e36-d342-4afa-9254-0ebd0b9d5922
   (lib_component 3c1cc73a-ce7e-43da-aa41-de4e725adc6d)
   (lib_variant 60647749-65d0-4c88-a15c-e65eaeaa8d58)
-  (name "NVR") (value "Servo SG90")
+  (name "NVR") (value "Servo DM996")
   (lock_assembly false)
   (signal 2a016582-989c-48e4-91e0-3eacaa0c3fa2 (net e24fcd5f-2985-439d-82f7-eec9ac845e15))
   (signal 8f865176-4d3c-4109-8423-01326f09e273 (net ebb70a34-6325-4bce-9b37-fb5d71933806))
@@ -318,7 +318,7 @@
  (component 51c451d5-a662-4a8d-8e2e-abf940f0e6da
   (lib_component 3c1cc73a-ce7e-43da-aa41-de4e725adc6d)
   (lib_variant 60647749-65d0-4c88-a15c-e65eaeaa8d58)
-  (name "NHL") (value "Servo SG90")
+  (name "NHL") (value "Servo DM996")
   (lock_assembly false)
   (signal 2a016582-989c-48e4-91e0-3eacaa0c3fa2 (net 8106ad5a-f5d4-4db2-91b5-68295b329519))
   (signal 8f865176-4d3c-4109-8423-01326f09e273 (net ebb70a34-6325-4bce-9b37-fb5d71933806))
@@ -334,7 +334,7 @@
  (component 60b8b87c-25c8-432e-934d-bd11c021bd8b
   (lib_component 3c1cc73a-ce7e-43da-aa41-de4e725adc6d)
   (lib_variant 60647749-65d0-4c88-a15c-e65eaeaa8d58)
-  (name "NVL") (value "Servo SG90")
+  (name "NVL") (value "Servo DM996")
   (lock_assembly false)
   (signal 2a016582-989c-48e4-91e0-3eacaa0c3fa2 (net 23587979-3064-4ad8-9aa3-ef1f4e74067d))
   (signal 8f865176-4d3c-4109-8423-01326f09e273 (net ebb70a34-6325-4bce-9b37-fb5d71933806))
@@ -357,7 +357,7 @@
  (component 662dfb8d-fafe-43ec-93ea-715664998a35
   (lib_component 3c1cc73a-ce7e-43da-aa41-de4e725adc6d)
   (lib_variant 60647749-65d0-4c88-a15c-e65eaeaa8d58)
-  (name "TL") (value "Servo SG90")
+  (name "TL") (value "Servo DM996")
   (lock_assembly false)
   (signal 2a016582-989c-48e4-91e0-3eacaa0c3fa2 (net cd77dd79-2f59-4688-abf8-26308d2779b0))
   (signal 8f865176-4d3c-4109-8423-01326f09e273 (net ebb70a34-6325-4bce-9b37-fb5d71933806))
